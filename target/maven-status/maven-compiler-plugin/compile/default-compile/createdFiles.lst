@@ -1,10 +1,15 @@
 com\zzz\quanlibangiay\entity\xml\OrderItemXML.class
 com\zzz\quanlibangiay\action\ManageShoeType.class
 com\zzz\quanlibangiay\action\ManageMaterial.class
+com\zzz\quanlibangiay\view\LoginView$1.class
 com\zzz\quanlibangiay\action\ManageOrder.class
+com\zzz\quanlibangiay\controller\LoginController$LoginListener.class
 com\zzz\quanlibangiay\enums\Gender.class
+com\zzz\quanlibangiay\view\LoginView.class
 com\zzz\quanlibangiay\entity\User.class
 com\zzz\quanlibangiay\entity\ShoeType.class
+com\zzz\quanlibangiay\view\LoginView$3.class
+com\zzz\quanlibangiay\controller\LoginController.class
 com\zzz\quanlibangiay\entity\Brand.class
 com\zzz\quanlibangiay\entity\xml\ShoeXML.class
 com\zzz\quanlibangiay\action\ManageOrderItem.class
@@ -27,9 +32,10 @@ com\zzz\quanlibangiay\entity\OrderItem.class
 com\zzz\quanlibangiay\entity\AbstractEntity.class
 com\zzz\quanlibangiay\utils\FileUtils.class
 com\zzz\quanlibangiay\entity\xml\UserXML.class
+com\zzz\quanlibangiay\Test.class
 com\zzz\quanlibangiay\entity\xml\ShoeTypeXML.class
-com\zzz\quanlibangiay\TestCustomerManager.class
 com\zzz\quanlibangiay\entity\Order.class
 com\zzz\quanlibangiay\Quanlibangiay.class
+com\zzz\quanlibangiay\view\LoginView$2.class
 com\zzz\quanlibangiay\action\ManageColor.class
 com\zzz\quanlibangiay\entity\Customer.class

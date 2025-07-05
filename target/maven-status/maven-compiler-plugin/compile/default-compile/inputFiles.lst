@@ -7,6 +7,7 @@ C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\action\ManageShoe.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\action\ManageShoeType.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\action\ManageUser.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\controller\LoginController.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\entity\AbstractEntity.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\entity\Brand.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\entity\Color.java
@@ -31,5 +32,6 @@ C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\enums\PaymentMethod.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\enums\UserRole.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\Quanlibangiay.java
-C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\TestCustomerManager.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\Test.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\utils\FileUtils.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\view\LoginView.java

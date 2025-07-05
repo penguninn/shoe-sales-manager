@@ -15,6 +15,7 @@ import java.util.List;
  * @author coole
  */
 public class ManageUser {
+
     private static final String FILE_NAME = "Users.xml";
     private List<User> userList;
 
@@ -27,20 +28,33 @@ public class ManageUser {
         }
     }
 
+    public boolean authenticate(String username, String password) {
+        for (User user : userList) {
+            if (user.getUserName().equalsIgnoreCase(username) && user.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public List<User> getAllUsers() {
         return userList;
     }
 
     public User getUserById(int id) {
         for (User user : userList) {
-            if (user.getId() == id) return user;
+            if (user.getId() == id) {
+                return user;
+            }
         }
         return null;
     }
 
     public User getUserByUserName(String userName) {
         for (User user : userList) {
-            if (user.getUserName().equalsIgnoreCase(userName)) return user;
+            if (user.getUserName().equalsIgnoreCase(userName)) {
+                return user;
+            }
         }
         return null;
     }
