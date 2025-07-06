@@ -7,7 +7,13 @@ C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\action\ManageShoe.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\action\ManageShoeType.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\action\ManageUser.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\component\menu\EventMenuSelected.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\component\menu\ListMenu.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\component\menu\MenuItem.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\component\menu\Model_Menu.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\component\menu\SidebarMenu.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\controller\LoginController.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\controller\MainController.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\entity\AbstractEntity.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\entity\Brand.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\entity\Color.java
@@ -34,4 +40,6 @@ C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\Quanlibangiay.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\Test.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\utils\FileUtils.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\view\Form_Dashboard.java
 C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\view\LoginView.java
+C:\Users\coole\Desktop\OOP N02\quanlibangiay\src\main\java\com\zzz\quanlibangiay\view\MainView.java

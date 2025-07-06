@@ -16,8 +16,7 @@ public class Quanlibangiay {
 
     public static void main(String[] args) {
         LoginView view = new LoginView();
-        ManageUser manageUser = new ManageUser();
-        LoginController controller = new LoginController(view, manageUser);
+        LoginController controller = new LoginController(view);
         controller.showLoginView(); 
     }
 }

@@ -7,6 +7,7 @@ package com.zzz.quanlibangiay.controller;
 import com.zzz.quanlibangiay.action.ManageUser;
 import com.zzz.quanlibangiay.entity.User;
 import com.zzz.quanlibangiay.view.LoginView;
+import com.zzz.quanlibangiay.view.MainView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,13 +17,17 @@ import java.awt.event.ActionListener;
  */
 public class LoginController {
     
-    private final LoginView loginView;
-    private final ManageUser manageUser;
+    private LoginView loginView;
+    private ManageUser manageUser;
 
-    public LoginController(LoginView view, ManageUser manageUser) {
+    public LoginController(LoginView view) {
         this.loginView = view;
-        this.manageUser = manageUser;
         loginView.addLoginListener(new LoginListener());
+        init();
+    }
+    
+    public void init() {
+        manageUser = new ManageUser();
     }
     
     public void showLoginView() {
@@ -38,6 +43,9 @@ public class LoginController {
                 return;
             }
            if (manageUser.authenticate(user.getUserName(), user.getPassword())) {
+               MainView mainView = new MainView();
+               MainController controller = new MainController(mainView);
+               controller.showMainView();
                loginView.setVisible(false);
            } else {
                loginView.showMessage("Sai tên đăng nhập hoặc mật khẩu.");
