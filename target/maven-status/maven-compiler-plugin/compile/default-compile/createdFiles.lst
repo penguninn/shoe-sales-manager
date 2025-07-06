@@ -2,18 +2,22 @@ com\zzz\quanlibangiay\action\ManageMaterial.class
 com\zzz\quanlibangiay\view\LoginView$1.class
 com\zzz\quanlibangiay\action\ManageOrder.class
 com\zzz\quanlibangiay\component\table_custom\TableCustom$2.class
+com\zzz\quanlibangiay\component\combobox_custom\ComboSuggestionUI$ComboSuggestionPopup.class
 com\zzz\quanlibangiay\enums\Gender.class
 com\zzz\quanlibangiay\component\table_custom\TableCustom.class
 com\zzz\quanlibangiay\component\menu\EventMenuSelected.class
+com\zzz\quanlibangiay\component\button_custom\ButtonCustom.class
 com\zzz\quanlibangiay\enums\UserRole.class
 com\zzz\quanlibangiay\component\menu\SidebarMenu$2.class
 com\zzz\quanlibangiay\entity\xml\ColorXML.class
 com\zzz\quanlibangiay\entity\xml\OrderXML.class
+com\zzz\quanlibangiay\component\combobox_custom\ComboSuggestionUI$ArrowButton.class
 com\zzz\quanlibangiay\entity\xml\BrandXML.class
 com\zzz\quanlibangiay\view\Bill.class
 com\zzz\quanlibangiay\component\scrollbar_custom\ScrollbarCustom.class
 com\zzz\quanlibangiay\entity\Shoe.class
 com\zzz\quanlibangiay\action\ManageCustomer.class
+com\zzz\quanlibangiay\component\combobox_custom\ComboSuggestionUI$2.class
 com\zzz\quanlibangiay\enums\OrderStatus.class
 com\zzz\quanlibangiay\view\Staff.class
 com\zzz\quanlibangiay\component\table_custom\TableCustom$TableType.class
@@ -24,6 +28,7 @@ com\zzz\quanlibangiay\component\table_custom\TextAreaCellRenderer.class
 com\zzz\quanlibangiay\controller\LoginController$LoginListener.class
 com\zzz\quanlibangiay\component\menu\SidebarMenu.class
 com\zzz\quanlibangiay\component\scrollbar_custom\ModernScrollbarUI.class
+com\zzz\quanlibangiay\component\combobox_custom\ComboBoxSuggestion.class
 com\zzz\quanlibangiay\entity\ShoeType.class
 com\zzz\quanlibangiay\controller\LoginController.class
 com\zzz\quanlibangiay\entity\Brand.class
@@ -31,6 +36,7 @@ com\zzz\quanlibangiay\entity\xml\ShoeXML.class
 com\zzz\quanlibangiay\enums\PaymentMethod.class
 com\zzz\quanlibangiay\action\ManageUser.class
 com\zzz\quanlibangiay\entity\xml\CustomerXML.class
+com\zzz\quanlibangiay\component\combobox_custom\ComboSuggestionUI.class
 com\zzz\quanlibangiay\view\Sell.class
 com\zzz\quanlibangiay\component\menu\SidebarMenu$1.class
 com\zzz\quanlibangiay\entity\OrderItem.class
@@ -38,7 +44,9 @@ com\zzz\quanlibangiay\entity\AbstractEntity.class
 com\zzz\quanlibangiay\view\Dashboard.class
 com\zzz\quanlibangiay\view\MainView.class
 com\zzz\quanlibangiay\action\ManageColor.class
+com\zzz\quanlibangiay\component\combobox_custom\ComboSuggestionUI$Border.class
 com\zzz\quanlibangiay\component\scrollbar_custom\ModernScrollbarUI$ScrollBarButton.class
+com\zzz\quanlibangiay\component\combobox_custom\ComboSuggestionUI$3.class
 com\zzz\quanlibangiay\component\table_custom\TableHeaderCustomCellRender.class
 com\zzz\quanlibangiay\component\menu\ListMenu$2.class
 com\zzz\quanlibangiay\component\menu\ListMenu.class
@@ -64,6 +72,7 @@ com\zzz\quanlibangiay\component\panel_custom\PanelBorder.class
 com\zzz\quanlibangiay\view\LoginView.class
 com\zzz\quanlibangiay\component\menu\tabbedpane_custom\MaterialTabbed$MaterialTabbedUI.class
 com\zzz\quanlibangiay\view\MainView$2.class
+com\zzz\quanlibangiay\component\combobox_custom\ComboSuggestionUI$1.class
 com\zzz\quanlibangiay\view\Product.class
 com\zzz\quanlibangiay\component\menu\ListMenu$1.class
 com\zzz\quanlibangiay\component\menu\tabbedpane_custom\MaterialTabbed$MaterialTabbedUI$1.class
