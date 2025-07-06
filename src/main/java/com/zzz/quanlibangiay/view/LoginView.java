@@ -104,6 +104,7 @@ public class LoginView extends javax.swing.JFrame {
         description.setText("Đăng nhập để sử dụng phần mềm");
 
         txtUsername.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtUsername.setText("admin");
         txtUsername.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
@@ -113,6 +114,7 @@ public class LoginView extends javax.swing.JFrame {
         jLabel4.setText("Mật khẩu");
 
         txtPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtPassword.setText("admin");
         txtPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 102, 102)));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

@@ -11,6 +11,8 @@ import com.zzz.quanlibangiay.controller.LoginController;
 import com.zzz.quanlibangiay.entity.User;
 import com.zzz.quanlibangiay.enums.UserRole;
 import java.awt.CardLayout;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -37,7 +39,7 @@ public class MainView extends javax.swing.JFrame {
     private Staff staff;
     private Customer customer;
     private User user;
-    
+
     public MainView(User user) {
         initComponents();
         this.user = user;
@@ -70,6 +72,11 @@ public class MainView extends javax.swing.JFrame {
         staff = new Staff();
         customer = new Customer();
 
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.WHITE),
+                BorderFactory.createEmptyBorder(6, 6, 6, 6)
+            )
+        );
         cardPanel.add(dashboard, "Dashboard");
         cardPanel.add(product, "Form_Product");
         cardPanel.add(sell, "Form_Sell");
@@ -92,19 +99,26 @@ public class MainView extends javax.swing.JFrame {
 
     public void showForm(int index) {
         switch (index) {
-            case 0 -> cardLayout.show(cardPanel, "Dashboard");
-            case 1 -> cardLayout.show(cardPanel, "Form_Product");
-            case 2 -> cardLayout.show(cardPanel, "Form_Sell");
-            case 3 -> cardLayout.show(cardPanel, "Form_Bill");
-            case 4 -> cardLayout.show(cardPanel, "Form_Staff");
-            case 5 -> cardLayout.show(cardPanel, "Form_Customer");
+            case 0 ->
+                cardLayout.show(cardPanel, "Dashboard");
+            case 1 ->
+                cardLayout.show(cardPanel, "Form_Product");
+            case 2 ->
+                cardLayout.show(cardPanel, "Form_Sell");
+            case 3 ->
+                cardLayout.show(cardPanel, "Form_Bill");
+            case 4 ->
+                cardLayout.show(cardPanel, "Form_Staff");
+            case 5 ->
+                cardLayout.show(cardPanel, "Form_Customer");
             case 9 -> {
                 this.dispose();
                 LoginView view = new LoginView();
                 LoginController controller = new LoginController(view);
                 controller.showLoginView();
             }
-            default -> System.out.println("Not found form with index: " + index);
+            default ->
+                System.out.println("Not found form with index: " + index);
         }
     }
 
@@ -116,26 +130,30 @@ public class MainView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        layerPane.setPreferredSize(new java.awt.Dimension(1400, 700));
+
         javax.swing.GroupLayout layerPaneLayout = new javax.swing.GroupLayout(layerPane);
         layerPane.setLayout(layerPaneLayout);
         layerPaneLayout.setHorizontalGroup(
             layerPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1258, Short.MAX_VALUE)
+            .addGap(0, 1400, Short.MAX_VALUE)
         );
         layerPaneLayout.setVerticalGroup(
             layerPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 714, Short.MAX_VALUE)
+            .addGap(0, 700, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(layerPane)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(layerPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(layerPane)
+            .addComponent(layerPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
