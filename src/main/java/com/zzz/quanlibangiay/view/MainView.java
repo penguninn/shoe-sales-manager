@@ -8,6 +8,8 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.zzz.quanlibangiay.component.menu.EventMenuSelected;
 import com.zzz.quanlibangiay.component.menu.SidebarMenu;
 import com.zzz.quanlibangiay.controller.LoginController;
+import com.zzz.quanlibangiay.entity.User;
+import com.zzz.quanlibangiay.enums.UserRole;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -26,11 +28,19 @@ public class MainView extends javax.swing.JFrame {
      */
     private MigLayout mlayout;
     private CardLayout cardLayout;
-    private JPanel cardPanel;
     private SidebarMenu sidebarMenu;
-
-    public MainView() {
+    private JPanel cardPanel;
+    private Dashboard dashboard;
+    private Product product;
+    private Sell sell;
+    private Bill bill;
+    private Staff staff;
+    private Customer customer;
+    private User user;
+    
+    public MainView(User user) {
         initComponents();
+        this.user = user;
         this.setLocationRelativeTo(null);
         layerPane.removeAll();
         init();
@@ -43,30 +53,29 @@ public class MainView extends javax.swing.JFrame {
         setResizable(false);
         mlayout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0");
         layerPane.setLayout(mlayout);
-        sidebarMenu = new SidebarMenu(4);
-//        if (!nv.getChucVu().equals("ql")) {
-//            menu = new Menu(5);
-//        } else {
-//            menu = new Menu(-1);
-//        }
 
-//        header = new Header(this, nv.getHoTen());
-//        Form_Products = new Form_Products(this);
-//        Form_Sell = new Form_Sell(nv);
-//        Form_Bill = new Form_Bill();
-//        Form_Staffs = new Form_Staffs();
-//        Form_Customer = new Form_Customer();
-//        Form_Profile = new Form_Profile(nv);
+        sidebarMenu = user.getRole().equals(UserRole.Admin)
+                ? new SidebarMenu(-1)
+                : new SidebarMenu(4);
+
         sidebarMenu.initMoving(MainView.this);
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-//        cardPanel.add(Form_Products, "Form_Products");
-//        cardPanel.add(Form_Sell, "Form_Sell");
-//        cardPanel.add(Form_Bill, "Form_Bill");
-//        cardPanel.add(Form_Staffs, "Form_Staffs");
-//        cardPanel.add(Form_Customer, "Form_Customer");
-//        cardPanel.add(Form_Profile, "Form_Profile");
+
+        dashboard = new Dashboard();
+        product = new Product();
+        sell = new Sell();
+        bill = new Bill();
+        staff = new Staff();
+        customer = new Customer();
+
+        cardPanel.add(dashboard, "Dashboard");
+        cardPanel.add(product, "Form_Product");
+        cardPanel.add(sell, "Form_Sell");
+        cardPanel.add(bill, "Form_Bill");
+        cardPanel.add(staff, "Form_Staff");
+        cardPanel.add(customer, "Form_Customer");
 
         layerPane.add(sidebarMenu, "w 230!, spany 2");
         layerPane.add(cardPanel, "w 100%, h 100%");
@@ -78,38 +87,24 @@ public class MainView extends javax.swing.JFrame {
                 showForm(index);
             }
         });
+        showForm(0);
     }
 
     public void showForm(int index) {
         switch (index) {
-            case 0:
-                cardLayout.show(cardPanel, "Dashboard");
-                break;
-            case 1:
-                cardLayout.show(cardPanel, "Form_Product");
-                break;
-            case 2:
-                cardLayout.show(cardPanel, "Form_Sell");
-                break;
-            case 3:
-                cardLayout.show(cardPanel, "Form_Bill");
-                break;
-            case 4:
-                cardLayout.show(cardPanel, "Form_Staff");
-                break;
-            case 5:
-                cardLayout.show(cardPanel, "Form_Customer");
-                break;
-            case 9:
-                cardLayout.show(cardPanel, "Form_Profile");
-                break;
-            case 10:
+            case 0 -> cardLayout.show(cardPanel, "Dashboard");
+            case 1 -> cardLayout.show(cardPanel, "Form_Product");
+            case 2 -> cardLayout.show(cardPanel, "Form_Sell");
+            case 3 -> cardLayout.show(cardPanel, "Form_Bill");
+            case 4 -> cardLayout.show(cardPanel, "Form_Staff");
+            case 5 -> cardLayout.show(cardPanel, "Form_Customer");
+            case 9 -> {
                 this.dispose();
                 LoginView view = new LoginView();
                 LoginController controller = new LoginController(view);
                 controller.showLoginView();
-                break;
-            default:
+            }
+            default -> System.out.println("Not found form with index: " + index);
         }
     }
 
@@ -146,14 +141,11 @@ public class MainView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void main(String args[]) {
-        try {
-            UIManager.setLookAndFeel(new FlatMacLightLaf());
-        } catch (UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        }
-        SwingUtilities.invokeLater(() -> {
-            new MainView().setVisible(true);
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MainView(null).setVisible(true);
+            }
         });
     }
 

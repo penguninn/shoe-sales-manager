@@ -43,7 +43,8 @@ public class LoginController {
                 return;
             }
            if (manageUser.authenticate(user.getUserName(), user.getPassword())) {
-               MainView mainView = new MainView();
+               User u = manageUser.getUserByUserName(user.getUserName());
+               MainView mainView = new MainView(u);
                MainController controller = new MainController(mainView);
                controller.showMainView();
                loginView.setVisible(false);

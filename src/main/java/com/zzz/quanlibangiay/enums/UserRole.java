@@ -9,7 +9,6 @@ package com.zzz.quanlibangiay.enums;
  * @author coole
  */
 public enum UserRole {
-    
     Admin,
     Staff
 }

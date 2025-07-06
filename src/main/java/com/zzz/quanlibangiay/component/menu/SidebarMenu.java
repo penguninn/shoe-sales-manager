@@ -47,7 +47,6 @@ public class SidebarMenu extends javax.swing.JPanel {
         listMenu.addItem(new Model_Menu("", "------------------------------", Model_Menu.MenuType.TITLE));
         listMenu.addItem(new Model_Menu("", " ", Model_Menu.MenuType.EMPTY));
 
-        listMenu.addItem(new Model_Menu("account", "Tài Khoản", Model_Menu.MenuType.MENU));
         listMenu.addItem(new Model_Menu("logout", "Đăng xuất", Model_Menu.MenuType.MENU));
         listMenu.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
     }

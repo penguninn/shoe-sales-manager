@@ -4,5 +4,12 @@
         <id>1</id>
         <userName>admin</userName>
         <password>admin</password>
+        <role>Admin</role>
+    </User>
+    <User>
+        <id>2</id>
+        <userName>staff</userName>
+        <password>staff</password>
+        <role>Staff</role>
     </User>
 </Users>
