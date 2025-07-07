@@ -1,15 +1,9 @@
 package com.zzz.quanlibangiay.component.menu;
 
-import java.awt.Color;
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.lang.model.element.Element;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingUtilities;
 
 public class ListMenu<E extends Object> extends JList<E> {
 

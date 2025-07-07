@@ -1,19 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.zzz.quanlibangiay.view;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.zzz.quanlibangiay.entity.User;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.RenderingHints;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 
 /**
  *
@@ -25,6 +17,11 @@ public class LoginView extends javax.swing.JFrame {
      * Creates new form LoginView
      */
     public LoginView() {
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
         initComponents();
         JPanel gradientPanel = new JPanel() {
             @Override
@@ -217,7 +214,6 @@ public class LoginView extends javax.swing.JFrame {
         description.setText(msg);
         description.setForeground(Color.RED);
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_login;

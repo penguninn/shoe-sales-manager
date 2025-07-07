@@ -8,7 +8,7 @@ package com.zzz.quanlibangiay.enums;
  *
  * @author coole
  */
-public enum Gender {
-    Male,
-    Female
+public enum UserStatus {
+    Working,
+    Retired
 }

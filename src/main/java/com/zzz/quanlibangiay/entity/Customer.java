@@ -4,14 +4,12 @@
  */
 package com.zzz.quanlibangiay.entity;
 
-import com.zzz.quanlibangiay.enums.Gender;
-import java.util.Date;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 /**
- *
  * @author coole
  */
 @XmlRootElement(name = "Customer")
@@ -21,12 +19,12 @@ public class Customer extends AbstractEntity {
     private String name;
     private String phoneNumber;
     private String address;
-    private Gender gender;
+    private boolean gender;
 
     public Customer() {
     }
 
-    public Customer(String name, String phoneNumber, String address, Gender gender, int id, Date createdDate, String description) {
+    public Customer(String name, String phoneNumber, String address, boolean gender, int id, Date createdDate, String description) {
         super(id, createdDate, description);
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -58,12 +56,11 @@ public class Customer extends AbstractEntity {
         this.address = address;
     }
 
-    public Gender getGender() {
+    public boolean isGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
-
 }

@@ -4,13 +4,13 @@
  */
 package com.zzz.quanlibangiay.action;
 
-import com.zzz.quanlibangiay.entity.Brand;
 import com.zzz.quanlibangiay.entity.Color;
 import com.zzz.quanlibangiay.entity.Material;
 import com.zzz.quanlibangiay.entity.Shoe;
 import com.zzz.quanlibangiay.entity.ShoeType;
 import com.zzz.quanlibangiay.entity.xml.ShoeXML;
 import com.zzz.quanlibangiay.utils.FileUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 

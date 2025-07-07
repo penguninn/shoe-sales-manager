@@ -1,7 +1,6 @@
 package com.zzz.quanlibangiay.component.menu;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 public class Model_Menu {
 

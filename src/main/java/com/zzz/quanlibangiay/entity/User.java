@@ -5,23 +5,30 @@
 package com.zzz.quanlibangiay.entity;
 
 import com.zzz.quanlibangiay.enums.UserRole;
-import java.util.Date;
+import com.zzz.quanlibangiay.enums.UserStatus;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 /**
- *
  * @author coole
  */
 @XmlRootElement(name = "User")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User extends AbstractEntity {
-    
+
     private String userName;
     private String password;
     private String fullName;
     private UserRole role;
+    private String name;
+    private boolean gender;
+    private String phoneNumber;
+    private String address;
+    private UserStatus status;
+    private Date birtDate;
 
     public User() {
     }
@@ -31,12 +38,75 @@ public class User extends AbstractEntity {
         this.password = password;
     }
 
+    public User(String userName, String password, String fullName, UserRole role, String name, boolean gender, String phoneNumber, String address, UserStatus status, Date birtDate, int id, Date createdDate, String description) {
+        super(id, createdDate, description);
+        this.userName = userName;
+        this.password = password;
+        this.fullName = fullName;
+        this.role = role;
+        this.name = name;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.status = status;
+        this.birtDate = birtDate;
+    }
+
     public User(String userName, String password, String fullName, UserRole role, int id, Date createdDate, String description) {
         super(id, createdDate, description);
         this.userName = userName;
         this.password = password;
         this.fullName = fullName;
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public boolean isGender() {
+        return gender;
+    }
+
+    public void setGender(boolean gender) {
+        this.gender = gender;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
+    public Date getBirtDate() {
+        return birtDate;
+    }
+
+    public void setBirtDate(Date birtDate) {
+        this.birtDate = birtDate;
     }
 
     public String getUserName() {
@@ -70,6 +140,5 @@ public class User extends AbstractEntity {
     public void setRole(UserRole role) {
         this.role = role;
     }
-    
-    
+
 }

@@ -1,14 +1,10 @@
 package com.zzz.quanlibangiay.component.menu;
 
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import javax.swing.JFrame;
 
 public class SidebarMenu extends javax.swing.JPanel {
 

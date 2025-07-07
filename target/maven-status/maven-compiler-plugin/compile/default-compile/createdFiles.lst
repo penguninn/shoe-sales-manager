@@ -56,6 +56,7 @@ com\zzz\quanlibangiay\action\ManageOrderItem.class
 com\zzz\quanlibangiay\action\ManageShoe.class
 com\zzz\quanlibangiay\entity\Material.class
 com\zzz\quanlibangiay\component\menu\tabbedpane_custom\MaterialTabbed.class
+com\zzz\quanlibangiay\enums\UserStatus.class
 com\zzz\quanlibangiay\action\ManageBrand.class
 com\zzz\quanlibangiay\entity\xml\MaterialXML.class
 com\zzz\quanlibangiay\component\table_custom\TableCustom$1.class
@@ -71,7 +72,6 @@ com\zzz\quanlibangiay\action\ManageShoeType.class
 com\zzz\quanlibangiay\component\panel_custom\PanelBorder.class
 com\zzz\quanlibangiay\view\LoginView.class
 com\zzz\quanlibangiay\component\menu\tabbedpane_custom\MaterialTabbed$MaterialTabbedUI.class
-com\zzz\quanlibangiay\view\MainView$2.class
 com\zzz\quanlibangiay\component\combobox_custom\ComboSuggestionUI$1.class
 com\zzz\quanlibangiay\view\Product.class
 com\zzz\quanlibangiay\component\menu\ListMenu$1.class

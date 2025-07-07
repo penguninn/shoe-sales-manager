@@ -1,9 +1,8 @@
 
 package com.zzz.quanlibangiay.component.scrollbar_custom;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.JScrollBar;
+import javax.swing.*;
+import java.awt.*;
 
 public class ScrollbarCustom extends JScrollBar {
     public ScrollbarCustom() {

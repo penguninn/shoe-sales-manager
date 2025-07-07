@@ -1,8 +1,7 @@
 package com.zzz.quanlibangiay.component.table_custom;
 
-import java.awt.Component;
-import javax.swing.JCheckBox;
-import javax.swing.JTable;
+import javax.swing.*;
+import java.awt.*;
 
 public class BooleanCellRenderer extends TableCustomCellRender {
 

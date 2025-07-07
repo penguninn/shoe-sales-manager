@@ -4,18 +4,12 @@ import com.zzz.quanlibangiay.component.button_custom.ButtonCustom;
 import com.zzz.quanlibangiay.component.combobox_custom.ComboBoxSuggestion;
 import com.zzz.quanlibangiay.component.menu.tabbedpane_custom.MaterialTabbed;
 import com.zzz.quanlibangiay.component.panel_custom.PanelBorder;
+import com.zzz.quanlibangiay.component.scrollbar_custom.ScrollbarCustom;
 import com.zzz.quanlibangiay.component.table_custom.TableCustom;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.TextField;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import net.miginfocom.swing.MigLayout;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -130,7 +124,7 @@ public class Product extends javax.swing.JPanel {
         String[] cols = {"Tên", "Thương hiệu", "Loại", "Màu", "Chất liệu", "Size", "Số lượng", "Giá"};
         Object[][] data = {};
         JTable table = new JTable(data, cols);
-        JScrollPane scroll = new JScrollPane(table);
+        JScrollPane scroll = createCustomScrollPane(table);
         TableCustom.apply(scroll, TableCustom.TableType.DEFAULT);
         searchPanelBorder.add(scroll, BorderLayout.CENTER);
     }
@@ -216,7 +210,7 @@ public class Product extends javax.swing.JPanel {
         Object[][] data = {};
 
         JTable table = new JTable(data, columns);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = createCustomScrollPane(table);
         TableCustom.apply(scrollPane, TableCustom.TableType.DEFAULT);
 
         productPanelBorder.add(scrollPane, "grow, push");
@@ -268,12 +262,19 @@ public class Product extends javax.swing.JPanel {
         String[] columns = {"ID", labelText};
         Object[][] data = {};
         JTable table = new JTable(data, columns);
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = createCustomScrollPane(table);
         TableCustom.apply(scrollPane, TableCustom.TableType.DEFAULT);
 
         panel.add(scrollPane, "span 3, grow, push");
 
         return panel;
+    }
+    
+    private JScrollPane createCustomScrollPane(JTable table) {
+        JScrollPane scroll = new JScrollPane(table);
+        scroll.setVerticalScrollBar(new ScrollbarCustom());
+        scroll.setHorizontalScrollBar(new ScrollbarCustom());
+        return scroll;
     }
 
     /**

@@ -4,7 +4,6 @@
 
 package com.zzz.quanlibangiay;
 
-import com.zzz.quanlibangiay.action.ManageUser;
 import com.zzz.quanlibangiay.controller.LoginController;
 import com.zzz.quanlibangiay.view.LoginView;
 

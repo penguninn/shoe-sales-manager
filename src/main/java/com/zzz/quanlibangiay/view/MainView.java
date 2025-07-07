@@ -4,20 +4,15 @@
  */
 package com.zzz.quanlibangiay.view;
 
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import com.zzz.quanlibangiay.component.menu.EventMenuSelected;
 import com.zzz.quanlibangiay.component.menu.SidebarMenu;
 import com.zzz.quanlibangiay.controller.LoginController;
 import com.zzz.quanlibangiay.entity.User;
 import com.zzz.quanlibangiay.enums.UserRole;
-import java.awt.CardLayout;
-import java.awt.Color;
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import net.miginfocom.swing.MigLayout;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
@@ -158,14 +153,6 @@ public class MainView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainView(null).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane layerPane;

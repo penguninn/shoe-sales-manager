@@ -1,13 +1,8 @@
 package com.zzz.quanlibangiay.component.button_custom;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import javax.swing.JButton;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
 
 public class ButtonCustom extends JButton {
 

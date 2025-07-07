@@ -1,31 +1,18 @@
 package com.zzz.quanlibangiay.component.combobox_custom;
 
 import com.zzz.quanlibangiay.component.scrollbar_custom.ScrollbarCustom;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class ComboSuggestionUI extends BasicComboBoxUI {
 

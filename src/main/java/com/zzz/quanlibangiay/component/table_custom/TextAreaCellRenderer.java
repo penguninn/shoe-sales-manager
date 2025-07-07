@@ -1,14 +1,12 @@
 package com.zzz.quanlibangiay.component.table_custom;
 
-import java.awt.Color;
-import java.awt.Component;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableCellRenderer;
 
 public class TextAreaCellRenderer extends JTextArea implements TableCellRenderer {
 

@@ -1,6 +1,6 @@
 package com.zzz.quanlibangiay.component.combobox_custom;
 
-import javax.swing.JComboBox;
+import javax.swing.*;
 
 public class ComboBoxSuggestion<E> extends JComboBox<E> {
 
