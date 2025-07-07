@@ -12,12 +12,13 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  *
  * @author coole
  */
-public class Staff extends javax.swing.JPanel {
+public class StaffView extends javax.swing.JPanel {
 
     /**
      * Creates new form Staff
@@ -44,7 +45,7 @@ public class Staff extends javax.swing.JPanel {
     private ButtonCustom btnAdd, btnEdit, btnDelete, btnClear;
     private JDateChooser birthDateChooser;
 
-    public Staff() {
+    public StaffView() {
         initComponents();
         init();
     }
@@ -181,4 +182,27 @@ public class Staff extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+
+    // Search Listeners
+    public void addSearchStaffListener(ActionListener listener) {
+        btnSearch.addActionListener(listener);
+    }
+
+    // Staff Management Listeners
+    public void addAddStaffListener(ActionListener listener) {
+        btnAdd.addActionListener(listener);
+    }
+
+    public void addEditStaffListener(ActionListener listener) {
+        btnEdit.addActionListener(listener);
+    }
+
+    public void addDeleteStaffListener(ActionListener listener) {
+        btnDelete.addActionListener(listener);
+    }
+
+    public void addClearStaffListener(ActionListener listener) {
+        btnClear.addActionListener(listener);
+    }
 }

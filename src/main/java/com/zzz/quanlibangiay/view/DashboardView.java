@@ -13,11 +13,8 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- *
- * @author coole
- */
-public class Dashboard extends javax.swing.JPanel {
+
+public class DashboardView extends javax.swing.JPanel {
 
     private JPanel panel;
     private JLayeredPane layerPane;
@@ -37,7 +34,7 @@ public class Dashboard extends javax.swing.JPanel {
     private PanelBorder panelBorder;
     private MaterialTabbed tabbedPane;
 
-    public Dashboard() {
+    public DashboardView() {
         initComponents();
         init();
         setTableData();

@@ -10,12 +10,13 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 /**
  *
  * @author coole
  */
-public class Product extends javax.swing.JPanel {
+public class ProductView extends javax.swing.JPanel {
 
     /**
      * Creates new form Product
@@ -28,7 +29,24 @@ public class Product extends javax.swing.JPanel {
     private JPanel productPanel;
     private JPanel attributePanel;
 
-    public Product() {
+    // Search Panel buttons
+    private ButtonCustom btnSearch;
+    private ButtonCustom btnReset;
+
+    // Product Panel buttons
+    private ButtonCustom btnProductAdd;
+    private ButtonCustom btnProductEdit;
+    private ButtonCustom btnProductDelete;
+    private ButtonCustom btnProductClear;
+
+    // Attribute Panel buttons (for each tab)
+    private ButtonCustom btnTypeAdd, btnTypeEdit, btnTypeDelete, btnTypeClear;
+    private ButtonCustom btnMaterialAdd, btnMaterialEdit, btnMaterialDelete, btnMaterialClear;
+    private ButtonCustom btnColorAdd, btnColorEdit, btnColorDelete, btnColorClear;
+    private ButtonCustom btnSizeAdd, btnSizeEdit, btnSizeDelete, btnSizeClear;
+    private ButtonCustom btnBrandAdd, btnBrandEdit, btnBrandDelete, btnBrandClear;
+
+    public ProductView() {
         initComponents();
         init();
     }
@@ -111,8 +129,9 @@ public class Product extends javax.swing.JPanel {
         pricePanel.add(txtPriceTo, "growx");
         filterPanel.add(pricePanel, "span 3, growx");
 
-        ButtonCustom btnSearch = new ButtonCustom();
-        ButtonCustom btnReset = new ButtonCustom();
+        // Khởi tạo và gán cho instance variables
+        btnSearch = new ButtonCustom();
+        btnReset = new ButtonCustom();
 
         btnReset.setText("Reset");
         btnSearch.setText("Tìm kiếm");
@@ -186,20 +205,21 @@ public class Product extends javax.swing.JPanel {
         formPanel.add(new JLabel("Giá Nhập"));
         formPanel.add(txtImportPrice);
 
-        ButtonCustom btnAdd = new ButtonCustom();
-        ButtonCustom btnEdit = new ButtonCustom();
-        ButtonCustom btnDelete = new ButtonCustom();
-        ButtonCustom btnClear = new ButtonCustom();
+        // Khởi tạo và gán cho instance variables
+        btnProductAdd = new ButtonCustom();
+        btnProductEdit = new ButtonCustom();
+        btnProductDelete = new ButtonCustom();
+        btnProductClear = new ButtonCustom();
 
-        btnAdd.setText("Thêm");
-        btnEdit.setText("Sửa");
-        btnDelete.setText("Xóa");
-        btnClear.setText("Làm Mới");
+        btnProductAdd.setText("Thêm");
+        btnProductEdit.setText("Sửa");
+        btnProductDelete.setText("Xóa");
+        btnProductClear.setText("Làm Mới");
 
-        formPanel.add(btnAdd, "skip 2");
-        formPanel.add(btnEdit);
-        formPanel.add(btnDelete);
-        formPanel.add(btnClear);
+        formPanel.add(btnProductAdd, "skip 2");
+        formPanel.add(btnProductEdit);
+        formPanel.add(btnProductDelete);
+        formPanel.add(btnProductClear);
 
         productPanelBorder.add(formPanel, "growx");
 
@@ -241,10 +261,54 @@ public class Product extends javax.swing.JPanel {
         TextField txtName = new TextField();
         txtName.setPreferredSize(new Dimension(200, 30));
 
-        ButtonCustom btnAdd = new ButtonCustom();
-        ButtonCustom btnEdit = new ButtonCustom();
-        ButtonCustom btnDelete = new ButtonCustom();
-        ButtonCustom btnClear = new ButtonCustom();
+        ButtonCustom btnAdd, btnEdit, btnDelete, btnClear;
+        
+        // Khởi tạo buttons và gán cho instance variables tương ứng
+        switch (labelText) {
+            case "Loại sản phẩm":
+                btnTypeAdd = new ButtonCustom();
+                btnTypeEdit = new ButtonCustom();
+                btnTypeDelete = new ButtonCustom();
+                btnTypeClear = new ButtonCustom();
+                btnAdd = btnTypeAdd; btnEdit = btnTypeEdit; 
+                btnDelete = btnTypeDelete; btnClear = btnTypeClear;
+                break;
+            case "Chất liệu":
+                btnMaterialAdd = new ButtonCustom();
+                btnMaterialEdit = new ButtonCustom();
+                btnMaterialDelete = new ButtonCustom();
+                btnMaterialClear = new ButtonCustom();
+                btnAdd = btnMaterialAdd; btnEdit = btnMaterialEdit; 
+                btnDelete = btnMaterialDelete; btnClear = btnMaterialClear;
+                break;
+            case "Màu sắc":
+                btnColorAdd = new ButtonCustom();
+                btnColorEdit = new ButtonCustom();
+                btnColorDelete = new ButtonCustom();
+                btnColorClear = new ButtonCustom();
+                btnAdd = btnColorAdd; btnEdit = btnColorEdit; 
+                btnDelete = btnColorDelete; btnClear = btnColorClear;
+                break;
+            case "Size":
+                btnSizeAdd = new ButtonCustom();
+                btnSizeEdit = new ButtonCustom();
+                btnSizeDelete = new ButtonCustom();
+                btnSizeClear = new ButtonCustom();
+                btnAdd = btnSizeAdd; btnEdit = btnSizeEdit; 
+                btnDelete = btnSizeDelete; btnClear = btnSizeClear;
+                break;
+            case "Thương hiệu":
+                btnBrandAdd = new ButtonCustom();
+                btnBrandEdit = new ButtonCustom();
+                btnBrandDelete = new ButtonCustom();
+                btnBrandClear = new ButtonCustom();
+                btnAdd = btnBrandAdd; btnEdit = btnBrandEdit; 
+                btnDelete = btnBrandDelete; btnClear = btnBrandClear;
+                break;
+            default:
+                btnAdd = new ButtonCustom(); btnEdit = new ButtonCustom();
+                btnDelete = new ButtonCustom(); btnClear = new ButtonCustom();
+        }
 
         btnAdd.setText("Thêm");
         btnEdit.setText("Sửa");
@@ -254,7 +318,6 @@ public class Product extends javax.swing.JPanel {
         panel.add(lblName);
         panel.add(btnAdd, "growx");
         panel.add(btnEdit, "growx");
-
         panel.add(txtName);
         panel.add(btnDelete, "growx");
         panel.add(btnClear, "growx");
@@ -298,6 +361,118 @@ public class Product extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    // ==================== ACTION LISTENER METHODS ====================
+
+    // Search Panel Listeners
+    public void addSearchProductListener(ActionListener listener) {
+        btnSearch.addActionListener(listener);
+    }
+
+    public void addResetSearchListener(ActionListener listener) {
+        btnReset.addActionListener(listener);
+    }
+
+    // Product Panel Listeners
+    public void addAddProductListener(ActionListener listener) {
+        btnProductAdd.addActionListener(listener);
+    }
+
+    public void addEditProductListener(ActionListener listener) {
+        btnProductEdit.addActionListener(listener);
+    }
+
+    public void addDeleteProductListener(ActionListener listener) {
+        btnProductDelete.addActionListener(listener);
+    }
+
+    public void addClearProductListener(ActionListener listener) {
+        btnProductClear.addActionListener(listener);
+    }
+
+    // Product Type Attribute Listeners
+    public void addAddTypeListener(ActionListener listener) {
+        btnTypeAdd.addActionListener(listener);
+    }
+
+    public void addEditTypeListener(ActionListener listener) {
+        btnTypeEdit.addActionListener(listener);
+    }
+
+    public void addDeleteTypeListener(ActionListener listener) {
+        btnTypeDelete.addActionListener(listener);
+    }
+
+    public void addClearTypeListener(ActionListener listener) {
+        btnTypeClear.addActionListener(listener);
+    }
+
+    // Material Attribute Listeners
+    public void addAddMaterialListener(ActionListener listener) {
+        btnMaterialAdd.addActionListener(listener);
+    }
+
+    public void addEditMaterialListener(ActionListener listener) {
+        btnMaterialEdit.addActionListener(listener);
+    }
+
+    public void addDeleteMaterialListener(ActionListener listener) {
+        btnMaterialDelete.addActionListener(listener);
+    }
+
+    public void addClearMaterialListener(ActionListener listener) {
+        btnMaterialClear.addActionListener(listener);
+    }
+
+    // Color Attribute Listeners
+    public void addAddColorListener(ActionListener listener) {
+        btnColorAdd.addActionListener(listener);
+    }
+
+    public void addEditColorListener(ActionListener listener) {
+        btnColorEdit.addActionListener(listener);
+    }
+
+    public void addDeleteColorListener(ActionListener listener) {
+        btnColorDelete.addActionListener(listener);
+    }
+
+    public void addClearColorListener(ActionListener listener) {
+        btnColorClear.addActionListener(listener);
+    }
+
+    // Size Attribute Listeners
+    public void addAddSizeListener(ActionListener listener) {
+        btnSizeAdd.addActionListener(listener);
+    }
+
+    public void addEditSizeListener(ActionListener listener) {
+        btnSizeEdit.addActionListener(listener);
+    }
+
+    public void addDeleteSizeListener(ActionListener listener) {
+        btnSizeDelete.addActionListener(listener);
+    }
+
+    public void addClearSizeListener(ActionListener listener) {
+        btnSizeClear.addActionListener(listener);
+    }
+
+    // Brand Attribute Listeners
+    public void addAddBrandListener(ActionListener listener) {
+        btnBrandAdd.addActionListener(listener);
+    }
+
+    public void addEditBrandListener(ActionListener listener) {
+        btnBrandEdit.addActionListener(listener);
+    }
+
+    public void addDeleteBrandListener(ActionListener listener) {
+        btnBrandDelete.addActionListener(listener);
+    }
+
+    public void addClearBrandListener(ActionListener listener) {
+        btnBrandClear.addActionListener(listener);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

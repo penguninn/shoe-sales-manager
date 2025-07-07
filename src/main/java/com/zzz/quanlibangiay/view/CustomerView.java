@@ -5,7 +5,6 @@
 package com.zzz.quanlibangiay.view;
 
 import com.zzz.quanlibangiay.component.button_custom.ButtonCustom;
-import com.zzz.quanlibangiay.component.combobox_custom.ComboBoxSuggestion;
 import com.zzz.quanlibangiay.component.panel_custom.PanelBorder;
 import com.zzz.quanlibangiay.component.scrollbar_custom.ScrollbarCustom;
 import com.zzz.quanlibangiay.component.table_custom.TableCustom;
@@ -14,19 +13,18 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
-/**
- * @author coole
- */
-public class Customer extends javax.swing.JPanel {
+public class CustomerView extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Customer
-     */
+
     private PanelBorder leftPanelSection;
     private PanelBorder rightPanelSection;
+    private TextField txtSearch;
+    private ButtonCustom btnSearch;
+    private ButtonCustom btnAdd, btnEdit, btnDelete, btnClear;
 
-    public Customer() {
+    public CustomerView() {
         initComponents();
         init();
     }
@@ -50,9 +48,9 @@ public class Customer extends javax.swing.JPanel {
         leftPanelSection.setBorder(BorderFactory.createTitledBorder("Danh sách khách hàng"));
 
         JPanel searchPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        TextField txtSearch = new TextField();
+        txtSearch = new TextField();
         txtSearch.setPreferredSize(new Dimension(250, 25));
-        ButtonCustom btnSearch = new ButtonCustom();
+        btnSearch = new ButtonCustom();
         btnSearch.setText("Tìm kiếm");
         searchPane.add(txtSearch);
         searchPane.add(btnSearch);
@@ -86,13 +84,13 @@ public class Customer extends javax.swing.JPanel {
         TextField txtJoinDate = new TextField();
         JTextArea txtAddress = new JTextArea();
 
-        ButtonCustom btnAdd = new ButtonCustom();
+        btnAdd = new ButtonCustom();
         btnAdd.setText("Thêm");
-        ButtonCustom btnEdit = new ButtonCustom();
+        btnEdit = new ButtonCustom();
         btnEdit.setText("Sửa");
-        ButtonCustom btnDelete = new ButtonCustom();
+        btnDelete = new ButtonCustom();
         btnDelete.setText("Xóa");
-        ButtonCustom btnClear = new ButtonCustom();
+        btnClear = new ButtonCustom();
         btnClear.setText("Làm Mới");
 
         rightPanelSection.add(new JLabel("Họ & Tên:"), "top");
@@ -116,8 +114,8 @@ public class Customer extends javax.swing.JPanel {
         rightPanelSection.add(new JLabel("Ngày tham gia:"), "top");
         rightPanelSection.add(txtJoinDate, "top");
 
-        rightPanelSection.add(btnAdd,    "skip2, split 4, span 6, right, gapx 10");
-        rightPanelSection.add(btnEdit,   "gapx 10");
+        rightPanelSection.add(btnAdd, "skip2, split 4, span 6, right, gapx 10");
+        rightPanelSection.add(btnEdit, "gapx 10");
         rightPanelSection.add(btnDelete, "gapx 10");
         rightPanelSection.add(btnClear, "gapx 10");
     }
@@ -153,4 +151,26 @@ public class Customer extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+    // Search Listeners
+    public void addSearchCustomerListener(ActionListener listener) {
+        btnSearch.addActionListener(listener);
+    }
+
+    // Customer Management Listeners
+    public void addAddCustomerListener(ActionListener listener) {
+        btnAdd.addActionListener(listener);
+    }
+
+    public void addEditCustomerListener(ActionListener listener) {
+        btnEdit.addActionListener(listener);
+    }
+
+    public void addDeleteCustomerListener(ActionListener listener) {
+        btnDelete.addActionListener(listener);
+    }
+
+    public void addClearCustomerListener(ActionListener listener) {
+        btnClear.addActionListener(listener);
+    }
 }

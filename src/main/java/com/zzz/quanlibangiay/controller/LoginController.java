@@ -12,10 +12,6 @@ import com.zzz.quanlibangiay.view.MainView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- *
- * @author coole
- */
 public class LoginController {
     
     private LoginView loginView;
@@ -46,9 +42,9 @@ public class LoginController {
            if (manageUser.authenticate(user.getUserName(), user.getPassword())) {
                User u = manageUser.getUserByUserName(user.getUserName());
                MainView mainView = new MainView(u);
-               MainController controller = new MainController(mainView);
+               MainController controller = new MainController(mainView, u);
                controller.showMainView();
-               loginView.setVisible(false);
+               loginView.dispose();
            } else {
                loginView.showMessage("Sai tên đăng nhập hoặc mật khẩu.");
            }

@@ -12,16 +12,11 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
-/**
- *
- * @author coole
- */
-public class Bill extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Invoice
-     */
+public class BillView extends javax.swing.JPanel {
+
     private PanelBorder panelBorder;
     private JTable invoiceTable;
     private JTable productTable;
@@ -35,7 +30,7 @@ public class Bill extends javax.swing.JPanel {
     private TextField txtAddress;
     private TextField txtTotal;
 
-    public Bill() {
+    public BillView() {
         initComponents();
         init();
     }
@@ -159,4 +154,11 @@ public class Bill extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
+
+    // Bill Management Listeners
+    public void addRefreshBillListener(ActionListener listener) {
+        btnRefresh.addActionListener(listener);
+    }
+
 }

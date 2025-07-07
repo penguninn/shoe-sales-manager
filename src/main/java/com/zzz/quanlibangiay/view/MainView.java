@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.zzz.quanlibangiay.view;
 
 import com.zzz.quanlibangiay.component.menu.EventMenuSelected;
@@ -13,27 +9,26 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.function.Consumer;
 
-/**
- *
- * @author coole
- */
+
 public class MainView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainFrame
-     */
     private MigLayout mlayout;
     private CardLayout cardLayout;
     private SidebarMenu sidebarMenu;
     private JPanel cardPanel;
-    private Dashboard dashboard;
-    private Product product;
-    private Sell sell;
-    private Bill bill;
-    private Staff staff;
-    private Customer customer;
+    
+    private DashboardView dashboardView;
+    private ProductView productView;
+    private SellView sellView;
+    private BillView billView;
+    private StaffView staffView;
+    private CustomerView customerView;
+    
     private User user;
+    
+    private Consumer<Integer> menuSelectionListener;
 
     public MainView(User user) {
         initComponents();
@@ -60,36 +55,59 @@ public class MainView extends javax.swing.JFrame {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        dashboard = new Dashboard();
-        product = new Product();
-        sell = new Sell();
-        bill = new Bill();
-        staff = new Staff();
-        customer = new Customer();
+        initializeAllViews();
 
         cardPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.WHITE),
                 BorderFactory.createEmptyBorder(6, 6, 6, 6)
-            )
-        );
-        cardPanel.add(dashboard, "Dashboard");
-        cardPanel.add(product, "Form_Product");
-        cardPanel.add(sell, "Form_Sell");
-        cardPanel.add(bill, "Form_Bill");
-        cardPanel.add(staff, "Form_Staff");
-        cardPanel.add(customer, "Form_Customer");
+        ));
+        
+        addViewsToCardPanel();
 
         layerPane.add(sidebarMenu, "w 230!, spany 2");
         layerPane.add(cardPanel, "w 100%, h 100%");
 
+        setupMenuListener();
+        
+        showForm(0);
+    }
+    
+
+    private void initializeAllViews() {
+        dashboardView = new DashboardView();
+        productView = new ProductView();
+        sellView = new SellView();
+        billView = new BillView();
+        staffView = new StaffView();
+        customerView = new CustomerView();
+    }
+
+    private void addViewsToCardPanel() {
+        cardPanel.add(dashboardView, "Dashboard");
+        cardPanel.add(productView, "Form_Product");
+        cardPanel.add(sellView, "Form_Sell");
+        cardPanel.add(billView, "Form_Bill");
+        cardPanel.add(staffView, "Form_Staff");
+        cardPanel.add(customerView, "Form_Customer");
+    }
+    
+
+    private void setupMenuListener() {
         sidebarMenu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selectedIndex(int index) {
-                System.out.println(index);
+                System.out.println("Menu selected: " + index);
+                
+                if (menuSelectionListener != null) {
+                    menuSelectionListener.accept(index);
+                }
                 showForm(index);
             }
         });
-        showForm(0);
+    }
+
+    public void setMenuSelectionListener(Consumer<Integer> listener) {
+        this.menuSelectionListener = listener;
     }
 
     public void showForm(int index) {
@@ -106,15 +124,33 @@ public class MainView extends javax.swing.JFrame {
                 cardLayout.show(cardPanel, "Form_Staff");
             case 5 ->
                 cardLayout.show(cardPanel, "Form_Customer");
-            case 9 -> {
-                this.dispose();
-                LoginView view = new LoginView();
-                LoginController controller = new LoginController(view);
-                controller.showLoginView();
-            }
             default ->
                 System.out.println("Not found form with index: " + index);
         }
+    }
+
+    public DashboardView getDashboardView() {
+        return dashboardView;
+    }
+    
+    public ProductView getProductView() {
+        return productView;
+    }
+    
+    public SellView getSellView() {
+        return sellView;
+    }
+    
+    public BillView getBillView() {
+        return billView;
+    }
+    
+    public StaffView getStaffView() {
+        return staffView;
+    }
+    
+    public CustomerView getCustomerView() {
+        return customerView;
     }
 
     @SuppressWarnings("unchecked")
