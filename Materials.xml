@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Materials>
+    <Material>
+        <id>1</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Chất liệu da thật cao cấp</description>
+        <name>Da thật</name>
+    </Material>
+    <Material>
+        <id>2</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Chất liệu vải canvas bền bỉ</description>
+        <name>Canvas</name>
+    </Material>
+    <Material>
+        <id>3</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Chất liệu da tổng hợp</description>
+        <name>Da tổng hợp</name>
+    </Material>
+    <Material>
+        <id>4</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Chất liệu vải mesh thoáng khí</description>
+        <name>Mesh</name>
+    </Material>
+    <Material>
+        <id>5</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Chất liệu vải flyknit</description>
+        <name>Flyknit</name>
+    </Material>
+</Materials>

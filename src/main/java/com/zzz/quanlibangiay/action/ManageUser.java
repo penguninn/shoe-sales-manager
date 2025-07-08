@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author coole
  */
 public class ManageUser {
@@ -61,11 +60,7 @@ public class ManageUser {
     }
 
     public boolean addUser(User user) {
-        if (user.getId() == 0) {
-            user.setId(getNextId());
-        } else if (getUserById(user.getId()) != null) {
-            return false;
-        }
+        user.setId(getNextId());
 
         userList.add(user);
         saveToFile();

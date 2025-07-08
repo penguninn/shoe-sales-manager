@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author coole
  */
 public class ManageBrand {
-    
-private static final String BRAND_FILE = "Brands.xml";
+
+    private static final String BRAND_FILE = "Brands.xml";
     private List<Brand> brandList;
 
     public ManageBrand() {
@@ -43,11 +42,7 @@ private static final String BRAND_FILE = "Brands.xml";
     }
 
     public boolean addBrand(Brand brand) {
-        if (brand.getId() == 0) {
-            brand.setId(getNextId());
-        } else if (getBrandById(brand.getId()) != null) {
-            return false;
-        }
+        brand.setId(getNextId());
         brandList.add(brand);
         saveToFile();
         return true;

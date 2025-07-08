@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author coole
  */
 public class ManageMaterial {
-    
-private static final String MATERIAL_FILE = "Materials.xml";
+
+    private static final String MATERIAL_FILE = "Materials.xml";
     private List<Material> materialList;
 
     public ManageMaterial() {
@@ -43,11 +42,7 @@ private static final String MATERIAL_FILE = "Materials.xml";
     }
 
     public boolean addMaterial(Material material) {
-        if (material.getId() == 0) {
-            material.setId(getNextId());
-        } else if (getMaterialById(material.getId()) != null) {
-            return false;
-        }
+        material.setId(getNextId());
         materialList.add(material);
         saveToFile();
         return true;

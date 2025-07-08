@@ -2,7 +2,6 @@ package com.zzz.quanlibangiay.view;
 
 import com.zzz.quanlibangiay.component.menu.EventMenuSelected;
 import com.zzz.quanlibangiay.component.menu.SidebarMenu;
-import com.zzz.quanlibangiay.controller.LoginController;
 import com.zzz.quanlibangiay.entity.User;
 import com.zzz.quanlibangiay.enums.UserRole;
 import net.miginfocom.swing.MigLayout;
@@ -32,8 +31,13 @@ public class MainView extends javax.swing.JFrame {
 
     public MainView(User user) {
         initComponents();
+        this.setTitle("Quản lý bán giày");
         this.user = user;
         this.setLocationRelativeTo(null);
+        this.setResizable(true);
+        this.pack();
+        Dimension defaultSize = this.getSize();
+        this.setMinimumSize(defaultSize);
         layerPane.removeAll();
         init();
         setContentPane(layerPane);
@@ -42,7 +46,6 @@ public class MainView extends javax.swing.JFrame {
     }
 
     public void init() {
-        setResizable(false);
         mlayout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0");
         layerPane.setLayout(mlayout);
 
@@ -161,30 +164,28 @@ public class MainView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        layerPane.setPreferredSize(new java.awt.Dimension(1400, 700));
+        layerPane.setPreferredSize(new java.awt.Dimension(1800, 600));
 
         javax.swing.GroupLayout layerPaneLayout = new javax.swing.GroupLayout(layerPane);
         layerPane.setLayout(layerPaneLayout);
         layerPaneLayout.setHorizontalGroup(
             layerPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1400, Short.MAX_VALUE)
+            .addGap(0, 1800, Short.MAX_VALUE)
         );
         layerPaneLayout.setVerticalGroup(
             layerPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(layerPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(layerPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(layerPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(layerPane, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
         );
 
         pack();

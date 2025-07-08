@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author coole
  */
 public class ManageCustomer {
-    
-private static final String FILE_NAME = "Customers.xml";
+
+    private static final String FILE_NAME = "Customers.xml";
     private List<Customer> customerList;
 
     public ManageCustomer() {
@@ -41,12 +40,7 @@ private static final String FILE_NAME = "Customers.xml";
     }
 
     public boolean addCustomer(Customer customer) {
-        if (customer.getId() == 0) {
-            customer.setId(getNextId());
-        } else if (getCustomerById(customer.getId()) != null) {
-            return false;
-        }
-
+        customer.setId(getNextId());
         customerList.add(customer);
         saveToFile();
         return true;

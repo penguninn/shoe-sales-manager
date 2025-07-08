@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Brands>
+    <Brand>
+        <createdDate>2024-01-01T00:00:00+07:00</createdDate>
+        <description>Thương hiệu thể thao nổi tiếng</description>
+        <id>1</id>
+        <name>Nike</name>
+    </Brand>
+    <Brand>
+        <createdDate>2024-01-01T00:00:00+07:00</createdDate>
+        <description>Thương hiệu thể thao Đức</description>
+        <id>2</id>
+        <name>Adidas</name>
+    </Brand>
+    <Brand>
+        <createdDate>2024-01-01T00:00:00+07:00</createdDate>
+        <description>Thương hiệu thể thao cao cấp</description>
+        <id>3</id>
+        <name>Puma</name>
+    </Brand>
+    <Brand>
+        <id>4</id>
+        <name>Vans1</name>
+    </Brand>
+    <Brand>
+        <id>6</id>
+        <name>Vans</name>
+    </Brand>
+</Brands>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Shoes>
+    <Shoe>
+        <id>1</id>
+        <name>Giầy sneaker</name>
+        <brandId>1</brandId>
+        <typeId>3</typeId>
+        <colorId>1</colorId>
+        <materialId>1</materialId>
+        <sizeId>1</sizeId>
+        <quantity>100</quantity>
+        <price>500.0</price>
+        <importPrice>500.0</importPrice>
+        <image>C:\Users\coole\Desktop\images.jpg</image>
+    </Shoe>
+    <Shoe>
+        <id>3</id>
+        <name>giay sneaker</name>
+        <brandId>1</brandId>
+        <typeId>3</typeId>
+        <colorId>1</colorId>
+        <materialId>1</materialId>
+        <sizeId>1</sizeId>
+        <quantity>100</quantity>
+        <price>1.02E7</price>
+        <importPrice>5.0E7</importPrice>
+        <image>C:\Users\coole\Desktop\images.jpg</image>
+    </Shoe>
+</Shoes>

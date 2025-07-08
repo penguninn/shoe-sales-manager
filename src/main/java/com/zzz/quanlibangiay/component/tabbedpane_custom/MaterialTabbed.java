@@ -1,4 +1,4 @@
-package com.zzz.quanlibangiay.component.menu.tabbedpane_custom;
+package com.zzz.quanlibangiay.component.tabbedpane_custom;
 
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;

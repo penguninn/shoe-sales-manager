@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Colors>
+    <Color>
+        <id>1</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Màu đen cổ điển</description>
+        <name>Đen</name>
+    </Color>
+    <Color>
+        <id>2</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Màu trắng tinh khôi</description>
+        <name>Trắng</name>
+    </Color>
+    <Color>
+        <id>3</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Màu đỏ nổi bật</description>
+        <name>Đỏ</name>
+    </Color>
+    <Color>
+        <id>4</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Màu xanh navy</description>
+        <name>Xanh Navy</name>
+    </Color>
+    <Color>
+        <id>5</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Màu xám hiện đại</description>
+        <name>Xám</name>
+    </Color>
+</Colors>

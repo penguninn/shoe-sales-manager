@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author coole
  */
 public class ManageShoeType {
-    
-private static final String FILE_NAME = "ShoeTypes.xml";
+
+    private static final String FILE_NAME = "ShoeTypes.xml";
     private List<ShoeType> shoeTypeList;
 
     public ManageShoeType() {
@@ -43,11 +42,7 @@ private static final String FILE_NAME = "ShoeTypes.xml";
     }
 
     public boolean addShoeType(ShoeType shoeType) {
-        if (shoeType.getId() == 0) {
-            shoeType.setId(getNextId());
-        } else if (getShoeTypeById(shoeType.getId()) != null) {
-            return false;
-        }
+        shoeType.setId(getNextId());
         shoeTypeList.add(shoeType);
         saveToFile();
         return true;

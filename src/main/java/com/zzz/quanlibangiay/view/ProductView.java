@@ -2,49 +2,87 @@ package com.zzz.quanlibangiay.view;
 
 import com.zzz.quanlibangiay.component.button_custom.ButtonCustom;
 import com.zzz.quanlibangiay.component.combobox_custom.ComboBoxSuggestion;
-import com.zzz.quanlibangiay.component.menu.tabbedpane_custom.MaterialTabbed;
+import com.zzz.quanlibangiay.component.panel_custom.ImagePanel;
 import com.zzz.quanlibangiay.component.panel_custom.PanelBorder;
 import com.zzz.quanlibangiay.component.scrollbar_custom.ScrollbarCustom;
+import com.zzz.quanlibangiay.component.tabbedpane_custom.MaterialTabbed;
 import com.zzz.quanlibangiay.component.table_custom.TableCustom;
+import com.zzz.quanlibangiay.entity.*;
+import com.zzz.quanlibangiay.utils.CurrencyUtils;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.Currency;
+import java.util.List;
 
-/**
- *
- * @author coole
- */
 public class ProductView extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Product
-     */
+    private Font vietnameseFont;
+    private String selectedImageName;
+
     private MaterialTabbed materialTabbed;
     private PanelBorder searchPanelBorder;
     private PanelBorder productPanelBorder;
     private PanelBorder attributePanelBorder;
-    private JPanel searchPanel;
     private JPanel productPanel;
     private JPanel attributePanel;
+    private JTable tableProduct;
 
-    // Search Panel buttons
+    private JTextField txtProductId;
+    private JTextField txtProductName;
+    private ComboBoxSuggestion<Brand> cbProductBrand;
+    private ComboBoxSuggestion<ShoeType> cbProductType;
+    private ComboBoxSuggestion<com.zzz.quanlibangiay.entity.Color> cbProductColor;
+    private ComboBoxSuggestion<Material> cbProductMaterial;
+    private ComboBoxSuggestion<Size> cbProductSize;
+    private JTextField txtProductQuantity;
+    private JTextField txtProductPrice;
+    private JTextField txtProductImportPrice;
+    private ImagePanel imagePanel;
+
+    private JTextField txtSearchName;
+    private ComboBoxSuggestion<Brand> cbSearchBrand;
+    private ComboBoxSuggestion<ShoeType> cbSearchType;
+    private ComboBoxSuggestion<com.zzz.quanlibangiay.entity.Color> cbSearchColor;
+    private ComboBoxSuggestion<Material> cbSearchMaterial;
+    private ComboBoxSuggestion<Size> cbSearchSize;
+    private JTextField txtSearchPriceFrom;
+    private JTextField txtSearchPriceTo;
+
     private ButtonCustom btnSearch;
     private ButtonCustom btnReset;
-
-    // Product Panel buttons
     private ButtonCustom btnProductAdd;
     private ButtonCustom btnProductEdit;
     private ButtonCustom btnProductDelete;
     private ButtonCustom btnProductClear;
 
-    // Attribute Panel buttons (for each tab)
+    private ButtonGroup sortButtonGroup;
+    private JRadioButton rdoIdAsc, rdoIdDesc;
+    private JRadioButton rdoNameAsc, rdoNameDesc;
+    private JRadioButton rdoPriceAsc, rdoPriceDesc;
+    private JRadioButton rdoImportPriceAsc, rdoImportPriceDesc;
+    private JRadioButton rdoQuantityAsc, rdoQuantityDesc;
+
     private ButtonCustom btnTypeAdd, btnTypeEdit, btnTypeDelete, btnTypeClear;
     private ButtonCustom btnMaterialAdd, btnMaterialEdit, btnMaterialDelete, btnMaterialClear;
     private ButtonCustom btnColorAdd, btnColorEdit, btnColorDelete, btnColorClear;
     private ButtonCustom btnSizeAdd, btnSizeEdit, btnSizeDelete, btnSizeClear;
     private ButtonCustom btnBrandAdd, btnBrandEdit, btnBrandDelete, btnBrandClear;
+
+    private JTable typeTable, materialTable, colorTable, sizeTable, brandTable;
+    private JTextField txtTypeId, txtTypeName, txtMaterialId, txtMaterialName;
+    private JTextField txtColorId, txtColorName, txtSizeId, txtSizeName;
+    private JTextField txtBrandId, txtBrandName;
+
 
     public ProductView() {
         initComponents();
@@ -52,25 +90,30 @@ public class ProductView extends javax.swing.JPanel {
     }
 
     public void init() {
+
+        vietnameseFont = new Font("Arial", Font.PLAIN, 14);
+
         materialTabbed = new MaterialTabbed();
 
         searchPanelBorder = new PanelBorder();
         productPanelBorder = new PanelBorder();
         attributePanelBorder = new PanelBorder();
 
-        searchPanel = new JPanel(new MigLayout("fill", "0[fill]0", "5[fill]5"));
-        productPanel = new JPanel(new MigLayout("fill", "0[fill]0", "5[fill]5"));
+        productPanel = new JPanel(new MigLayout(
+                "fill",
+                "0[20%][80%]0",
+                "5[fill]5"
+        ));
         attributePanel = new JPanel(new MigLayout("fill", "0[fill]0", "5[fill]5"));
 
         initSearchPanel();
         initProductPanel();
         initAttributePanel();
 
-        searchPanel.add(searchPanelBorder, "grow");
-        productPanel.add(productPanelBorder, "grow");
+        productPanel.add(productPanelBorder, "cell 1 0, grow");
+        productPanel.add(searchPanelBorder, "cell 0 0, grow");
         attributePanel.add(attributePanelBorder, "grow");
 
-        materialTabbed.add(searchPanel, "Tìm kiếm sản phẩm");
         materialTabbed.add(productPanel, "Sản phẩm");
         materialTabbed.add(attributePanel, "Thuộc tính sản phẩm");
 
@@ -84,68 +127,117 @@ public class ProductView extends javax.swing.JPanel {
         searchPanelBorder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JPanel filterPanel = new JPanel(new MigLayout(
-                "insets 10, wrap 4",
-                "[right]10[fill, grow]20[]10[fill, grow]",
+                "insets 10, wrap 2",
+                "[right]10[fill, grow]",
                 "[]10[]10[]10[]10[]10[]"
         ));
-        filterPanel.setBackground(Color.white);
+        filterPanel.setBackground(Color.WHITE);
+
+        JLabel searchLabel = new JLabel("Tìm kiếm sản phẩm");
+        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        filterPanel.add(searchLabel, "span 2, wrap, left");
 
         filterPanel.add(new JLabel("Tên"), "right");
-        TextField txtName = new TextField();
-        filterPanel.add(txtName, "growx");
+        txtSearchName = new JTextField();
+        filterPanel.add(txtSearchName, "growx");
 
         filterPanel.add(new JLabel("Thương hiệu"), "right");
-        ComboBoxSuggestion<String> cbBrand = new ComboBoxSuggestion<>();
-        cbBrand.setModel(new DefaultComboBoxModel<>(new String[]{"Adidas", "Nike", "Puma"}));
-        filterPanel.add(cbBrand, "growx");
+        cbSearchBrand = new ComboBoxSuggestion<>();
+        filterPanel.add(cbSearchBrand, "growx");
 
         filterPanel.add(new JLabel("Loại"), "right");
-        ComboBoxSuggestion<String> cbType = new ComboBoxSuggestion<>();
-        cbType.setModel(new DefaultComboBoxModel<>(new String[]{"Thể thao", "Sneaker", "Chạy bộ"}));
-        filterPanel.add(cbType, "growx");
+        cbSearchType = new ComboBoxSuggestion<>();
+        filterPanel.add(cbSearchType, "growx");
 
         filterPanel.add(new JLabel("Màu sắc"), "right");
-        ComboBoxSuggestion<String> cbColor = new ComboBoxSuggestion<>();
-        cbColor.setModel(new DefaultComboBoxModel<>(new String[]{"Đen", "Trắng", "Xanh navy", "Đỏ"}));
-        filterPanel.add(cbColor, "growx");
+        cbSearchColor = new ComboBoxSuggestion<>();
+        filterPanel.add(cbSearchColor, "growx");
 
         filterPanel.add(new JLabel("Chất liệu"), "right");
-        ComboBoxSuggestion<String> cbMaterial = new ComboBoxSuggestion<>();
-        cbMaterial.setModel(new DefaultComboBoxModel<>(new String[]{"Cotton", "Polyester", "Nylon", "Da"}));
-        filterPanel.add(cbMaterial, "growx");
+        cbSearchMaterial = new ComboBoxSuggestion<>();
+        filterPanel.add(cbSearchMaterial, "growx");
 
         filterPanel.add(new JLabel("Size"), "right");
-        ComboBoxSuggestion<String> cbSize = new ComboBoxSuggestion<>();
-        cbSize.setModel(new DefaultComboBoxModel<>(new String[]{"36", "37", "38", "39", "40", "41", "42"}));
-        filterPanel.add(cbSize, "growx");
+        cbSearchSize = new ComboBoxSuggestion<>();
+        filterPanel.add(cbSearchSize, "growx");
 
-        filterPanel.add(new JLabel("Giá (từ–đến)"), "right");
-        TextField txtPriceFrom = new TextField();
-        txtPriceFrom.setPreferredSize(new Dimension(80, 30));
-        TextField txtPriceTo = new TextField();
-        txtPriceTo.setPreferredSize(new Dimension(80, 30));
+        filterPanel.add(new JLabel("Giá từ–đến"), "right");
+
         JPanel pricePanel = new JPanel(new MigLayout("insets 0, wrap 2", "[fill, grow]5[fill, grow]"));
-        pricePanel.add(txtPriceFrom, "growx");
-        pricePanel.add(txtPriceTo, "growx");
-        filterPanel.add(pricePanel, "span 3, growx");
+        txtSearchPriceFrom = new JTextField();
+        txtSearchPriceFrom.setPreferredSize(new Dimension(80, 30));
+        txtSearchPriceTo = new JTextField();
+        txtSearchPriceTo.setPreferredSize(new Dimension(80, 30));
+        pricePanel.add(txtSearchPriceFrom, "growx");
+        pricePanel.add(txtSearchPriceTo, "growx");
+        filterPanel.add(pricePanel, "growx");
 
-        // Khởi tạo và gán cho instance variables
+        JPanel sortPanel = new JPanel(new MigLayout(
+                "insets 0, wrap 1",
+                "[fill, grow]",
+                "[]10[]"
+        ));
+        sortPanel.setBackground(Color.WHITE);
+
+        JLabel sortLabel = new JLabel("Sắp xếp");
+        sortLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        sortPanel.add(sortLabel, "wrap");
+
+        sortButtonGroup = new ButtonGroup();
+
+        JPanel sortOptionsPanel = new JPanel(new MigLayout(
+                "insets 10, wrap 2",
+                "[fill]50[fill]"
+        ));
+        sortOptionsPanel.setBackground(Color.WHITE);
+
+        rdoIdAsc = new JRadioButton("ID ↑");
+        rdoIdDesc = new JRadioButton("ID ↓");
+        rdoNameAsc = new JRadioButton("Tên ↑");
+        rdoNameDesc = new JRadioButton("Tên ↓");
+        rdoPriceAsc = new JRadioButton("Giá bán ↑");
+        rdoPriceDesc = new JRadioButton("Giá bán ↓");
+        rdoImportPriceAsc = new JRadioButton("Giá nhập ↑");
+        rdoImportPriceDesc = new JRadioButton("Giá nhập ↓");
+        rdoQuantityAsc = new JRadioButton("Số lượng ↑");
+        rdoQuantityDesc = new JRadioButton("Số lượng ↓");
+
+        sortButtonGroup.add(rdoIdAsc);
+        sortButtonGroup.add(rdoIdDesc);
+        sortButtonGroup.add(rdoNameAsc);
+        sortButtonGroup.add(rdoNameDesc);
+        sortButtonGroup.add(rdoPriceAsc);
+        sortButtonGroup.add(rdoPriceDesc);
+        sortButtonGroup.add(rdoImportPriceAsc);
+        sortButtonGroup.add(rdoImportPriceDesc);
+        sortButtonGroup.add(rdoQuantityAsc);
+        sortButtonGroup.add(rdoQuantityDesc);
+
+        rdoIdAsc.setSelected(true);
+
+        sortOptionsPanel.add(rdoIdAsc);
+        sortOptionsPanel.add(rdoIdDesc);
+        sortOptionsPanel.add(rdoNameAsc);
+        sortOptionsPanel.add(rdoNameDesc);
+        sortOptionsPanel.add(rdoPriceAsc);
+        sortOptionsPanel.add(rdoPriceDesc);
+        sortOptionsPanel.add(rdoImportPriceAsc);
+        sortOptionsPanel.add(rdoImportPriceDesc);
+        sortOptionsPanel.add(rdoQuantityAsc);
+        sortOptionsPanel.add(rdoQuantityDesc);
+
         btnSearch = new ButtonCustom();
         btnReset = new ButtonCustom();
 
         btnReset.setText("Reset");
         btnSearch.setText("Tìm kiếm");
-        filterPanel.add(btnSearch, "span 4, split 2, right");
-        filterPanel.add(btnReset, "");
+
+        sortPanel.add(sortOptionsPanel, "growx");
+        sortPanel.add(btnSearch, "split 2, growx");
+        sortPanel.add(btnReset, "growx");
 
         searchPanelBorder.add(filterPanel, BorderLayout.NORTH);
-
-        String[] cols = {"Tên", "Thương hiệu", "Loại", "Màu", "Chất liệu", "Size", "Số lượng", "Giá"};
-        Object[][] data = {};
-        JTable table = new JTable(data, cols);
-        JScrollPane scroll = createCustomScrollPane(table);
-        TableCustom.apply(scroll, TableCustom.TableType.DEFAULT);
-        searchPanelBorder.add(scroll, BorderLayout.CENTER);
+        searchPanelBorder.add(sortPanel, BorderLayout.CENTER);
     }
 
     private void initProductPanel() {
@@ -153,59 +245,69 @@ public class ProductView extends javax.swing.JPanel {
 
         JPanel formPanel = new JPanel(new MigLayout(
                 "wrap 5",
-                "[right]10[fill, grow]20[right]10[fill, grow]20[200!]"));
+                "[right]10[fill, grow]20[right]10[fill, grow]20[200!]",
+                "[]10[]10[]10[]10[]10[]"));
         formPanel.setBackground(Color.WHITE);
 
-        ComboBoxSuggestion<String> cbBrand = new ComboBoxSuggestion<>();
-        cbBrand.setModel(new DefaultComboBoxModel<>(new String[]{"Adidas", "Nike", "Puma"}));
+        cbProductBrand = new ComboBoxSuggestion<>();
+        cbProductType = new ComboBoxSuggestion<>();
+        cbProductColor = new ComboBoxSuggestion<>();
+        cbProductMaterial = new ComboBoxSuggestion<>();
+        cbProductSize = new ComboBoxSuggestion<>();
+        txtProductName = new JTextField();
+        txtProductId = new JTextField();
+        txtProductQuantity = new JTextField();
+        txtProductPrice = new JTextField();
+        txtProductImportPrice = new JTextField();
 
-        ComboBoxSuggestion<String> cbType = new ComboBoxSuggestion<>();
-        cbType.setModel(new DefaultComboBoxModel<>(new String[]{"Giày thể thao", "Giày sneaker", "Giày chạy bộ"}));
-
-        ComboBoxSuggestion<String> cbColor = new ComboBoxSuggestion<>();
-        cbColor.setModel(new DefaultComboBoxModel<>(new String[]{"Đen", "Xanh navy", "Xám", "Trắng", "Đỏ", "Xanh lá"}));
-
-        ComboBoxSuggestion<String> cbMaterial = new ComboBoxSuggestion<>();
-        cbMaterial.setModel(new DefaultComboBoxModel<>(new String[]{"Polyester", "Cotton", "Nylon", "Spandex", "Fleece"}));
-
-        ComboBoxSuggestion<String> cbSize = new ComboBoxSuggestion<>();
-        cbSize.setModel(new DefaultComboBoxModel<>(new String[]{"36", "37", "38", "39", "40", "41", "42", "43"}));
-
-        TextField txtName = new TextField();
-        TextField txtQuantity = new TextField();
-        TextField txtPrice = new TextField();
-        TextField txtImportPrice = new TextField();
-
-        JPanel imagePanel = new JPanel();
+        imagePanel = new ImagePanel(200, 240);
         imagePanel.setBackground(Color.LIGHT_GRAY);
-        imagePanel.setPreferredSize(new Dimension(200, 240));
         imagePanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
+        imagePanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JFileChooser chooser = new JFileChooser();
+                chooser.setDialogTitle("Chọn ảnh sản phẩm");
+                chooser.setFileFilter(new FileNameExtensionFilter(
+                        "Ảnh (*.jpg, *.png, *.gif)", "jpg", "jpeg", "png", "gif"));
+                int result = chooser.showOpenDialog(ProductView.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedImageFile = chooser.getSelectedFile();
+                    selectedImageName = selectedImageFile.getAbsolutePath();
+                    imagePanel.setImage(selectedImageFile);
+                }
+            }
+        });
+
+        formPanel.add(new JLabel("ID"));
+        txtProductId.setEditable(false);
+        formPanel.add(txtProductId);
         formPanel.add(new JLabel("Tên Sản Phẩm"));
-        formPanel.add(txtName);
+        formPanel.add(txtProductName);
+        formPanel.add(imagePanel, "cell 4 0 1 6, h 240!, w 200!");
+
         formPanel.add(new JLabel("Thương Hiệu"));
-        formPanel.add(cbBrand);
-        formPanel.add(imagePanel, "cell 4 0 1 6, growy");
+        formPanel.add(cbProductBrand);
 
         formPanel.add(new JLabel("Loại Sản Phẩm"));
-        formPanel.add(cbType);
+        formPanel.add(cbProductType);
         formPanel.add(new JLabel("Chất Liệu"));
-        formPanel.add(cbMaterial);
+        formPanel.add(cbProductMaterial);
 
         formPanel.add(new JLabel("Màu Sắc"));
-        formPanel.add(cbColor);
+        formPanel.add(cbProductColor);
         formPanel.add(new JLabel("Size"));
-        formPanel.add(cbSize);
+        formPanel.add(cbProductSize);
 
         formPanel.add(new JLabel("Số Lượng"));
-        formPanel.add(txtQuantity);
+        formPanel.add(txtProductQuantity);
         formPanel.add(new JLabel("Giá Bán"));
-        formPanel.add(txtPrice);
+        formPanel.add(txtProductPrice);
 
         formPanel.add(new JLabel("Giá Nhập"));
-        formPanel.add(txtImportPrice);
+        formPanel.add(txtProductImportPrice);
 
-        // Khởi tạo và gán cho instance variables
         btnProductAdd = new ButtonCustom();
         btnProductEdit = new ButtonCustom();
         btnProductDelete = new ButtonCustom();
@@ -216,23 +318,16 @@ public class ProductView extends javax.swing.JPanel {
         btnProductDelete.setText("Xóa");
         btnProductClear.setText("Làm Mới");
 
-        formPanel.add(btnProductAdd, "skip 2");
+        formPanel.add(btnProductAdd);
         formPanel.add(btnProductEdit);
         formPanel.add(btnProductDelete);
         formPanel.add(btnProductClear);
 
         productPanelBorder.add(formPanel, "growx");
 
-        String[] columns = {
-            "Tên SP", "Thương hiệu", "Loại", "Màu sắc", "Chất liệu",
-            "Size", "Số lượng", "Giá bán", "Giá nhập", "Hình ảnh"
-        };
-        Object[][] data = {};
-
-        JTable table = new JTable(data, columns);
-        JScrollPane scrollPane = createCustomScrollPane(table);
+        tableProduct = new JTable();
+        JScrollPane scrollPane = createCustomScrollPane(tableProduct);
         TableCustom.apply(scrollPane, TableCustom.TableType.DEFAULT);
-
         productPanelBorder.add(scrollPane, "grow, push");
     }
 
@@ -252,62 +347,106 @@ public class ProductView extends javax.swing.JPanel {
 
     private JPanel createAttributeCrudPanel(String labelText) {
         JPanel panel = new JPanel(new MigLayout(
-                "insets 10, wrap 3",
-                "[fill, grow]10[fill, grow]10[fill, grow]",
-                "[][][grow]")); 
+                "insets 10, wrap 4",
+                "[fill, grow]10[fill, grow]10[fill, grow]10[fill, grow]",
+                "[]10[]10[]"));
         panel.setBackground(Color.WHITE);
 
-        JLabel lblName = new JLabel(labelText);
-        TextField txtName = new TextField();
+        JLabel lblTitle = new JLabel(labelText);
+        lblTitle.setFont(new Font("Arial", Font.BOLD, 14));
+
+        JLabel lblId = new JLabel("Id " + labelText.toLowerCase());
+        JTextField txtId = new JTextField();
+        txtId.setEditable(false);
+        txtId.setPreferredSize(new Dimension(200, 30));
+
+        JLabel lblName = new JLabel("Tên " + labelText.toLowerCase());
+        JTextField txtName = new JTextField();
         txtName.setPreferredSize(new Dimension(200, 30));
 
+        switch (labelText) {
+            case "Loại sản phẩm":
+                txtTypeId = txtId;
+                txtTypeName = txtName;
+                break;
+            case "Chất liệu":
+                txtMaterialId = txtId;
+                txtMaterialName = txtName;
+                break;
+            case "Màu sắc":
+                txtColorId = txtId;
+                txtColorName = txtName;
+                break;
+            case "Size":
+                txtSizeId = txtId;
+                txtSizeName = txtName;
+                break;
+            case "Thương hiệu":
+                txtBrandId = txtId;
+                txtBrandName = txtName;
+                break;
+        }
+
+
         ButtonCustom btnAdd, btnEdit, btnDelete, btnClear;
-        
-        // Khởi tạo buttons và gán cho instance variables tương ứng
+
         switch (labelText) {
             case "Loại sản phẩm":
                 btnTypeAdd = new ButtonCustom();
                 btnTypeEdit = new ButtonCustom();
                 btnTypeDelete = new ButtonCustom();
                 btnTypeClear = new ButtonCustom();
-                btnAdd = btnTypeAdd; btnEdit = btnTypeEdit; 
-                btnDelete = btnTypeDelete; btnClear = btnTypeClear;
+                btnAdd = btnTypeAdd;
+                btnEdit = btnTypeEdit;
+                btnDelete = btnTypeDelete;
+                btnClear = btnTypeClear;
+
                 break;
             case "Chất liệu":
                 btnMaterialAdd = new ButtonCustom();
                 btnMaterialEdit = new ButtonCustom();
                 btnMaterialDelete = new ButtonCustom();
                 btnMaterialClear = new ButtonCustom();
-                btnAdd = btnMaterialAdd; btnEdit = btnMaterialEdit; 
-                btnDelete = btnMaterialDelete; btnClear = btnMaterialClear;
+                btnAdd = btnMaterialAdd;
+                btnEdit = btnMaterialEdit;
+                btnDelete = btnMaterialDelete;
+                btnClear = btnMaterialClear;
                 break;
             case "Màu sắc":
                 btnColorAdd = new ButtonCustom();
                 btnColorEdit = new ButtonCustom();
                 btnColorDelete = new ButtonCustom();
                 btnColorClear = new ButtonCustom();
-                btnAdd = btnColorAdd; btnEdit = btnColorEdit; 
-                btnDelete = btnColorDelete; btnClear = btnColorClear;
+                btnAdd = btnColorAdd;
+                btnEdit = btnColorEdit;
+                btnDelete = btnColorDelete;
+                btnClear = btnColorClear;
                 break;
             case "Size":
                 btnSizeAdd = new ButtonCustom();
                 btnSizeEdit = new ButtonCustom();
                 btnSizeDelete = new ButtonCustom();
                 btnSizeClear = new ButtonCustom();
-                btnAdd = btnSizeAdd; btnEdit = btnSizeEdit; 
-                btnDelete = btnSizeDelete; btnClear = btnSizeClear;
+                btnAdd = btnSizeAdd;
+                btnEdit = btnSizeEdit;
+                btnDelete = btnSizeDelete;
+                btnClear = btnSizeClear;
                 break;
             case "Thương hiệu":
                 btnBrandAdd = new ButtonCustom();
                 btnBrandEdit = new ButtonCustom();
                 btnBrandDelete = new ButtonCustom();
                 btnBrandClear = new ButtonCustom();
-                btnAdd = btnBrandAdd; btnEdit = btnBrandEdit; 
-                btnDelete = btnBrandDelete; btnClear = btnBrandClear;
+                btnAdd = btnBrandAdd;
+                btnEdit = btnBrandEdit;
+                btnDelete = btnBrandDelete;
+                btnClear = btnBrandClear;
                 break;
             default:
-                btnAdd = new ButtonCustom(); btnEdit = new ButtonCustom();
-                btnDelete = new ButtonCustom(); btnClear = new ButtonCustom();
+                btnAdd = new ButtonCustom();
+                btnEdit = new ButtonCustom();
+                btnDelete = new ButtonCustom();
+                btnClear = new ButtonCustom();
         }
 
         btnAdd.setText("Thêm");
@@ -315,29 +454,601 @@ public class ProductView extends javax.swing.JPanel {
         btnDelete.setText("Xóa");
         btnClear.setText("Làm Mới");
 
-        panel.add(lblName);
+        panel.add(lblTitle, "span 4, left");
+        panel.add(lblId);
+        panel.add(txtId);
         panel.add(btnAdd, "growx");
         panel.add(btnEdit, "growx");
+
+        panel.add(lblName);
         panel.add(txtName);
         panel.add(btnDelete, "growx");
         panel.add(btnClear, "growx");
 
         String[] columns = {"ID", labelText};
         Object[][] data = {};
-        JTable table = new JTable(data, columns);
+        DefaultTableModel model = new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable table = new JTable(model);
+
+        table.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow >= 0) {
+                    txtId.setText(table.getValueAt(selectedRow, 0).toString());
+                    txtName.setText(table.getValueAt(selectedRow, 1).toString());
+                }
+            }
+        });
+
+        switch (labelText) {
+            case "Loại sản phẩm":
+                typeTable = table;
+                break;
+            case "Chất liệu":
+                materialTable = table;
+                break;
+            case "Màu sắc":
+                colorTable = table;
+                break;
+            case "Size":
+                sizeTable = table;
+                break;
+            case "Thương hiệu":
+                brandTable = table;
+                break;
+        }
+
         JScrollPane scrollPane = createCustomScrollPane(table);
         TableCustom.apply(scrollPane, TableCustom.TableType.DEFAULT);
-
-        panel.add(scrollPane, "span 3, grow, push");
+        panel.add(scrollPane, "span 4, grow, push");
 
         return panel;
     }
-    
+
     private JScrollPane createCustomScrollPane(JTable table) {
         JScrollPane scroll = new JScrollPane(table);
         scroll.setVerticalScrollBar(new ScrollbarCustom());
         scroll.setHorizontalScrollBar(new ScrollbarCustom());
         return scroll;
+    }
+
+    public void setProductFormData(Shoe shoe) {
+        if (shoe == null) return;
+
+        txtProductId.setText(String.valueOf(shoe.getId()));
+        txtProductName.setText(shoe.getName());
+        txtProductQuantity.setText(String.valueOf(shoe.getQuantity()));
+        txtProductPrice.setText(CurrencyUtils.formatCurrency(shoe.getPrice()));
+        txtProductImportPrice.setText(CurrencyUtils.formatCurrency(shoe.getImportPrice()));
+
+        selectComboById(cbProductBrand, shoe.getBrandId());
+        selectComboById(cbProductType, shoe.getTypeId());
+        selectComboById(cbProductMaterial, shoe.getMaterialId());
+        selectComboById(cbProductColor, shoe.getColorId());
+        selectComboById(cbProductSize, shoe.getSizeId());
+
+        String path = shoe.getImage();
+        if (path != null && !path.isBlank()) {
+            File f = new File(path);
+            if (f.exists()) {
+                imagePanel.setImage(f);
+                selectedImageName = f.getAbsolutePath();
+            } else {
+                imagePanel.setImage(null);
+            }
+        } else {
+            imagePanel.setImage(null);
+        }
+
+    }
+
+    public Shoe getDataProductFromForm() {
+        try {
+            Shoe shoe = new Shoe();
+
+            String idText = txtProductId.getText().trim();
+            if (!idText.isEmpty()) {
+                try {
+                    shoe.setId(Integer.parseInt(idText));
+                } catch (NumberFormatException ex) {
+                    showError("ID không hợp lệ!");
+                    txtProductId.requestFocus();
+                    return null;
+                }
+            }
+
+            String name = txtProductName.getText().trim();
+            if (name.isEmpty()) {
+                showError("Tên sản phẩm không được để trống!");
+                txtProductName.requestFocus();
+                return null;
+            }
+            shoe.setName(name);
+
+            shoe.setBrandId(((Brand) cbProductBrand.getSelectedItem()).getId());
+            shoe.setTypeId(((ShoeType) cbProductType.getSelectedItem()).getId());
+            shoe.setColorId(((com.zzz.quanlibangiay.entity.Color) cbProductColor.getSelectedItem()).getId());
+            shoe.setMaterialId(((Material) cbProductMaterial.getSelectedItem()).getId());
+            shoe.setSizeId(((Size) cbProductSize.getSelectedItem()).getId());
+
+            String qtyText = txtProductQuantity.getText().trim();
+            if (qtyText.isEmpty()) {
+                showError("Số lượng không được để trống!");
+                txtProductQuantity.requestFocus();
+                return null;
+            }
+            int qty;
+            try {
+                qty = Integer.parseInt(qtyText);
+                if (qty < 0) throw new NumberFormatException();
+            } catch (NumberFormatException ex) {
+                showError("Số lượng phải là số nguyên >= 0!");
+                txtProductQuantity.requestFocus();
+                return null;
+            }
+            shoe.setQuantity(qty);
+
+            String priceText = txtProductPrice.getText().trim();
+            if (priceText.isEmpty()) {
+                showError("Giá bán không được để trống!");
+                txtProductPrice.requestFocus();
+                return null;
+            }
+            double price;
+            try {
+                price = CurrencyUtils.parseCurrency(priceText);
+                if (price < 0) throw new NumberFormatException();
+            } catch (NumberFormatException ex) {
+                showError("Giá bán phải là số >= 0!");
+                txtProductPrice.requestFocus();
+                return null;
+            }
+            shoe.setPrice(price);
+
+            String importText = txtProductImportPrice.getText().trim();
+            if (importText.isEmpty()) {
+                showError("Giá nhập không được để trống!");
+                txtProductImportPrice.requestFocus();
+                return null;
+            }
+            double importPrice;
+            try {
+                importPrice = CurrencyUtils.parseCurrency(importText);
+                if (importPrice < 0) throw new NumberFormatException();
+            } catch (NumberFormatException ex) {
+                showError("Giá nhập phải là số >= 0!");
+                txtProductImportPrice.requestFocus();
+                return null;
+            }
+            shoe.setImportPrice(importPrice);
+
+            if (selectedImageName != null) {
+                shoe.setImage(selectedImageName);
+            }
+
+            return shoe;
+
+        } catch (Exception e) {
+            showError("Có lỗi xảy ra khi lấy dữ liệu form: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void setTypeTableData(List<ShoeType> types) {
+        if (typeTable != null) {
+            DefaultTableModel model = (DefaultTableModel) typeTable.getModel();
+            model.setRowCount(0);
+            for (ShoeType type : types) {
+                model.addRow(new Object[]{type.getId(), type.getName()});
+            }
+        }
+    }
+
+    public void setMaterialTableData(List<Material> materials) {
+        if (materialTable != null) {
+            DefaultTableModel model = (DefaultTableModel) materialTable.getModel();
+            model.setRowCount(0);
+            for (Material material : materials) {
+                model.addRow(new Object[]{material.getId(), material.getName()});
+            }
+        }
+    }
+
+    public void setColorTableData(List<com.zzz.quanlibangiay.entity.Color> colors) {
+        if (colorTable != null) {
+            DefaultTableModel model = (DefaultTableModel) colorTable.getModel();
+            model.setRowCount(0);
+            for (com.zzz.quanlibangiay.entity.Color color : colors) {
+                model.addRow(new Object[]{color.getId(), color.getName()});
+            }
+        }
+    }
+
+    public void setSizeTableData(List<Size> sizes) {
+        if (sizeTable != null) {
+            DefaultTableModel model = (DefaultTableModel) sizeTable.getModel();
+            model.setRowCount(0);
+            for (Size size : sizes) {
+                model.addRow(new Object[]{size.getId(), size.getSizeName()});
+            }
+        }
+    }
+
+    public void setBrandTableData(List<Brand> brands) {
+        if (brandTable != null) {
+            DefaultTableModel model = (DefaultTableModel) brandTable.getModel();
+            model.setRowCount(0);
+            for (Brand brand : brands) {
+                model.addRow(new Object[]{brand.getId(), brand.getName()});
+            }
+        }
+    }
+
+    public ShoeType getTypeFromForm() {
+        if (txtTypeName.getText().trim().isEmpty()) {
+            showError("Vui lòng nhập đầy đủ thông tin loại sản phẩm!");
+            return null;
+        }
+        ShoeType type = new ShoeType();
+        if (!txtTypeId.getText().trim().isEmpty()) {
+            try {
+                type.setId(Integer.parseInt(txtTypeId.getText().trim()));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        type.setName(txtTypeName.getText().trim());
+        return type;
+    }
+
+    public Material getMaterialFromForm() {
+        if (txtMaterialName.getText().trim().isEmpty()) {
+            showError("Vui lòng nhập tên chất liệu!");
+            return null;
+        }
+        Material material = new Material();
+        if (!txtMaterialId.getText().trim().isEmpty()) {
+            try {
+                material.setId(Integer.parseInt(txtMaterialId.getText().trim()));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        material.setName(txtMaterialName.getText().trim());
+        return material;
+    }
+
+    public com.zzz.quanlibangiay.entity.Color getColorFromForm() {
+        if (txtColorName.getText().trim().isEmpty()) {
+            showError("Vui lòng nhập tên màu sắc!");
+            return null;
+        }
+        com.zzz.quanlibangiay.entity.Color color = new com.zzz.quanlibangiay.entity.Color();
+        if (!txtColorId.getText().trim().isEmpty()) {
+            try {
+                color.setId(Integer.parseInt(txtColorId.getText().trim()));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        color.setName(txtColorName.getText().trim());
+        return color;
+    }
+
+    public Size getSizeFromForm() {
+        if (txtSizeName.getText().trim().isEmpty()) {
+            showError("Vui lòng nhập tên size!");
+            return null;
+        }
+        Size size = new Size();
+        if (!txtSizeId.getText().trim().isEmpty()) {
+            try {
+                size.setId(Integer.parseInt(txtSizeId.getText().trim()));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        size.setSizeName(txtSizeName.getText().trim());
+        return size;
+    }
+
+    public Brand getBrandFromForm() {
+        if (txtBrandName.getText().trim().isEmpty()) {
+            showError("Vui lòng nhập tên thương hiệu!");
+            return null;
+        }
+        Brand brand = new Brand();
+        if (!txtBrandId.getText().trim().isEmpty()) {
+            try {
+                brand.setId(Integer.parseInt(txtBrandId.getText().trim()));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        brand.setName(txtBrandName.getText().trim());
+        return brand;
+    }
+
+    public void clearTypeForm() {
+        txtTypeId.setText("");
+        txtTypeName.setText("");
+    }
+
+    public void clearMaterialForm() {
+        txtMaterialId.setText("");
+        txtMaterialName.setText("");
+    }
+
+    public void clearColorForm() {
+        txtColorId.setText("");
+        txtColorName.setText("");
+    }
+
+    public void clearSizeForm() {
+        txtSizeId.setText("");
+        txtSizeName.setText("");
+    }
+
+    public void clearBrandForm() {
+        txtBrandId.setText("");
+        txtBrandName.setText("");
+    }
+
+    public int getSelectedTypeId() {
+        if (typeTable.getSelectedRow() >= 0) {
+            return Integer.parseInt(typeTable.getValueAt(typeTable.getSelectedRow(), 0).toString());
+        }
+        return -1;
+    }
+
+    public int getSelectedMaterialId() {
+        if (materialTable.getSelectedRow() >= 0) {
+            return Integer.parseInt(materialTable.getValueAt(materialTable.getSelectedRow(), 0).toString());
+        }
+        return -1;
+    }
+
+    public int getSelectedColorId() {
+        if (colorTable.getSelectedRow() >= 0) {
+            return Integer.parseInt(colorTable.getValueAt(colorTable.getSelectedRow(), 0).toString());
+        }
+        return -1;
+    }
+
+    public int getSelectedSizeId() {
+        if (sizeTable.getSelectedRow() >= 0) {
+            return Integer.parseInt(sizeTable.getValueAt(sizeTable.getSelectedRow(), 0).toString());
+        }
+        return -1;
+    }
+
+    public int getSelectedBrandId() {
+        if (brandTable.getSelectedRow() >= 0) {
+            return Integer.parseInt(brandTable.getValueAt(brandTable.getSelectedRow(), 0).toString());
+        }
+        return -1;
+    }
+
+    public ShoeSearchCriteria getSearchCriteria() {
+        ShoeSearchCriteria c = new ShoeSearchCriteria();
+
+        String name = txtSearchName.getText().trim();
+        c.setName(name.isEmpty() ? null : name);
+
+        Brand b = (Brand) cbSearchBrand.getSelectedItem();
+        c.setBrand((b != null && b.getId() != 0) ? b : null);
+
+        ShoeType t = (ShoeType) cbSearchType.getSelectedItem();
+        c.setType((t != null && t.getId() != 0) ? t : null);
+
+        com.zzz.quanlibangiay.entity.Color co = (com.zzz.quanlibangiay.entity.Color) cbSearchColor.getSelectedItem();
+        c.setColor((co != null && co.getId() != 0) ? co : null);
+
+        Material m = (Material) cbSearchMaterial.getSelectedItem();
+        c.setMaterial((m != null && m.getId() != 0) ? m : null);
+
+        Size s = (Size) cbSearchSize.getSelectedItem();
+        c.setSize((s != null && s.getId() != 0) ? s : null);
+
+        String fromTxt = txtSearchPriceFrom.getText().trim();
+        String toTxt = txtSearchPriceTo.getText().trim();
+        try {
+            c.setPriceFrom(CurrencyUtils.parseCurrency(fromTxt.isEmpty() ? null : fromTxt));
+        } catch (NumberFormatException e) {
+            c.setPriceFrom(null);
+        }
+        try {
+            c.setPriceTo(CurrencyUtils.parseCurrency(toTxt.isEmpty() ? null : toTxt));
+        } catch (NumberFormatException e) {
+            c.setPriceTo(null);
+        }
+
+        return c;
+    }
+
+    public void clearProductForm() {
+        txtProductId.setText("");
+        txtProductName.setText("");
+        cbProductBrand.setSelectedIndex(0);
+        cbProductType.setSelectedIndex(0);
+        cbProductColor.setSelectedIndex(0);
+        cbProductMaterial.setSelectedIndex(0);
+        cbProductSize.setSelectedIndex(0);
+        txtProductQuantity.setText("");
+        txtProductPrice.setText("");
+        txtProductImportPrice.setText("");
+        imagePanel.clearImage();
+    }
+
+    public void clearSearchAndSortForm() {
+        txtSearchName.setText("");
+        txtSearchPriceFrom.setText("");
+        txtSearchPriceTo.setText("");
+
+        if (cbSearchBrand.getItemCount() > 0) {
+            cbSearchBrand.setSelectedIndex(0);
+        }
+        if (cbSearchType.getItemCount() > 0) {
+            cbSearchType.setSelectedIndex(0);
+        }
+        if (cbSearchColor.getItemCount() > 0) {
+            cbSearchColor.setSelectedIndex(0);
+        }
+        if (cbSearchMaterial.getItemCount() > 0) {
+            cbSearchMaterial.setSelectedIndex(0);
+        }
+        if (cbSearchSize.getItemCount() > 0) {
+            cbSearchSize.setSelectedIndex(0);
+        }
+
+        sortButtonGroup.setSelected(rdoIdAsc.getModel(), true);
+    }
+
+    public String getSelectedSortCriteria() {
+        if (rdoIdAsc.isSelected()) return "ID_ASC";
+        if (rdoIdDesc.isSelected()) return "ID_DESC";
+        if (rdoNameAsc.isSelected()) return "NAME_ASC";
+        if (rdoNameDesc.isSelected()) return "NAME_DESC";
+        if (rdoPriceAsc.isSelected()) return "PRICE_ASC";
+        if (rdoPriceDesc.isSelected()) return "PRICE_DESC";
+        if (rdoImportPriceAsc.isSelected()) return "IMPORT_PRICE_ASC";
+        if (rdoImportPriceDesc.isSelected()) return "IMPORT_PRICE_DESC";
+        if (rdoQuantityAsc.isSelected()) return "QUANTITY_ASC";
+        if (rdoQuantityDesc.isSelected()) return "QUANTITY_DESC";
+        return "ID_ASC";
+    }
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showSuccess(String message) {
+        JOptionPane.showMessageDialog(this, message, "Thành công", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void setProductTableData(Object[][] data) {
+        String[] columnNames = new String[]{
+                "Id", "Tên", "Loại", "Thương hiệu", "Chất liệu", "Màu sắc", "Kích thước", "Số lượng", "Giá bán", "Giá nhập"};
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tableProduct.setModel(model);
+    }
+
+    public void setBrandComboBoxData(List<Brand> brands) {
+        DefaultComboBoxModel<Brand> model = new DefaultComboBoxModel<>();
+        for (Brand brand : brands) {
+            model.addElement(brand);
+        }
+        cbProductBrand.setModel(model);
+
+        DefaultComboBoxModel<Brand> searchModel = new DefaultComboBoxModel<>();
+        Brand allBrands = new Brand();
+        allBrands.setId(0);
+        allBrands.setName("Tất cả");
+        searchModel.addElement(allBrands);
+        for (Brand b : brands) {
+            searchModel.addElement(b);
+        }
+        cbSearchBrand.setModel(searchModel);
+        cbSearchBrand.setSelectedIndex(0);
+    }
+
+    public void setTypeComboBoxData(List<ShoeType> types) {
+        DefaultComboBoxModel<ShoeType> productModel = new DefaultComboBoxModel<>();
+        for (ShoeType t : types) {
+            productModel.addElement(t);
+        }
+        cbProductType.setModel(productModel);
+
+        DefaultComboBoxModel<ShoeType> searchModel = new DefaultComboBoxModel<>();
+        ShoeType allType = new ShoeType();
+        allType.setId(0);
+        allType.setName("Tất cả");
+        searchModel.addElement(allType);
+        for (ShoeType t : types) {
+            searchModel.addElement(t);
+        }
+        cbSearchType.setModel(searchModel);
+        cbSearchType.setSelectedIndex(0);
+    }
+
+    public void setMaterialComboBoxData(List<Material> materials) {
+        DefaultComboBoxModel<Material> productModel = new DefaultComboBoxModel<>();
+        for (Material m : materials) {
+            productModel.addElement(m);
+        }
+        cbProductMaterial.setModel(productModel);
+
+        DefaultComboBoxModel<Material> searchModel = new DefaultComboBoxModel<>();
+        Material allMat = new Material();
+        allMat.setId(0);
+        allMat.setName("Tất cả");
+        searchModel.addElement(allMat);
+        for (Material m : materials) {
+            searchModel.addElement(m);
+        }
+        cbSearchMaterial.setModel(searchModel);
+        cbSearchMaterial.setSelectedIndex(0);
+    }
+
+    public void setColorComboBoxData(List<com.zzz.quanlibangiay.entity.Color> colors) {
+        DefaultComboBoxModel<com.zzz.quanlibangiay.entity.Color> productModel = new DefaultComboBoxModel<>();
+        for (com.zzz.quanlibangiay.entity.Color c : colors) {
+            productModel.addElement(c);
+        }
+        cbProductColor.setModel(productModel);
+
+        DefaultComboBoxModel<com.zzz.quanlibangiay.entity.Color> searchModel = new DefaultComboBoxModel<>();
+        com.zzz.quanlibangiay.entity.Color allColor =
+                new com.zzz.quanlibangiay.entity.Color();
+        allColor.setId(0);
+        allColor.setName("Tất cả");
+        searchModel.addElement(allColor);
+        for (com.zzz.quanlibangiay.entity.Color c : colors) {
+            searchModel.addElement(c);
+        }
+        cbSearchColor.setModel(searchModel);
+        cbSearchColor.setSelectedIndex(0);
+    }
+
+    public void setSizeComboBoxData(List<Size> sizes) {
+        DefaultComboBoxModel<Size> productModel = new DefaultComboBoxModel<>();
+        for (Size s : sizes) {
+            productModel.addElement(s);
+        }
+        cbProductSize.setModel(productModel);
+
+        DefaultComboBoxModel<Size> searchModel = new DefaultComboBoxModel<>();
+        Size allSize = new Size();
+        allSize.setId(0);
+        allSize.setSizeName("Tất cả");
+        searchModel.addElement(allSize);
+        for (Size s : sizes) {
+            searchModel.addElement(s);
+        }
+        cbSearchSize.setModel(searchModel);
+        cbSearchSize.setSelectedIndex(0);
+    }
+
+    private <T extends AbstractEntity> void selectComboById(ComboBoxSuggestion<T> combo, int id) {
+        ComboBoxModel<T> model = combo.getModel();
+        for (int i = 0; i < model.getSize(); i++) {
+            T item = model.getElementAt(i);
+            if (item.getId() == id) {
+                combo.setSelectedIndex(i);
+                return;
+            }
+        }
     }
 
     /**
@@ -352,16 +1063,15 @@ public class ProductView extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    // ==================== ACTION LISTENER METHODS ====================
 
     // Search Panel Listeners
     public void addSearchProductListener(ActionListener listener) {
@@ -472,6 +1182,29 @@ public class ProductView extends javax.swing.JPanel {
 
     public void addClearBrandListener(ActionListener listener) {
         btnBrandClear.addActionListener(listener);
+    }
+
+    // Radio Button Listeners
+    public void addSortListener(ActionListener listener) {
+        rdoIdAsc.addActionListener(listener);
+        rdoIdDesc.addActionListener(listener);
+        rdoNameAsc.addActionListener(listener);
+        rdoNameDesc.addActionListener(listener);
+        rdoPriceAsc.addActionListener(listener);
+        rdoPriceDesc.addActionListener(listener);
+        rdoImportPriceAsc.addActionListener(listener);
+        rdoImportPriceDesc.addActionListener(listener);
+        rdoQuantityAsc.addActionListener(listener);
+        rdoQuantityDesc.addActionListener(listener);
+    }
+
+    // Table Product Listeners
+    public void addProductTableSelectionListener(ListSelectionListener listener) {
+        tableProduct.getSelectionModel().addListSelectionListener(listener);
+    }
+
+    public JTable getProductTable() {
+        return tableProduct;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

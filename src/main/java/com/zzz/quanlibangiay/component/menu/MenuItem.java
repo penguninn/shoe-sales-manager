@@ -16,7 +16,6 @@ public class MenuItem extends javax.swing.JPanel {
     }
     
     public MenuItem(Model_Menu data, boolean isDisable) {
-        System.out.println(data.getType().toString());
         initComponents();
         setOpaque(false);
         this.isDisable = isDisable;

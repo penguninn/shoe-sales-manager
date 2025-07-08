@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author coole
  */
 public class ManageColor {
-    
-private static final String COLOR_FILE = "Colors.xml";
+
+    private static final String COLOR_FILE = "Colors.xml";
     private List<Color> colorList;
 
     public ManageColor() {
@@ -43,11 +42,7 @@ private static final String COLOR_FILE = "Colors.xml";
     }
 
     public boolean addColor(Color color) {
-        if (color.getId() == 0) {
-            color.setId(getNextId());
-        } else if (getColorById(color.getId()) != null) {
-            return false;
-        }
+        color.setId(getNextId());
         colorList.add(color);
         saveToFile();
         return true;

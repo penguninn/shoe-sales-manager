@@ -2,14 +2,32 @@
 <Users>
     <User>
         <id>1</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Tài khoản quản trị viên</description>
         <userName>admin</userName>
         <password>admin</password>
+        <fullName>Nguyễn Văn Admin</fullName>
         <role>Admin</role>
+        <name>Admin</name>
+        <gender>true</gender>
+        <phoneNumber>0123456789</phoneNumber>
+        <address>123 Đường ABC, Quận 1, TP.HCM</address>
+        <status>ACTIVE</status>
+        <birtDate>1990-01-01T00:00:00.000+07:00</birtDate>
     </User>
     <User>
         <id>2</id>
+        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
+        <description>Tài khoản nhân viên</description>
         <userName>staff</userName>
         <password>staff</password>
+        <fullName>Trần Thị Staff</fullName>
         <role>Staff</role>
+        <name>Staff</name>
+        <gender>false</gender>
+        <phoneNumber>0987654321</phoneNumber>
+        <address>456 Đường XYZ, Quận 2, TP.HCM</address>
+        <status>ACTIVE</status>
+        <birtDate>1995-05-15T00:00:00.000+07:00</birtDate>
     </User>
 </Users>

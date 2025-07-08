@@ -1,115 +1,77 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.zzz.quanlibangiay.entity;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Date;
 
 /**
- *
- * @author coole
+ * Refactored Shoe entity using foreign key IDs instead of embedded objects
  */
 @XmlRootElement(name = "Shoe")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Shoe extends AbstractEntity {
 
     private String name;
-    private Brand brand;
-    private ShoeType type;
-    private Color color;
-    private Material material;
-    private int size;
+    private int brandId;
+    private int typeId;
+    private int colorId;
+    private int materialId;
+    private int sizeId;
     private int quantity;
     private double price;
+    private double importPrice;
     private String image;
 
     public Shoe() {
     }
 
-    public Shoe(String name, Brand brand, ShoeType type, Color color, Material material, int size, int quantity, double price, String image) {
+    public Shoe(int id, Date createdDate, String description,
+                String name, int brandId, int typeId, int colorId,
+                int materialId, int sizeId, int quantity,
+                double price, double importPrice, String image) {
+        super(id, createdDate, description);
         this.name = name;
-        this.brand = brand;
-        this.type = type;
-        this.color = color;
-        this.material = material;
-        this.size = size;
+        this.brandId = brandId;
+        this.typeId = typeId;
+        this.colorId = colorId;
+        this.materialId = materialId;
+        this.sizeId = sizeId;
         this.quantity = quantity;
         this.price = price;
+        this.importPrice = importPrice;
         this.image = image;
     }
 
-    public String getName() {
-        return name;
-    }
+    // Getters and setters
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public Brand getBrand() {
-        return brand;
-    }
+    public int getBrandId() { return brandId; }
+    public void setBrandId(int brandId) { this.brandId = brandId; }
 
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
+    public int getTypeId() { return typeId; }
+    public void setTypeId(int typeId) { this.typeId = typeId; }
 
-    public ShoeType getType() {
-        return type;
-    }
+    public int getColorId() { return colorId; }
+    public void setColorId(int colorId) { this.colorId = colorId; }
 
-    public void setType(ShoeType type) {
-        this.type = type;
-    }
+    public int getMaterialId() { return materialId; }
+    public void setMaterialId(int materialId) { this.materialId = materialId; }
 
-    public Color getColor() {
-        return color;
-    }
+    public int getSizeId() { return sizeId; }
+    public void setSizeId(int sizeId) { this.sizeId = sizeId; }
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
+    public int getQuantity() { return quantity; }
+    public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public Material getMaterial() {
-        return material;
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
+    public double getImportPrice() { return importPrice; }
+    public void setImportPrice(double importPrice) { this.importPrice = importPrice; }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 }

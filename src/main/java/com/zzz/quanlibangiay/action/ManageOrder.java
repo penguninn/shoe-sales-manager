@@ -11,13 +11,9 @@ import com.zzz.quanlibangiay.utils.FileUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author coole
- */
 public class ManageOrder {
-    
-private static final String FILE_NAME = "Orders.xml";
+
+    private static final String FILE_NAME = "Orders.xml";
     private List<Order> orderList;
 
     public ManageOrder() {
@@ -41,12 +37,7 @@ private static final String FILE_NAME = "Orders.xml";
     }
 
     public boolean addOrder(Order order) {
-        if (order.getId() == 0) {
-            order.setId(getNextId());
-        } else if (getOrderById(order.getId()) != null) {
-            return false; 
-        }
-
+        order.setId(getNextId());
         orderList.add(order);
         saveToFile();
         return true;
