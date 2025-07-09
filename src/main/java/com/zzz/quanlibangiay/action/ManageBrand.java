@@ -9,6 +9,7 @@ import com.zzz.quanlibangiay.entity.xml.BrandXML;
 import com.zzz.quanlibangiay.utils.FileUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +44,7 @@ public class ManageBrand {
 
     public boolean addBrand(Brand brand) {
         brand.setId(getNextId());
+        brand.setCreatedDate(new Date());
         brandList.add(brand);
         saveToFile();
         return true;

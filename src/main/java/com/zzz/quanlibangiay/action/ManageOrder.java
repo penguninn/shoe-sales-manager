@@ -1,53 +1,61 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.zzz.quanlibangiay.action;
 
 import com.zzz.quanlibangiay.entity.Order;
 import com.zzz.quanlibangiay.entity.xml.OrderXML;
+import com.zzz.quanlibangiay.enums.OrderStatus;
 import com.zzz.quanlibangiay.utils.FileUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ManageOrder {
 
-    private static final String FILE_NAME = "Orders.xml";
+    private static final String ORDERS_FILE = "Orders.xml";
+
     private List<Order> orderList;
 
     public ManageOrder() {
-        OrderXML orderXML = (OrderXML) FileUtils.readXMLFile(FILE_NAME, OrderXML.class);
-        if (orderXML == null || orderXML.getOrders() == null) {
-            orderList = new ArrayList<>();
-        } else {
-            orderList = orderXML.getOrders();
-        }
+        OrderXML ox = (OrderXML) FileUtils.readXMLFile(ORDERS_FILE, OrderXML.class);
+        this.orderList = (ox == null || ox.getOrders() == null)
+                ? new ArrayList<>()
+                : ox.getOrders();
     }
 
     public List<Order> getAllOrders() {
         return orderList;
     }
 
+    public List<Order> getAllPendingOrders() {
+        List<Order> pending = new ArrayList<>();
+        for (Order o : orderList) {
+            if (o.getStatus() == OrderStatus.PENDING) {
+                pending.add(o);
+            }
+        }
+        return pending;
+    }
+
     public Order getOrderById(int id) {
-        for (Order order : orderList) {
-            if (order.getId() == id) return order;
+        for (Order o : orderList) {
+            if (o.getId() == id) return o;
         }
         return null;
     }
 
     public boolean addOrder(Order order) {
-        order.setId(getNextId());
+        order.setId(getNextOrderId());
+        order.setCreatedDate(new Date());
         orderList.add(order);
-        saveToFile();
+        saveAll();
         return true;
     }
 
-    public boolean updateOrder(Order updatedOrder) {
+    public boolean updateOrder(Order updated) {
         for (int i = 0; i < orderList.size(); i++) {
-            if (orderList.get(i).getId() == updatedOrder.getId()) {
-                orderList.set(i, updatedOrder);
-                saveToFile();
+            if (orderList.get(i).getId() == updated.getId()) {
+                orderList.set(i, updated);
+                saveAll();
                 return true;
             }
         }
@@ -55,28 +63,28 @@ public class ManageOrder {
     }
 
     public boolean deleteOrder(int id) {
-        Order order = getOrderById(id);
-        if (order != null) {
-            orderList.remove(order);
-            saveToFile();
+        Order toRemove = getOrderById(id);
+        if (toRemove != null) {
+            orderList.remove(toRemove);
+            saveAll();
             return true;
         }
         return false;
     }
 
-    private int getNextId() {
+    private int getNextOrderId() {
         int max = 0;
-        for (Order order : orderList) {
-            if (order.getId() > max) {
-                max = order.getId();
+        for (Order o : orderList) {
+            if (o.getId() > max) {
+                max = o.getId();
             }
         }
         return max + 1;
     }
 
-    private void saveToFile() {
-        OrderXML orderXML = new OrderXML();
-        orderXML.setOrders(orderList);
-        FileUtils.writeXMLtoFile(FILE_NAME, orderXML);
+    private void saveAll() {
+        OrderXML ox = new OrderXML();
+        ox.setOrders(orderList);
+        FileUtils.writeXMLtoFile(ORDERS_FILE, ox);
     }
 }

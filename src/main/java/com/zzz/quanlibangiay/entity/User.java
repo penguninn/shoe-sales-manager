@@ -12,9 +12,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
-/**
- * @author coole
- */
 @XmlRootElement(name = "User")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class User extends AbstractEntity {
@@ -28,7 +25,7 @@ public class User extends AbstractEntity {
     private String phoneNumber;
     private String address;
     private UserStatus status;
-    private Date birtDate;
+    private Date birthDate;
 
     public User() {
     }
@@ -38,7 +35,7 @@ public class User extends AbstractEntity {
         this.password = password;
     }
 
-    public User(String userName, String password, String fullName, UserRole role, String name, boolean gender, String phoneNumber, String address, UserStatus status, Date birtDate, int id, Date createdDate, String description) {
+    public User(String userName, String password, String fullName, UserRole role, String name, boolean gender, String phoneNumber, String address, UserStatus status, Date birthDate, int id, Date createdDate, String description) {
         super(id, createdDate, description);
         this.userName = userName;
         this.password = password;
@@ -49,7 +46,7 @@ public class User extends AbstractEntity {
         this.phoneNumber = phoneNumber;
         this.address = address;
         this.status = status;
-        this.birtDate = birtDate;
+        this.birthDate = birthDate;
     }
 
     public User(String userName, String password, String fullName, UserRole role, int id, Date createdDate, String description) {
@@ -101,12 +98,12 @@ public class User extends AbstractEntity {
         this.status = status;
     }
 
-    public Date getBirtDate() {
-        return birtDate;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirtDate(Date birtDate) {
-        this.birtDate = birtDate;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getUserName() {

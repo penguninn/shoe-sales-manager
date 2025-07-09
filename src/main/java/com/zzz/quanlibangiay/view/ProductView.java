@@ -21,7 +21,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Currency;
 import java.util.List;
 
 public class ProductView extends javax.swing.JPanel {
@@ -40,7 +39,7 @@ public class ProductView extends javax.swing.JPanel {
     private JTextField txtProductId;
     private JTextField txtProductName;
     private ComboBoxSuggestion<Brand> cbProductBrand;
-    private ComboBoxSuggestion<ShoeType> cbProductType;
+    private ComboBoxSuggestion<Type> cbProductType;
     private ComboBoxSuggestion<com.zzz.quanlibangiay.entity.Color> cbProductColor;
     private ComboBoxSuggestion<Material> cbProductMaterial;
     private ComboBoxSuggestion<Size> cbProductSize;
@@ -51,7 +50,7 @@ public class ProductView extends javax.swing.JPanel {
 
     private JTextField txtSearchName;
     private ComboBoxSuggestion<Brand> cbSearchBrand;
-    private ComboBoxSuggestion<ShoeType> cbSearchType;
+    private ComboBoxSuggestion<Type> cbSearchType;
     private ComboBoxSuggestion<com.zzz.quanlibangiay.entity.Color> cbSearchColor;
     private ComboBoxSuggestion<Material> cbSearchMaterial;
     private ComboBoxSuggestion<Size> cbSearchSize;
@@ -539,10 +538,12 @@ public class ProductView extends javax.swing.JPanel {
                 imagePanel.setImage(f);
                 selectedImageName = f.getAbsolutePath();
             } else {
-                imagePanel.setImage(null);
+                imagePanel.clearImage();
+                selectedImageName = null;
             }
         } else {
-            imagePanel.setImage(null);
+            imagePanel.clearImage();
+            selectedImageName = null;
         }
 
     }
@@ -571,7 +572,7 @@ public class ProductView extends javax.swing.JPanel {
             shoe.setName(name);
 
             shoe.setBrandId(((Brand) cbProductBrand.getSelectedItem()).getId());
-            shoe.setTypeId(((ShoeType) cbProductType.getSelectedItem()).getId());
+            shoe.setTypeId(((Type) cbProductType.getSelectedItem()).getId());
             shoe.setColorId(((com.zzz.quanlibangiay.entity.Color) cbProductColor.getSelectedItem()).getId());
             shoe.setMaterialId(((Material) cbProductMaterial.getSelectedItem()).getId());
             shoe.setSizeId(((Size) cbProductSize.getSelectedItem()).getId());
@@ -639,11 +640,123 @@ public class ProductView extends javax.swing.JPanel {
         }
     }
 
-    public void setTypeTableData(List<ShoeType> types) {
+    public void clearProductForm() {
+        txtProductId.setText("");
+        txtProductName.setText("");
+        cbProductBrand.setSelectedIndex(0);
+        cbProductType.setSelectedIndex(0);
+        cbProductColor.setSelectedIndex(0);
+        cbProductMaterial.setSelectedIndex(0);
+        cbProductSize.setSelectedIndex(0);
+        txtProductQuantity.setText("");
+        txtProductPrice.setText("");
+        txtProductImportPrice.setText("");
+        imagePanel.clearImage();
+    }
+
+    public void setProductTableData(Object[][] data) {
+        String[] columnNames = new String[]{
+                "Id", "Tên", "Loại", "Thương hiệu", "Chất liệu", "Màu sắc", "Kích thước", "Số lượng", "Giá bán", "Giá nhập"};
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tableProduct.setModel(model);
+    }
+
+    public ShoeSearchCriteria getSearchCriteria() {
+        ShoeSearchCriteria c = new ShoeSearchCriteria();
+
+        String name = txtSearchName.getText().trim();
+        c.setName(name.isEmpty() ? null : name);
+
+        Brand b = (Brand) cbSearchBrand.getSelectedItem();
+        c.setBrand((b != null && b.getId() != 0) ? b : null);
+
+        Type t = (Type) cbSearchType.getSelectedItem();
+        c.setType((t != null && t.getId() != 0) ? t : null);
+
+        com.zzz.quanlibangiay.entity.Color co = (com.zzz.quanlibangiay.entity.Color) cbSearchColor.getSelectedItem();
+        c.setColor((co != null && co.getId() != 0) ? co : null);
+
+        Material m = (Material) cbSearchMaterial.getSelectedItem();
+        c.setMaterial((m != null && m.getId() != 0) ? m : null);
+
+        Size s = (Size) cbSearchSize.getSelectedItem();
+        c.setSize((s != null && s.getId() != 0) ? s : null);
+
+        String fromTxt = txtSearchPriceFrom.getText().trim();
+        if (fromTxt.isEmpty()) {
+            c.setPriceFrom(null);
+        } else {
+            try {
+                c.setPriceFrom(CurrencyUtils.parseCurrency(fromTxt));
+            } catch (NumberFormatException ex) {
+                c.setPriceFrom(null);
+            }
+        }
+
+        String toTxt = txtSearchPriceTo.getText().trim();
+        if (toTxt.isEmpty()) {
+            c.setPriceTo(null);
+        } else {
+            try {
+                c.setPriceTo(CurrencyUtils.parseCurrency(toTxt));
+            } catch (NumberFormatException ex) {
+                c.setPriceTo(null);
+            }
+        }
+
+
+        return c;
+    }
+
+    public void clearSearchAndSortForm() {
+        txtSearchName.setText("");
+        txtSearchPriceFrom.setText("");
+        txtSearchPriceTo.setText("");
+
+        if (cbSearchBrand.getItemCount() > 0) {
+            cbSearchBrand.setSelectedIndex(0);
+        }
+        if (cbSearchType.getItemCount() > 0) {
+            cbSearchType.setSelectedIndex(0);
+        }
+        if (cbSearchColor.getItemCount() > 0) {
+            cbSearchColor.setSelectedIndex(0);
+        }
+        if (cbSearchMaterial.getItemCount() > 0) {
+            cbSearchMaterial.setSelectedIndex(0);
+        }
+        if (cbSearchSize.getItemCount() > 0) {
+            cbSearchSize.setSelectedIndex(0);
+        }
+
+        sortButtonGroup.setSelected(rdoIdAsc.getModel(), true);
+    }
+
+    public String getSelectedSortCriteria() {
+        if (rdoIdAsc.isSelected()) return "ID_ASC";
+        if (rdoIdDesc.isSelected()) return "ID_DESC";
+        if (rdoNameAsc.isSelected()) return "NAME_ASC";
+        if (rdoNameDesc.isSelected()) return "NAME_DESC";
+        if (rdoPriceAsc.isSelected()) return "PRICE_ASC";
+        if (rdoPriceDesc.isSelected()) return "PRICE_DESC";
+        if (rdoImportPriceAsc.isSelected()) return "IMPORT_PRICE_ASC";
+        if (rdoImportPriceDesc.isSelected()) return "IMPORT_PRICE_DESC";
+        if (rdoQuantityAsc.isSelected()) return "QUANTITY_ASC";
+        if (rdoQuantityDesc.isSelected()) return "QUANTITY_DESC";
+        return "ID_ASC";
+    }
+
+    public void setTypeTableData(List<Type> types) {
         if (typeTable != null) {
             DefaultTableModel model = (DefaultTableModel) typeTable.getModel();
             model.setRowCount(0);
-            for (ShoeType type : types) {
+            for (Type type : types) {
                 model.addRow(new Object[]{type.getId(), type.getName()});
             }
         }
@@ -674,7 +787,7 @@ public class ProductView extends javax.swing.JPanel {
             DefaultTableModel model = (DefaultTableModel) sizeTable.getModel();
             model.setRowCount(0);
             for (Size size : sizes) {
-                model.addRow(new Object[]{size.getId(), size.getSizeName()});
+                model.addRow(new Object[]{size.getId(), size.getName()});
             }
         }
     }
@@ -689,12 +802,12 @@ public class ProductView extends javax.swing.JPanel {
         }
     }
 
-    public ShoeType getTypeFromForm() {
+    public Type getTypeFromForm() {
         if (txtTypeName.getText().trim().isEmpty()) {
             showError("Vui lòng nhập đầy đủ thông tin loại sản phẩm!");
             return null;
         }
-        ShoeType type = new ShoeType();
+        Type type = new Type();
         if (!txtTypeId.getText().trim().isEmpty()) {
             try {
                 type.setId(Integer.parseInt(txtTypeId.getText().trim()));
@@ -753,7 +866,7 @@ public class ProductView extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         }
-        size.setSizeName(txtSizeName.getText().trim());
+        size.setName(txtSizeName.getText().trim());
         return size;
     }
 
@@ -834,116 +947,6 @@ public class ProductView extends javax.swing.JPanel {
         return -1;
     }
 
-    public ShoeSearchCriteria getSearchCriteria() {
-        ShoeSearchCriteria c = new ShoeSearchCriteria();
-
-        String name = txtSearchName.getText().trim();
-        c.setName(name.isEmpty() ? null : name);
-
-        Brand b = (Brand) cbSearchBrand.getSelectedItem();
-        c.setBrand((b != null && b.getId() != 0) ? b : null);
-
-        ShoeType t = (ShoeType) cbSearchType.getSelectedItem();
-        c.setType((t != null && t.getId() != 0) ? t : null);
-
-        com.zzz.quanlibangiay.entity.Color co = (com.zzz.quanlibangiay.entity.Color) cbSearchColor.getSelectedItem();
-        c.setColor((co != null && co.getId() != 0) ? co : null);
-
-        Material m = (Material) cbSearchMaterial.getSelectedItem();
-        c.setMaterial((m != null && m.getId() != 0) ? m : null);
-
-        Size s = (Size) cbSearchSize.getSelectedItem();
-        c.setSize((s != null && s.getId() != 0) ? s : null);
-
-        String fromTxt = txtSearchPriceFrom.getText().trim();
-        String toTxt = txtSearchPriceTo.getText().trim();
-        try {
-            c.setPriceFrom(CurrencyUtils.parseCurrency(fromTxt.isEmpty() ? null : fromTxt));
-        } catch (NumberFormatException e) {
-            c.setPriceFrom(null);
-        }
-        try {
-            c.setPriceTo(CurrencyUtils.parseCurrency(toTxt.isEmpty() ? null : toTxt));
-        } catch (NumberFormatException e) {
-            c.setPriceTo(null);
-        }
-
-        return c;
-    }
-
-    public void clearProductForm() {
-        txtProductId.setText("");
-        txtProductName.setText("");
-        cbProductBrand.setSelectedIndex(0);
-        cbProductType.setSelectedIndex(0);
-        cbProductColor.setSelectedIndex(0);
-        cbProductMaterial.setSelectedIndex(0);
-        cbProductSize.setSelectedIndex(0);
-        txtProductQuantity.setText("");
-        txtProductPrice.setText("");
-        txtProductImportPrice.setText("");
-        imagePanel.clearImage();
-    }
-
-    public void clearSearchAndSortForm() {
-        txtSearchName.setText("");
-        txtSearchPriceFrom.setText("");
-        txtSearchPriceTo.setText("");
-
-        if (cbSearchBrand.getItemCount() > 0) {
-            cbSearchBrand.setSelectedIndex(0);
-        }
-        if (cbSearchType.getItemCount() > 0) {
-            cbSearchType.setSelectedIndex(0);
-        }
-        if (cbSearchColor.getItemCount() > 0) {
-            cbSearchColor.setSelectedIndex(0);
-        }
-        if (cbSearchMaterial.getItemCount() > 0) {
-            cbSearchMaterial.setSelectedIndex(0);
-        }
-        if (cbSearchSize.getItemCount() > 0) {
-            cbSearchSize.setSelectedIndex(0);
-        }
-
-        sortButtonGroup.setSelected(rdoIdAsc.getModel(), true);
-    }
-
-    public String getSelectedSortCriteria() {
-        if (rdoIdAsc.isSelected()) return "ID_ASC";
-        if (rdoIdDesc.isSelected()) return "ID_DESC";
-        if (rdoNameAsc.isSelected()) return "NAME_ASC";
-        if (rdoNameDesc.isSelected()) return "NAME_DESC";
-        if (rdoPriceAsc.isSelected()) return "PRICE_ASC";
-        if (rdoPriceDesc.isSelected()) return "PRICE_DESC";
-        if (rdoImportPriceAsc.isSelected()) return "IMPORT_PRICE_ASC";
-        if (rdoImportPriceDesc.isSelected()) return "IMPORT_PRICE_DESC";
-        if (rdoQuantityAsc.isSelected()) return "QUANTITY_ASC";
-        if (rdoQuantityDesc.isSelected()) return "QUANTITY_DESC";
-        return "ID_ASC";
-    }
-
-    public void showError(String message) {
-        JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public void showSuccess(String message) {
-        JOptionPane.showMessageDialog(this, message, "Thành công", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    public void setProductTableData(Object[][] data) {
-        String[] columnNames = new String[]{
-                "Id", "Tên", "Loại", "Thương hiệu", "Chất liệu", "Màu sắc", "Kích thước", "Số lượng", "Giá bán", "Giá nhập"};
-
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-        tableProduct.setModel(model);
-    }
-
     public void setBrandComboBoxData(List<Brand> brands) {
         DefaultComboBoxModel<Brand> model = new DefaultComboBoxModel<>();
         for (Brand brand : brands) {
@@ -963,19 +966,19 @@ public class ProductView extends javax.swing.JPanel {
         cbSearchBrand.setSelectedIndex(0);
     }
 
-    public void setTypeComboBoxData(List<ShoeType> types) {
-        DefaultComboBoxModel<ShoeType> productModel = new DefaultComboBoxModel<>();
-        for (ShoeType t : types) {
+    public void setTypeComboBoxData(List<Type> types) {
+        DefaultComboBoxModel<Type> productModel = new DefaultComboBoxModel<>();
+        for (Type t : types) {
             productModel.addElement(t);
         }
         cbProductType.setModel(productModel);
 
-        DefaultComboBoxModel<ShoeType> searchModel = new DefaultComboBoxModel<>();
-        ShoeType allType = new ShoeType();
+        DefaultComboBoxModel<Type> searchModel = new DefaultComboBoxModel<>();
+        Type allType = new Type();
         allType.setId(0);
         allType.setName("Tất cả");
         searchModel.addElement(allType);
-        for (ShoeType t : types) {
+        for (Type t : types) {
             searchModel.addElement(t);
         }
         cbSearchType.setModel(searchModel);
@@ -1031,7 +1034,7 @@ public class ProductView extends javax.swing.JPanel {
         DefaultComboBoxModel<Size> searchModel = new DefaultComboBoxModel<>();
         Size allSize = new Size();
         allSize.setId(0);
-        allSize.setSizeName("Tất cả");
+        allSize.setName("Tất cả");
         searchModel.addElement(allSize);
         for (Size s : sizes) {
             searchModel.addElement(s);
@@ -1049,6 +1052,14 @@ public class ProductView extends javax.swing.JPanel {
                 return;
             }
         }
+    }
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showSuccess(String message) {
+        JOptionPane.showMessageDialog(this, message, "Thành công", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**

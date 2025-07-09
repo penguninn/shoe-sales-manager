@@ -4,7 +4,7 @@
  */
 package com.zzz.quanlibangiay.entity.xml;
 
-import com.zzz.quanlibangiay.entity.ShoeType;
+import com.zzz.quanlibangiay.entity.Type;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -17,18 +17,18 @@ import java.util.List;
  * @author coole
  */
 
-@XmlRootElement(name = "ShoeTypes")
+@XmlRootElement(name = "Types")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ShoeTypeXML {
+public class TypeXML {
 
-    @XmlElement(name = "ShoeType")
-    private List<ShoeType> shoeTypes;
+    @XmlElement(name = "Type")
+    private List<Type> types;
 
-    public List<ShoeType> getShoeTypes() {
-        return shoeTypes;
+    public List<Type> getShoeTypes() {
+        return types;
     }
 
-    public void setShoeTypes(List<ShoeType> shoeTypes) {
-        this.shoeTypes = shoeTypes;
+    public void setShoeTypes(List<Type> types) {
+        this.types = types;
     }
 }

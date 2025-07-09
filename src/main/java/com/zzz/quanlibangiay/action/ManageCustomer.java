@@ -9,11 +9,9 @@ import com.zzz.quanlibangiay.entity.xml.CustomerXML;
 import com.zzz.quanlibangiay.utils.FileUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-/**
- * @author coole
- */
 public class ManageCustomer {
 
     private static final String FILE_NAME = "Customers.xml";
@@ -39,8 +37,27 @@ public class ManageCustomer {
         return null;
     }
 
+    public boolean isPhoneExists(String phone, int excludeId) {
+        for (Customer c : customerList) {
+            if (c.getPhoneNumber().equals(phone) && c.getId() != excludeId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Customer getCustomerByPhone(String phone) {
+        for (Customer customer : customerList) {
+            if (customer.getPhoneNumber().equals(phone)) {
+                return customer;
+            }
+        }
+        return null;
+    }
+
     public boolean addCustomer(Customer customer) {
         customer.setId(getNextId());
+        customer.setCreatedDate(new Date());
         customerList.add(customer);
         saveToFile();
         return true;

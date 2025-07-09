@@ -8,27 +8,20 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author coole
- */
-
 @XmlRootElement(name = "OrderItem")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OrderItem extends AbstractEntity {
     
     private int orderId;
-    private int shoeId;
+    private int productId;
     private int quantity;
     private double price;
-    private double subtotal;
 
-    public OrderItem(int orderId, int shoeId, int quantity, double price, double subtotal) {
+    public OrderItem(int orderId, int productId, int quantity, double price) {
         this.orderId = orderId;
-        this.shoeId = shoeId;
+        this.productId = productId;
         this.quantity = quantity;
         this.price = price;
-        this.subtotal = subtotal;
     }
 
     public OrderItem() {
@@ -42,12 +35,12 @@ public class OrderItem extends AbstractEntity {
         this.orderId = orderId;
     }
 
-    public int getShoeId() {
-        return shoeId;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setShoeId(int shoeId) {
-        this.shoeId = shoeId;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public int getQuantity() {
@@ -64,13 +57,5 @@ public class OrderItem extends AbstractEntity {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
     }
 }

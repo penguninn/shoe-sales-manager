@@ -4,6 +4,7 @@
  */
 package com.zzz.quanlibangiay.action;
 
+import com.zzz.quanlibangiay.entity.Customer;
 import com.zzz.quanlibangiay.entity.User;
 import com.zzz.quanlibangiay.entity.xml.UserXML;
 import com.zzz.quanlibangiay.utils.FileUtils;
@@ -59,9 +60,38 @@ public class ManageUser {
         return null;
     }
 
+    public List<User> searchUserByFullname(String keyword) {
+        List<User> result = new ArrayList<>();
+        for (User u : userList) {
+            if (u.getFullName().toLowerCase().contains(keyword.toLowerCase())) {
+                result.add(u);
+            }
+        }
+        return result;
+    }
+
+    public boolean isUsernameExists(String username, int excludeId) {
+        for (User u : getAllUsers()) {
+            if (u.getUserName().equalsIgnoreCase(username) && u.getId() != excludeId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isPhoneExists(String phone, int excludeId) {
+        for (User u : getAllUsers()) {
+            if (u.getPhoneNumber().equals(phone) && u.getId() != excludeId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public boolean addUser(User user) {
         user.setId(getNextId());
-
+        user.setCreatedDate(new java.util.Date());
         userList.add(user);
         saveToFile();
         return true;

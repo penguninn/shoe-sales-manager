@@ -43,6 +43,7 @@ public class ManageMaterial {
 
     public boolean addMaterial(Material material) {
         material.setId(getNextId());
+        material.setCreatedDate(new java.util.Date());
         materialList.add(material);
         saveToFile();
         return true;

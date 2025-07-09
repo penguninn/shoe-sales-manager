@@ -7,40 +7,40 @@ import com.zzz.quanlibangiay.component.panel_custom.PanelBorder;
 import com.zzz.quanlibangiay.component.scrollbar_custom.ScrollbarCustom;
 import com.zzz.quanlibangiay.component.tabbedpane_custom.MaterialTabbed;
 import com.zzz.quanlibangiay.component.table_custom.TableCustom;
+import com.zzz.quanlibangiay.entity.User;
+import com.zzz.quanlibangiay.enums.UserRole;
+import com.zzz.quanlibangiay.enums.UserStatus;
+import com.zzz.quanlibangiay.utils.ValidationUtils;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-/**
- *
- * @author coole
- */
 public class StaffView extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Staff
-     */
+
     private PanelBorder leftPanelSection;
     private PanelBorder rightPanelSection;
 
-    private TextField txtSearch;
+    private JTextField txtSearch;
     private ButtonCustom btnSearch;
     private MaterialTabbed tabbed;
-    private JTable tableUsers;
-    private JTable tableStaff;
+    private JTable tableWorking;
+    private JTable tableRetired;
 
-    private TextField txtUserName;
-    private TextField txtPassword;
-    private TextField txtFullName;
+    private JTextField txtId;
+    private JTextField txtUserName;
+    private JTextField txtPassword;
+    private JTextField txtFullName;
     private ComboBoxSuggestion<String> cbRole;
-    private TextField txtName;
+    private JTextField txtName;
     private JRadioButton rdoMale;
     private JRadioButton rdoFemale;
-    private TextField txtPhoneNumber;
-    private TextField txtAddress;
+    private JTextField txtPhoneNumber;
+    private JTextField txtAddress;
     private ComboBoxSuggestion<String> cbStatus;
     private ButtonCustom btnAdd, btnEdit, btnDelete, btnClear;
     private JDateChooser birthDateChooser;
@@ -66,7 +66,7 @@ public class StaffView extends javax.swing.JPanel {
         leftPanelSection.setBorder(BorderFactory.createTitledBorder("Quản lý nhân viên"));
 
         JPanel searchPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        txtSearch = new TextField();
+        txtSearch = new JTextField();
         txtSearch.setPreferredSize(new Dimension(250, 25));
         btnSearch = new ButtonCustom();
         btnSearch.setText("Tìm kiếm");
@@ -75,20 +75,16 @@ public class StaffView extends javax.swing.JPanel {
         leftPanelSection.add(searchPane, BorderLayout.NORTH);
 
         tabbed = new MaterialTabbed();
-        String[] cols = {"ID", "Tài khoản", "Họ tên", "Vai trò"};
-        DefaultTableModel mdlUsers = new DefaultTableModel(cols, 0);
-        tableUsers = new JTable(mdlUsers);
-        JScrollPane spUsers = createCustomScrollPane(tableUsers);
-        TableCustom.apply(spUsers, TableCustom.TableType.DEFAULT);
+        tableWorking = new JTable();
+        JScrollPane spWorking = createCustomScrollPane(tableWorking);
+        TableCustom.apply(spWorking, TableCustom.TableType.DEFAULT);
 
-        String[] cols2 = {"ID", "Tên", "SĐT", "Trạng thái"};
-        DefaultTableModel mdlStaff = new DefaultTableModel(cols2, 0);
-        tableStaff = new JTable(mdlStaff);
-        JScrollPane spStaff = createCustomScrollPane(tableStaff);
-        TableCustom.apply(spStaff, TableCustom.TableType.DEFAULT);
+        tableRetired = new JTable();
+        JScrollPane spRetired = createCustomScrollPane(tableRetired);
+        TableCustom.apply(spRetired, TableCustom.TableType.DEFAULT);
 
-        tabbed.add(spUsers, "Đang làm");
-        tabbed.add(spStaff, "Đã nghỉ");
+        tabbed.add(spWorking, UserStatus.statusToDisplay(UserStatus.WORKING));
+        tabbed.add(spRetired, UserStatus.statusToDisplay(UserStatus.RETIRED));
         leftPanelSection.add(tabbed, BorderLayout.CENTER);
     }
 
@@ -96,24 +92,30 @@ public class StaffView extends javax.swing.JPanel {
         rightPanelSection.setLayout(new MigLayout("insets 10, wrap 2", "[right]10[fill, grow]", "[]10[]10[]10[]10[]10[]10[30!]10[]"));
         rightPanelSection.setBorder(BorderFactory.createTitledBorder("Thông tin chi tiết"));
 
-        txtUserName = new TextField();
-        txtPassword = new TextField();
-        txtFullName = new TextField();
+        txtId = new JTextField();
+        txtUserName = new JTextField();
+        txtPassword = new JTextField();
+        txtFullName = new JTextField();
         cbRole = new ComboBoxSuggestion<>();
-        cbRole.setModel(new DefaultComboBoxModel<>(new String[]{"ADMIN", "USER"}));
-        txtName = new TextField();
+        cbRole.setModel(new DefaultComboBoxModel<>(new String[]{UserRole.roleToDisplay(UserRole.STAFF),
+                UserRole.roleToDisplay(UserRole.ADMIN)}));
+        txtName = new JTextField();
         rdoMale = new JRadioButton("Nam");
         rdoFemale = new JRadioButton("Nữ");
         ButtonGroup grpGender = new ButtonGroup();
         rdoMale.setSelected(true);
         grpGender.add(rdoMale);
         grpGender.add(rdoFemale);
-        txtPhoneNumber = new TextField();
-        txtAddress = new TextField();
+        txtPhoneNumber = new JTextField();
+        txtAddress = new JTextField();
         cbStatus = new ComboBoxSuggestion<>();
-        cbStatus.setModel(new DefaultComboBoxModel<>(new String[]{"ACTIVE", "INACTIVE"}));
+        cbStatus.setModel(new DefaultComboBoxModel<>(new String[]{UserStatus.statusToDisplay(UserStatus.WORKING),
+                UserStatus.statusToDisplay(UserStatus.RETIRED)}));
         birthDateChooser = new JDateChooser();
 
+        rightPanelSection.add(new JLabel("ID:"));
+        txtId.setEditable(false);
+        rightPanelSection.add(txtId);
         rightPanelSection.add(new JLabel("Username:"));
         rightPanelSection.add(txtUserName);
         rightPanelSection.add(new JLabel("Password:"));
@@ -159,6 +161,156 @@ public class StaffView extends javax.swing.JPanel {
         return scroll;
     }
 
+    public User getDataStaffFromForm() {
+        try {
+            User user = new User();
+
+            String idText = txtId.getText().trim();
+            if (!idText.isEmpty()) {
+                try {
+                    int id = Integer.parseInt(idText);
+                    user.setId(id);
+                } catch (NumberFormatException e) {
+                    showError("ID không hợp lệ!");
+                    txtId.requestFocus();
+                    return null;
+                }
+            }
+
+            String username = txtUserName.getText().trim();
+            if (username.isEmpty()) {
+                showError("Username không được để trống!");
+                txtUserName.requestFocus();
+                return null;
+            }
+            user.setUserName(username);
+
+            String password = txtPassword.getText().trim();
+            if (password.isEmpty()) {
+                showError("Password không được để trống!");
+                txtPassword.requestFocus();
+                return null;
+            }
+            user.setPassword(password);
+
+            String fullName = txtFullName.getText().trim();
+            if (fullName.isEmpty()) {
+                showError("Họ tên không được để trống!");
+                txtFullName.requestFocus();
+                return null;
+            }
+            user.setFullName(fullName);
+
+            user.setRole(UserRole.displayToRole(cbRole.getSelectedItem().toString()));
+
+            String name = txtName.getText().trim();
+            user.setName(name);
+
+            user.setGender(rdoMale.isSelected());
+
+            String phone = txtPhoneNumber.getText().trim();
+            if (phone.isEmpty()) {
+                showError("SĐT không được để trống!");
+                txtPhoneNumber.requestFocus();
+                return null;
+            }
+            if (!ValidationUtils.isValidPhone(phone)) {
+                showError("SĐT không hợp lệ!");
+                txtPhoneNumber.requestFocus();
+                return null;
+            }
+            user.setPhoneNumber(phone);
+
+            String address = txtAddress.getText().trim();
+            if (address.isEmpty()) {
+                showError("Địa chỉ không được để trống!");
+                txtAddress.requestFocus();
+                return null;
+            }
+            user.setAddress(address);
+
+            user.setStatus(UserStatus.displayToStatus(cbStatus.getSelectedItem().toString()));
+
+            if (birthDateChooser.getDate() != null) {
+                user.setBirthDate(birthDateChooser.getDate());
+            }
+
+            return user;
+        } catch (Exception ex) {
+            showError("Lỗi khi lấy dữ liệu nhân viên: " + ex.getMessage());
+            return null;
+        }
+    }
+
+    public void setStaffFormData(User user) {
+        if (user == null) return;
+
+        txtId.setText(String.valueOf(user.getId()));
+        txtUserName.setText(user.getUserName());
+        txtPassword.setText(user.getPassword());
+        txtFullName.setText(user.getFullName());
+        cbRole.setSelectedItem(UserRole.roleToDisplay(user.getRole()));
+        cbStatus.setSelectedItem(UserStatus.statusToDisplay(user.getStatus()));
+        txtName.setText(user.getName());
+        rdoMale.setSelected(user.isGender());
+        rdoFemale.setSelected(!user.isGender());
+        txtPhoneNumber.setText(user.getPhoneNumber());
+        txtAddress.setText(user.getAddress());
+
+        if (user.getBirthDate() != null) {
+            birthDateChooser.setDate(user.getBirthDate());
+        } else {
+            birthDateChooser.setDate(null);
+        }
+    }
+
+    public void clearStaffForm() {
+        txtId.setText("");
+        txtUserName.setText("");
+        txtPassword.setText("");
+        txtFullName.setText("");
+        cbRole.setSelectedIndex(0);
+        txtName.setText("");
+        rdoMale.setSelected(true);
+        txtPhoneNumber.setText("");
+        txtAddress.setText("");
+        cbStatus.setSelectedIndex(0);
+        birthDateChooser.setDate(null);
+        tableWorking.clearSelection();
+        tableRetired.clearSelection();
+    }
+
+    public void setUserTableData(Object[][] data, boolean isWorking) {
+        String[] columnNames = new String[]{
+                "ID", "Username", "Password", "Tên gọi", "Họ tên", "Vai trò", "Giới tính", "SĐT", "Địa chỉ", "Trạng thái", "Ngày sinh"
+        };
+
+        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        if (isWorking) {
+            tableWorking.setModel(model);
+        } else {
+            tableRetired.setModel(model);
+        }
+    }
+
+    public String getSearchKeyword() {
+        return txtSearch.getText().trim();
+    }
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showSuccess(String message) {
+        JOptionPane.showMessageDialog(this, message, "Thành công", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -171,18 +323,27 @@ public class StaffView extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
+
+    // Table Listeners
+    public void addUserTableWorkingSelectionListener(ListSelectionListener listener) {
+        tableWorking.getSelectionModel().addListSelectionListener(listener);
+    }
+
+    public void addUserTableRetiredSelectionListener(ListSelectionListener listener) {
+        tableRetired.getSelectionModel().addListSelectionListener(listener);
+    }
 
     // Search Listeners
     public void addSearchStaffListener(ActionListener listener) {
@@ -204,5 +365,17 @@ public class StaffView extends javax.swing.JPanel {
 
     public void addClearStaffListener(ActionListener listener) {
         btnClear.addActionListener(listener);
+    }
+
+    public JTable getTableWorking() {
+        return tableWorking;
+    }
+
+    public JTable getTableRetired() {
+        return tableRetired;
+    }
+
+    public MaterialTabbed getTabbed() {
+        return tabbed;
     }
 }

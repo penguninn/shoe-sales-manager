@@ -19,11 +19,19 @@
         <name>Puma</name>
     </Brand>
     <Brand>
+        <createdDate>2024-01-01T00:00:00+07:00</createdDate>
+        <description>Thương hiệu giày skate nổi tiếng</description>
         <id>4</id>
-        <name>Vans1</name>
+        <name>Vans</name>
+    </Brand>
+    <Brand>
+        <createdDate>2024-01-01T00:00:00+07:00</createdDate>
+        <description>Thương hiệu giày skate nổi tiếng</description>
+        <id>5</id>
+        <name>Vans</name>
     </Brand>
     <Brand>
         <id>6</id>
-        <name>Vans</name>
+        <name>Vans6</name>
     </Brand>
 </Brands>

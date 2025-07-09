@@ -41,9 +41,19 @@ public class ManageOrderItem {
 
     public boolean add(OrderItem item) {
         item.setId(getNextId());
+        item.setCreatedDate(new java.util.Date());
         orderItemList.add(item);
         saveToFile();
         return true;
+    }
+
+    public OrderItem findByOrderIdAndProductId(int orderId, int productId) {
+        for (OrderItem item : orderItemList) {
+            if (item.getOrderId() == orderId && item.getProductId() == productId) {
+                return item;
+            }
+        }
+        return null;
     }
 
     public boolean update(OrderItem updatedItem) {

@@ -11,26 +11,26 @@ import com.zzz.quanlibangiay.component.table_custom.TableCustom;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
 
-public class BillView extends javax.swing.JPanel {
+public class OrderView extends javax.swing.JPanel {
 
     private PanelBorder panelBorder;
-    private JTable invoiceTable;
+    private JTable orderTable;
     private JTable productTable;
-    private TextField txtSearch;
-    private ButtonCustom btnRefresh;
 
-    private TextField txtCustomerId;
-    private TextField txtCustomerName;
-    private TextField txtPhone;
-    private TextField txtGender;
-    private TextField txtAddress;
-    private TextField txtTotal;
+    private JTextField txtCustomerId;
+    private JTextField txtCustomerName;
+    private JTextField txtPhone;
+    private JTextField txtGender;
+    private JTextField txtAddress;
+    private JTextField txtTotal;
 
-    public BillView() {
+    public OrderView() {
         initComponents();
         init();
     }
@@ -51,26 +51,11 @@ public class BillView extends javax.swing.JPanel {
         topPanel.setBackground(Color.WHITE);
 
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        txtSearch = new TextField();
-        txtSearch.setPreferredSize(new Dimension(300, 30));
-
-        btnRefresh = new ButtonCustom();
-        btnRefresh.setText("Làm Mới");
-
-        searchPanel.add(txtSearch);
-        searchPanel.add(btnRefresh);
-
         topPanel.add(searchPanel, BorderLayout.NORTH);
 
-        String[] columns = {"STT", "Mã Hóa Đơn", "Tên Khách Hàng", "Số Điện thoại", "Tổng Giá Trị", "Trạng Thái", "Ngày Tạo", "Nhân Viên"};
-        Object[][] data = {
-            {1, "HD004", "Trần Minh Đức", "0945678901", 1100000.0, "Đã thanh toán", "2024-07-04 00:00:00", "Phạm Thị Dung"},
-            {2, "HD005", "Nguyễn Thị Em", "0956789012", 1800000.0, "Đã thanh toán", "2024-07-05 00:00:00", "Hoàng Văn Em"},
-            {3, "HD007", "Đặng Thị Giang", "0978901234", 2250000.0, "Đã thanh toán", "2024-07-07 00:00:00", "Đặng Văn Quang"},
-            {4, "HD009", "Mai Thị Lan", "0990123456", 2700000.0, "Đã thanh toán", "2024-07-09 00:00:00", "Trương Văn Khoa"}
-        };
-        invoiceTable = new JTable(data, columns);
-        JScrollPane scrollPane = createCustomScrollPane(invoiceTable);
+
+        orderTable = new JTable();
+        JScrollPane scrollPane = createCustomScrollPane(orderTable);
         TableCustom.apply(scrollPane, TableCustom.TableType.DEFAULT);
         topPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -85,37 +70,40 @@ public class BillView extends javax.swing.JPanel {
         productPanel.setBorder(BorderFactory.createTitledBorder("Thông tin sản phẩm của hóa đơn"));
         productPanel.setBackground(Color.WHITE);
 
-        String[] productColumns = {"STT", "Mã SPCT", "Tên SP", "Thương hiệu", "Size", "Màu sắc", "Số lượng", "Giá bán", "Tổng Tiền"};
-        Object[][] productData = {};
-
-        productTable = new JTable(productData, productColumns);
+        productTable = new JTable();
         JScrollPane productScroll = createCustomScrollPane(productTable);
         TableCustom.apply(productScroll, TableCustom.TableType.DEFAULT);
         productPanel.add(productScroll, BorderLayout.CENTER);
 
-        JPanel customerPanel = new JPanel(new MigLayout("wrap 2", "[right]10[fill, grow]"));
+        JPanel customerPanel = new JPanel(new MigLayout("wrap 2", "[right]10[fill, grow]", "[]10[]10[]10[]10[]10[]"));
         customerPanel.setBorder(BorderFactory.createTitledBorder("Thông tin khách hàng"));
         customerPanel.setBackground(Color.WHITE);
 
-        txtCustomerId = new TextField();
-        txtCustomerName = new TextField();
-        txtPhone = new TextField();
-        txtGender = new TextField();
-        txtAddress = new TextField();
-        txtTotal = new TextField();
+        txtCustomerId = new JTextField();
+        txtCustomerName = new JTextField();
+        txtPhone = new JTextField();
+        txtGender = new JTextField();
+        txtAddress = new JTextField();
+        txtTotal = new JTextField();
 
         customerPanel.add(new JLabel("Mã khách hàng :"));
         customerPanel.add(txtCustomerId);
+        txtCustomerId.setEditable(false);
         customerPanel.add(new JLabel("Tên khách hàng :"));
         customerPanel.add(txtCustomerName);
+        txtCustomerName.setEditable(false);
         customerPanel.add(new JLabel("Số điện thoại :"));
         customerPanel.add(txtPhone);
+        txtPhone.setEditable(false);
         customerPanel.add(new JLabel("Giới tính :"));
         customerPanel.add(txtGender);
+        txtGender.setEditable(false);
         customerPanel.add(new JLabel("Địa Chỉ :"));
         customerPanel.add(txtAddress);
-        customerPanel.add(new JLabel("Tổng HĐ :"));
+        txtAddress.setEditable(false);
+        customerPanel.add(new JLabel("Tổng giá trị hóa đơn :"));
         customerPanel.add(txtTotal);
+        txtTotal.setEditable(false);
 
         bottomPanel.add(productPanel, "grow");
         bottomPanel.add(customerPanel, "grow");
@@ -130,6 +118,43 @@ public class BillView extends javax.swing.JPanel {
         return scroll;
     }
 
+    public void setInvoiceTableData(Object[][] data) {
+        String[] columns = {"Id", "Khách Hàng", "Nhân viên", "Tổng Giá Trị", "Phương thức thanh toán", "Trạng thái", "Ngày tạo"};
+        orderTable.setModel(new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+    }
+
+    public void setProductTableData(Object[][] data) {
+        String[] productColumns = {"Id", "Tên sản phẩm", "Loại sản phẩm", "Thương hiệu", "Size", "Màu sắc", "Chất liệu", "Số lượng", "Giá bán", "Tổng Tiền"};
+        productTable.setModel(new DefaultTableModel(data, productColumns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+    }
+
+    public void setCustomerInfo(String id, String name, String phone, String gender, String address, String total) {
+        txtCustomerId.setText(id);
+        txtCustomerName.setText(name);
+        txtPhone.setText(phone);
+        txtGender.setText(gender);
+        txtAddress.setText(address);
+        txtTotal.setText(total);
+    }
+
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Lỗi", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void showSuccess(String message) {
+        JOptionPane.showMessageDialog(this, message, "Thành công", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -142,23 +167,26 @@ public class BillView extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 
 
-    // Bill Management Listeners
-    public void addRefreshBillListener(ActionListener listener) {
-        btnRefresh.addActionListener(listener);
+    // Table Management Listeners
+    public void addInvoiceTableSelectionListener(ListSelectionListener listener) {
+        orderTable.getSelectionModel().addListSelectionListener(listener);
     }
 
+    // Table Management Methods
+    public JTable getOrderTable() {
+        return orderTable;
+    }
 }

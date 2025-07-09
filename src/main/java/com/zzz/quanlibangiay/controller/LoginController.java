@@ -17,10 +17,10 @@ public class LoginController {
     private LoginView loginView;
     private ManageUser manageUser;
 
-    public LoginController(LoginView view) {
+    public LoginController(LoginView view, ManageUser manageUser) {
         this.loginView = view;
+        this.manageUser = manageUser;
         loginView.addLoginListener(new LoginListener());
-        init();
     }
     
     public void init() {

@@ -3,7 +3,7 @@ package com.zzz.quanlibangiay.entity;
 public class ShoeSearchCriteria {
     private String name;
     private Brand brand;          
-    private ShoeType type;        
+    private Type type;
     private Color color;
     private Material material;    
     private Size size;            
@@ -13,7 +13,7 @@ public class ShoeSearchCriteria {
     public ShoeSearchCriteria() {
     }
 
-    public ShoeSearchCriteria(String name, Brand brand, ShoeType type, Color color, Material material, Size size, Double priceFrom, Double priceTo) {
+    public ShoeSearchCriteria(String name, Brand brand, Type type, Color color, Material material, Size size, Double priceFrom, Double priceTo) {
         this.name = name;
         this.brand = brand;
         this.type = type;
@@ -40,11 +40,11 @@ public class ShoeSearchCriteria {
         this.brand = brand;
     }
 
-    public ShoeType getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(ShoeType type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
@@ -86,5 +86,19 @@ public class ShoeSearchCriteria {
 
     public void setPriceTo(Double priceTo) {
         this.priceTo = priceTo;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoeSearchCriteria{" +
+                "name='" + name + '\'' +
+                ", brand=" + brand +
+                ", type=" + type +
+                ", color=" + color +
+                ", material=" + material +
+                ", size=" + size +
+                ", priceFrom=" + priceFrom +
+                ", priceTo=" + priceTo +
+                '}';
     }
 }

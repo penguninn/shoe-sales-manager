@@ -2,32 +2,93 @@
 <Users>
     <User>
         <id>1</id>
-        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
-        <description>Tài khoản quản trị viên</description>
         <userName>admin</userName>
         <password>admin</password>
-        <fullName>Nguyễn Văn Admin</fullName>
-        <role>Admin</role>
-        <name>Admin</name>
-        <gender>true</gender>
-        <phoneNumber>0123456789</phoneNumber>
+        <fullName>Admin</fullName>
+        <role>ADMIN</role>
+        <name>ADMIN</name>
+        <gender>false</gender>
+        <phoneNumber>0977427279</phoneNumber>
         <address>123 Đường ABC, Quận 1, TP.HCM</address>
-        <status>ACTIVE</status>
-        <birtDate>1990-01-01T00:00:00.000+07:00</birtDate>
+        <status>WORKING</status>
+        <birthDate>2025-07-31T00:12:27.893+07:00</birthDate>
     </User>
     <User>
         <id>2</id>
-        <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
-        <description>Tài khoản nhân viên</description>
-        <userName>staff</userName>
-        <password>staff</password>
-        <fullName>Trần Thị Staff</fullName>
-        <role>Staff</role>
-        <name>Staff</name>
+        <userName>STAFF</userName>
+        <password>STAFF</password>
+        <fullName>Trần Thị STAFF</fullName>
+        <role>STAFF</role>
+        <name>STAFF</name>
         <gender>false</gender>
         <phoneNumber>0987654321</phoneNumber>
         <address>456 Đường XYZ, Quận 2, TP.HCM</address>
-        <status>ACTIVE</status>
-        <birtDate>1995-05-15T00:00:00.000+07:00</birtDate>
+        <status>WORKING</status>
+        <birthDate>2025-07-07T00:12:46.855+07:00</birthDate>
+    </User>
+    <User>
+        <id>101</id>
+        <userName>STAFF101</userName>
+        <password>STAFF101</password>
+        <fullName>Nguyễn Văn Phúc</fullName>
+        <role>STAFF</role>
+        <name>STAFF 101</name>
+        <gender>true</gender>
+        <phoneNumber>0987123456</phoneNumber>
+        <address>789 Đường DEF, Quận 3, TP.HCM</address>
+        <status>WORKING</status>
+        <birthDate>1995-03-15T00:00:00+07:00</birthDate>
+    </User>
+    <User>
+        <id>102</id>
+        <userName>STAFF102</userName>
+        <password>STAFF102</password>
+        <fullName>Lê Thị Hoa</fullName>
+        <role>STAFF</role>
+        <name>STAFF 102</name>
+        <gender>false</gender>
+        <phoneNumber>0987234567</phoneNumber>
+        <address>321 Đường GHI, Quận 4, TP.HCM</address>
+        <status>WORKING</status>
+        <birthDate>1992-08-20T00:00:00+07:00</birthDate>
+    </User>
+    <User>
+        <id>103</id>
+        <userName>STAFF103</userName>
+        <password>STAFF103</password>
+        <fullName>Trần Văn Minh</fullName>
+        <role>STAFF</role>
+        <name>STAFF 103</name>
+        <gender>true</gender>
+        <phoneNumber>0987345678</phoneNumber>
+        <address>654 Đường JKL, Quận 5, TP.HCM</address>
+        <status>WORKING</status>
+        <birthDate>1990-11-10T00:00:00+07:00</birthDate>
+    </User>
+    <User>
+        <id>104</id>
+        <userName>STAFF104</userName>
+        <password>STAFF104</password>
+        <fullName>Phạm Thị Lan</fullName>
+        <role>STAFF</role>
+        <name>STAFF 104</name>
+        <gender>false</gender>
+        <phoneNumber>0987456789</phoneNumber>
+        <address>987 Đường MNO, Quận 6, TP.HCM</address>
+        <status>WORKING</status>
+        <birthDate>1993-05-25T00:00:00+07:00</birthDate>
+    </User>
+    <User>
+        <id>105</id>
+        <userName>STAFF105</userName>
+        <password>STAFF105</password>
+        <fullName>Hoàng Văn Tâm</fullName>
+        <role>STAFF</role>
+        <name>STAFF 105</name>
+        <gender>true</gender>
+        <phoneNumber>0987567890</phoneNumber>
+        <address>147 Đường PQR, Quận 7, TP.HCM</address>
+        <status>WORKING</status>
+        <birthDate>1988-12-05T00:00:00+07:00</birthDate>
     </User>
 </Users>

@@ -37,6 +37,7 @@ public class ManageSize {
 
     public boolean addSize(Size size) {
         size.setId(getNextId());
+        size.setCreatedDate(new java.util.Date());
         sizeList.add(size);
         saveToFile();
         return true;
@@ -66,7 +67,7 @@ public class ManageSize {
     public List<Size> searchSizeByName(String keyword) {
         List<Size> result = new ArrayList<>();
         for (Size s : sizeList) {
-            if (s.getSizeName().toLowerCase().contains(keyword.toLowerCase())) {
+            if (s.getName().toLowerCase().contains(keyword.toLowerCase())) {
                 result.add(s);
             }
         }

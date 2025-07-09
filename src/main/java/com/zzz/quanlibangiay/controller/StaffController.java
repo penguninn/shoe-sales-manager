@@ -1,285 +1,197 @@
 package com.zzz.quanlibangiay.controller;
 
+import com.zzz.quanlibangiay.action.ManageUser;
 import com.zzz.quanlibangiay.entity.User;
+import com.zzz.quanlibangiay.enums.UserRole;
+import com.zzz.quanlibangiay.enums.UserStatus;
+import com.zzz.quanlibangiay.utils.DateUtils;
 import com.zzz.quanlibangiay.view.StaffView;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.List;
 
 public class StaffController {
-    
+
     private StaffView staffView;
+    private ManageUser manageUser;
     private User currentUser;
-    
-    public StaffController(StaffView view, User user) {
+
+    public StaffController(StaffView view, User user, ManageUser manageUser) {
         this.staffView = view;
         this.currentUser = user;
+        this.manageUser = manageUser;
         initListeners();
         initData();
     }
-    
+
     private void initListeners() {
+        staffView.addUserTableWorkingSelectionListener(new StaffTableSelectionListener());
+        staffView.addUserTableRetiredSelectionListener(new StaffTableSelectionListener());
         staffView.addSearchStaffListener(new SearchStaffListener());
-        
         staffView.addAddStaffListener(new AddStaffListener());
         staffView.addEditStaffListener(new EditStaffListener());
         staffView.addDeleteStaffListener(new DeleteStaffListener());
         staffView.addClearStaffListener(new ClearStaffListener());
     }
-    
-    private void initData() {
-        loadStaffList();
-        loadRoleData();
-        setupFormValidation();
-        System.out.println("StaffController initialized for user: " + currentUser.getUserName());
+
+    public void initData() {
+        loadStaffTableData();
     }
-    
-    private void loadStaffList() {
-        // Implement loading staff list
-        System.out.println("Loading staff list...");
-        // TODO: Load staff from database and update table
-    }
-    
-    private void loadRoleData() {
-        // Load roles for combo box
-        System.out.println("Loading role data...");
-        // TODO: Load roles and populate combo box
-    }
-    
-    private void setupFormValidation() {
-        // Setup form validation rules
-        System.out.println("Setting up form validation...");
-        // TODO: Setup validation for staff form fields
-    }
-    
-    private void searchStaff() {
-        // Get search criteria from view - simplified based on actual StaffView
-        String searchText = getSearchText();
-        
-        System.out.println("Searching staff with criteria:");
-        System.out.println("- Search Text: " + searchText);
-        
-        // TODO: Implement search logic
-        loadStaffList(); // Reload with filters
-    }
-    
-    private String getSearchText() {
-        // Method to get search text from StaffView
-        // TODO: Implement getter method in StaffView
-        return "";
-    }
-    
-    private void addStaff() {
-        if (!validateStaffForm()) {
-            return;
-        }
-        
-        String userName = getUserName();
-        String password = getPassword();
-        String fullName = getFullName();
-        String role = getSelectedRole();
-        String name = getName();
-        String phone = getPhone();
-        String address = getAddress();
-        String status = getSelectedStatus();
-        
-        System.out.println("Adding new staff:");
-        System.out.println("- UserName: " + userName);
-        System.out.println("- FullName: " + fullName);
-        System.out.println("- Phone: " + phone);
-        System.out.println("- Role: " + role);
-        
-        // TODO: Implement add staff logic
-        showMessage("Thêm nhân viên thành công!");
-        clearForm();
-        loadStaffList();
-    }
-    
-    private void editStaff() {
-        int selectedRow = getSelectedStaffRow();
-        if (selectedRow < 0) {
-            showMessage("Vui lòng chọn nhân viên để sửa!");
-            return;
-        }
-        
-        // Validate form data
-        if (!validateStaffForm()) {
-            return;
-        }
-        
-        String staffId = getSelectedStaffId();
-        String userName = getUserName();
-        String fullName = getFullName();
-        String phone = getPhone();
-        String role = getSelectedRole();
-        
-        System.out.println("Editing staff ID: " + staffId);
-        System.out.println("- UserName: " + userName);
-        System.out.println("- FullName: " + fullName);
-        System.out.println("- Phone: " + phone);
-        System.out.println("- Role: " + role);
-        
-        // TODO: Implement edit staff logic
-        showMessage("Cập nhật nhân viên thành công!");
-        clearForm();
-        loadStaffList();
-    }
-    
-    private void deleteStaff() {
-        int selectedRow = getSelectedStaffRow();
-        if (selectedRow < 0) {
-            showMessage("Vui lòng chọn nhân viên để xóa!");
-            return;
-        }
-        
-        String staffId = getSelectedStaffId();
-        String staffName = getSelectedStaffName();
-        
-        int confirm = showConfirmDialog(
-            "Bạn có chắc chắn muốn xóa nhân viên: " + staffName + "?", 
-            "Xác nhận xóa"
-        );
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-            System.out.println("Deleting staff ID: " + staffId);
-            // TODO: Implement delete staff logic
-            showMessage("Xóa nhân viên thành công!");
-            loadStaffList();
+
+    private void loadStaffTableData() {
+        try {
+            List<User> allUsers = manageUser.getAllUsers();
+            Object[][] workingData = toTableData(allUsers.stream().filter(s -> UserStatus.WORKING.equals(s.getStatus())).toList());
+            Object[][] retiredData = toTableData(allUsers.stream().filter(s -> UserStatus.RETIRED.equals(s.getStatus())).toList());
+            staffView.setUserTableData(workingData, true);
+            staffView.setUserTableData(retiredData, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            staffView.showError("Không thể tải danh sách nhân viên!");
         }
     }
-    
-    private void clearForm() {
-        clearStaffForm();
-        System.out.println("Staff form cleared");
-    }
-    
-    private boolean validateStaffForm() {
-        String userName = getUserName();
-        String fullName = getFullName();
-        String phone = getPhone();
-        
-        if (userName == null || userName.trim().isEmpty()) {
-            showMessage("Vui lòng nhập username!");
-            return false;
+
+    private Object[][] toTableData(List<User> users) {
+        Object[][] data = new Object[users.size()][11];
+        for (int i = 0; i < users.size(); i++) {
+            User s = users.get(i);
+            data[i][0] = s.getId();
+            data[i][1] = s.getUserName();
+            data[i][2] = s.getPassword();
+            data[i][3] = s.getName();
+            data[i][4] = s.getFullName();
+            data[i][5] = UserRole.roleToDisplay(s.getRole());
+            data[i][6] = s.isGender() ? "Nam" : "Nữ";
+            data[i][7] = s.getPhoneNumber();
+            data[i][8] = s.getAddress();
+            data[i][9] = UserStatus.statusToDisplay(s.getStatus());
+            data[i][10] = s.getBirthDate() != null
+                    ? DateUtils.formatDateToShort(s.getBirthDate())
+                    : "";
         }
-        
-        if (fullName == null || fullName.trim().isEmpty()) {
-            showMessage("Vui lòng nhập họ tên!");
-            return false;
+        return data;
+    }
+
+    class StaffTableSelectionListener implements ListSelectionListener {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                JTable selectedTable = staffView.getTabbed().getSelectedIndex() == 0
+                        ? staffView.getTableWorking()
+                        : staffView.getTableRetired();
+
+                int selectedRow = selectedTable.getSelectedRow();
+                if (selectedRow >= 0) {
+                    int modelRow = selectedTable.convertRowIndexToModel(selectedRow);
+                    Object value = selectedTable.getModel().getValueAt(modelRow, 0);
+                    if (value != null) {
+                        int id = Integer.parseInt(value.toString());
+                        User user = manageUser.getUserById(id);
+                        if (user != null) {
+                            staffView.setStaffFormData(user);
+                        }
+                    }
+                }
+            }
         }
-        
-        if (phone == null || phone.trim().isEmpty()) {
-            showMessage("Vui lòng nhập số điện thoại!");
-            return false;
-        }
-        
-        return true;
     }
-    
-    // Utility methods - sẽ cần implement trong StaffView
-    private String getUserName() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private String getPassword() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private String getFullName() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private String getSelectedRole() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private String getName() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private String getPhone() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private String getAddress() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private String getSelectedStatus() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private int getSelectedStaffRow() {
-        // TODO: Implement getter in StaffView
-        return -1;
-    }
-    
-    private String getSelectedStaffId() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private String getSelectedStaffName() {
-        // TODO: Implement getter in StaffView
-        return "";
-    }
-    
-    private void clearStaffForm() {
-        // TODO: Implement in StaffView
-    }
-    
-    private void showMessage(String message) {
-        JOptionPane.showMessageDialog(null, message);
-    }
-    
-    private int showConfirmDialog(String message, String title) {
-        return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
-    }
-    
-    // ==================== INNER CLASS LISTENERS ====================
-    
+
     class SearchStaffListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            searchStaff();
+            String keyword = staffView.getSearchKeyword();
+            List<User> matched = manageUser.searchUserByFullname(keyword);
+            Object[][] active = toTableData(matched.stream().filter(s -> UserStatus.WORKING.equals(s.getStatus())).toList());
+            Object[][] inactive = toTableData(matched.stream().filter(s -> UserStatus.RETIRED.equals(s.getStatus())).toList());
+            staffView.setUserTableData(active, true);
+            staffView.setUserTableData(inactive, false);
         }
     }
-    
+
     class AddStaffListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            addStaff();
+            User user = staffView.getDataStaffFromForm();
+            if (user == null) return;
+
+            if (manageUser.isUsernameExists(user.getUserName(), -1)) {
+                staffView.showError("Username đã tồn tại!");
+                return;
+            }
+            if (manageUser.isPhoneExists(user.getPhoneNumber(), -1)) {
+                staffView.showError("SĐT đã tồn tại!");
+                return;
+            }
+
+            boolean ok = manageUser.addUser(user);
+            if (ok) {
+                staffView.showSuccess("Thêm nhân viên thành công!");
+            } else {
+                staffView.showError("Thêm nhân viên thất bại!");
+            }
+            loadStaffTableData();
+            staffView.clearStaffForm();
         }
     }
-    
+
     class EditStaffListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            editStaff();
+            User user = staffView.getDataStaffFromForm();
+            if (user == null) return;
+
+            if (manageUser.isUsernameExists(user.getUserName(), user.getId())) {
+                staffView.showError("Username đã tồn tại!");
+                return;
+            }
+            if (manageUser.isPhoneExists(user.getPhoneNumber(), user.getId())) {
+                staffView.showError("SĐT đã tồn tại!");
+                return;
+            }
+
+            boolean ok = manageUser.updateUser(user);
+            if (ok) {
+                staffView.showSuccess("Cập nhật nhân viên thành công!");
+            } else {
+                staffView.showError("Cập nhật nhân viên thất bại!");
+            }
+            loadStaffTableData();
+            staffView.clearStaffForm();
         }
     }
-    
+
     class DeleteStaffListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            deleteStaff();
+            User user = staffView.getDataStaffFromForm();
+
+            int confirm = JOptionPane.showConfirmDialog(
+                    null,
+                    "Bạn có chắc muốn xóa nhân viên này không?",
+                    "Xác nhận xóa",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (confirm != JOptionPane.YES_OPTION) return;
+
+            boolean ok = manageUser.deleteUser(user.getId());
+            if (ok) {
+                staffView.showSuccess("Xóa nhân viên thành công!");
+            } else {
+                staffView.showError("Xóa nhân viên thất bại!");
+            }
+            loadStaffTableData();
+            staffView.clearStaffForm();
         }
     }
-    
+
     class ClearStaffListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            clearForm();
+            staffView.clearStaffForm();
         }
     }
 }

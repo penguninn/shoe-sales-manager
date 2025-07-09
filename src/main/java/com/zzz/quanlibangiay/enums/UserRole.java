@@ -9,6 +9,21 @@ package com.zzz.quanlibangiay.enums;
  * @author coole
  */
 public enum UserRole {
-    Admin,
-    Staff
+    ADMIN,
+    STAFF;
+
+    public static String roleToDisplay(UserRole role) {
+        return switch (role) {
+            case ADMIN -> "Quản lý";
+            case STAFF -> "Nhân viên";
+        };
+    }
+
+    public static UserRole displayToRole(String display) {
+        return switch (display) {
+            case "Quản lý" -> UserRole.ADMIN;
+            case "Nhân viên" -> UserRole.STAFF;
+            default -> null;
+        };
+    }
 }

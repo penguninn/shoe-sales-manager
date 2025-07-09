@@ -9,16 +9,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-@XmlRootElement(name = "ShoeType")
+@XmlRootElement(name = "Type")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ShoeType extends AbstractEntity {
+public class Type extends AbstractEntity {
     
     private String name;
 
-    public ShoeType() {
+    public Type() {
     }
 
-    public ShoeType(String name) {
+    public Type(String name) {
         this.name = name;
     }
 

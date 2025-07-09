@@ -21,7 +21,7 @@ public class MainView extends javax.swing.JFrame {
     private DashboardView dashboardView;
     private ProductView productView;
     private SellView sellView;
-    private BillView billView;
+    private OrderView orderView;
     private StaffView staffView;
     private CustomerView customerView;
     
@@ -49,7 +49,7 @@ public class MainView extends javax.swing.JFrame {
         mlayout = new MigLayout("fill", "0[]0[100%, fill]0", "0[fill, top]0");
         layerPane.setLayout(mlayout);
 
-        sidebarMenu = user.getRole().equals(UserRole.Admin)
+        sidebarMenu = user.getRole().equals(UserRole.ADMIN)
                 ? new SidebarMenu(-1)
                 : new SidebarMenu(4);
 
@@ -80,7 +80,7 @@ public class MainView extends javax.swing.JFrame {
         dashboardView = new DashboardView();
         productView = new ProductView();
         sellView = new SellView();
-        billView = new BillView();
+        orderView = new OrderView();
         staffView = new StaffView();
         customerView = new CustomerView();
     }
@@ -89,7 +89,7 @@ public class MainView extends javax.swing.JFrame {
         cardPanel.add(dashboardView, "Dashboard");
         cardPanel.add(productView, "Form_Product");
         cardPanel.add(sellView, "Form_Sell");
-        cardPanel.add(billView, "Form_Bill");
+        cardPanel.add(orderView, "Form_Bill");
         cardPanel.add(staffView, "Form_Staff");
         cardPanel.add(customerView, "Form_Customer");
     }
@@ -144,8 +144,8 @@ public class MainView extends javax.swing.JFrame {
         return sellView;
     }
     
-    public BillView getBillView() {
-        return billView;
+    public OrderView getBillView() {
+        return orderView;
     }
     
     public StaffView getStaffView() {

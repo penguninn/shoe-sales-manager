@@ -1,239 +1,191 @@
 package com.zzz.quanlibangiay.controller;
 
+import com.zzz.quanlibangiay.action.ManageCustomer;
+import com.zzz.quanlibangiay.entity.Customer;
 import com.zzz.quanlibangiay.entity.User;
+import com.zzz.quanlibangiay.utils.DateUtils;
+import com.zzz.quanlibangiay.utils.ValidationUtils;
 import com.zzz.quanlibangiay.view.CustomerView;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class CustomerController {
-    
+
     private CustomerView customerView;
-    private User currentUser;
-    
-    public CustomerController(CustomerView view, User user) {
+    private ManageCustomer manageCustomer;
+    private User user;
+
+    public CustomerController(CustomerView view, User user, ManageCustomer manageCustomer) {
         this.customerView = view;
-        this.currentUser = user;
+        this.user = user;
+        this.manageCustomer = manageCustomer;
         initListeners();
         initData();
     }
-    
+
     private void initListeners() {
+
+        customerView.addTableSelectionListener(new CustomerTableSelectionListener());
         customerView.addSearchCustomerListener(new SearchCustomerListener());
-        
+
         customerView.addAddCustomerListener(new AddCustomerListener());
         customerView.addEditCustomerListener(new EditCustomerListener());
         customerView.addDeleteCustomerListener(new DeleteCustomerListener());
         customerView.addClearCustomerListener(new ClearCustomerListener());
     }
-    
-    private void initData() {
-        loadCustomerList();
-        setupFormValidation();
-        System.out.println("CustomerController initialized for user: " + currentUser.getUserName());
+
+    public void initData() {
+        loadCustomerTableData();
     }
-    
-    private void loadCustomerList() {
-        System.out.println("Loading customer list...");
-    }
-    
-    private void setupFormValidation() {
-        System.out.println("Setting up customer form validation...");
-    }
-    
-    private void searchCustomer() {
-        String searchText = getSearchText();
-        
-        System.out.println("Searching customers with criteria:");
-        System.out.println("- Search Text: " + searchText);
-        
-        loadCustomerList();
-    }
-    
-    private String getSearchText() {
-        return "";
-    }
-    
-    private void addCustomer() {
-        if (!validateCustomerForm()) {
-            return;
-        }
-        
-        String fullName = getFullName();
-        String phone = getPhone();
-        String address = getAddress();
-        String gender = getSelectedGender();
-        String joinDate = getJoinDate();
-        
-        System.out.println("Adding new customer:");
-        System.out.println("- FullName: " + fullName);
-        System.out.println("- Phone: " + phone);
-        System.out.println("- Address: " + address);
-        System.out.println("- Gender: " + gender);
-        
-        showMessage("Thêm khách hàng thành công!");
-        clearForm();
-        loadCustomerList();
-    }
-    
-    private void editCustomer() {
-        int selectedRow = getSelectedCustomerRow();
-        if (selectedRow < 0) {
-            showMessage("Vui lòng chọn khách hàng để sửa!");
-            return;
-        }
-        
-        if (!validateCustomerForm()) {
-            return;
-        }
-        
-        String customerId = getSelectedCustomerId();
-        String fullName = getFullName();
-        String phone = getPhone();
-        String address = getAddress();
-        String gender = getSelectedGender();
-        
-        System.out.println("Editing customer ID: " + customerId);
-        System.out.println("- FullName: " + fullName);
-        System.out.println("- Phone: " + phone);
-        System.out.println("- Address: " + address);
-        
-        showMessage("Cập nhật khách hàng thành công!");
-        clearForm();
-        loadCustomerList();
-    }
-    
-    private void deleteCustomer() {
-        int selectedRow = getSelectedCustomerRow();
-        if (selectedRow < 0) {
-            showMessage("Vui lòng chọn khách hàng để xóa!");
-            return;
-        }
-        
-        String customerId = getSelectedCustomerId();
-        String customerName = getSelectedCustomerName();
-        
-        int confirm = showConfirmDialog(
-            "Bạn có chắc chắn muốn xóa khách hàng: " + customerName + "?", 
-            "Xác nhận xóa"
-        );
-        
-        if (confirm == JOptionPane.YES_OPTION) {
-            System.out.println("Deleting customer ID: " + customerId);
-            // TODO: Implement delete customer logic
-            showMessage("Xóa khách hàng thành công!");
-            loadCustomerList();
+
+    private void loadCustomerTableData() {
+        try {
+            List<Customer> customers = manageCustomer.getAllCustomers();
+            Object[][] customerData = toTableData(customers);
+            customerView.setCustomerTableData(customerData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            customerView.showError("Không thể tải danh sách khách hàng!");
         }
     }
-    
-    private void clearForm() {
-        clearCustomerForm();
-        System.out.println("Customer form cleared");
-    }
-    
-    private boolean validateCustomerForm() {
-        String fullName = getFullName();
-        String phone = getPhone();
-        
-        if (fullName == null || fullName.trim().isEmpty()) {
-            showMessage("Vui lòng nhập họ tên khách hàng!");
-            return false;
+
+    private Object[][] toTableData(List<Customer> customers) {
+        Object[][] data = new Object[customers.size()][6];
+        for (int i = 0; i < customers.size(); i++) {
+            Customer c = customers.get(i);
+            data[i][0] = c.getId();
+            data[i][1] = c.getName();
+            data[i][2] = c.isGender() ? "Nam" : "Nữ";
+            data[i][3] = c.getPhoneNumber();
+            data[i][4] = c.getAddress();
+            data[i][5] = c.getCreatedDate() != null ? DateUtils.formatDateToShort(c.getCreatedDate()) : "";
         }
-        
-        if (phone == null || phone.trim().isEmpty()) {
-            showMessage("Vui lòng nhập số điện thoại!");
-            return false;
-        }
-        
-        return true;
+        return data;
     }
-    
-    private String getFullName() {
-        // TODO: Implement getter in CustomerView
-        return "";
-    }
-    
-    private String getPhone() {
-        // TODO: Implement getter in CustomerView
-        return "";
-    }
-    
-    private String getAddress() {
-        // TODO: Implement getter in CustomerView
-        return "";
-    }
-    
-    private String getSelectedGender() {
-        // TODO: Implement getter in CustomerView
-        return "";
-    }
-    
-    private String getJoinDate() {
-        // TODO: Implement getter in CustomerView
-        return "";
-    }
-    
-    private int getSelectedCustomerRow() {
-        // TODO: Implement getter in CustomerView
-        return -1;
-    }
-    
-    private String getSelectedCustomerId() {
-        // TODO: Implement getter in CustomerView
-        return "";
-    }
-    
-    private String getSelectedCustomerName() {
-        // TODO: Implement getter in CustomerView
-        return "";
-    }
-    
-    private void clearCustomerForm() {
-        // TODO: Implement in CustomerView
-    }
-    
+
     private void showMessage(String message) {
         JOptionPane.showMessageDialog(null, message);
     }
-    
+
     private int showConfirmDialog(String message, String title) {
         return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
     }
-    
+
+    class CustomerTableSelectionListener implements ListSelectionListener {
+        @Override
+        public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = customerView.getTableCustomer().getSelectedRow();
+                if (selectedRow >= 0) {
+                    int modelRow = customerView.getTableCustomer().convertRowIndexToModel(selectedRow);
+                    Object value = customerView.getTableCustomer().getModel().getValueAt(modelRow, 0);
+                    if (value != null) {
+                        int id = Integer.parseInt(value.toString());
+                        Customer customer = manageCustomer.getCustomerById(id);
+                        if (customer != null) {
+                            customerView.setCustomerFormData(customer);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     class SearchCustomerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            searchCustomer();
+            String phoneNumber = customerView.getPhoneNumber();
+            if (phoneNumber == null || phoneNumber.trim().isEmpty() ) {
+                customerView.showError("Vui lòng nhập số điện thoại để tìm kiếm!");
+                return;
+            }
+            if(!ValidationUtils.isValidPhone(phoneNumber)) {
+                customerView.showError("Số điện thoại không hợp lệ!");
+                return;
+            }
+            List<Customer> customers = manageCustomer.searchCustomerByPhone(phoneNumber);
+            Object[][] customerData = toTableData(customers);
+            customerView.setCustomerTableData(customerData);
         }
     }
-    
+
     class AddCustomerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            addCustomer();
+            Customer customer = customerView.getDataCustomerFromForm();
+            if(customer == null) {
+                return;
+            }
+
+            if (manageCustomer.isPhoneExists(customer.getPhoneNumber(), 0)) {
+                customerView.showError("Số điện thoại đã tồn tại!");
+                return;
+            }
+
+            boolean ok = manageCustomer.addCustomer(customer);
+            if (ok) {
+                customerView.showSuccess("Thêm khách hàng thành công!");
+            } else {
+                customerView.showError("Thêm khách hàng thất bại!");
+            }
+            loadCustomerTableData();
+            customerView.clearCustomerForm();
         }
     }
-    
+
     class EditCustomerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            editCustomer();
+            Customer customer = customerView.getDataCustomerFromForm();
+            if (customer == null) {
+                return;
+            }
+
+            if (manageCustomer.isPhoneExists(customer.getPhoneNumber(), customer.getId())) {
+                customerView.showError("Số điện thoại đã tồn tại!");
+                return;
+            }
+
+            boolean ok = manageCustomer.updateCustomer(customer);
+            if (ok) {
+                customerView.showSuccess("Cập nhật khách hàng thành công!");
+            } else {
+                customerView.showError("Cập nhật khách hàng thất bại!");
+            }
+            loadCustomerTableData();
+            customerView.clearCustomerForm();
         }
     }
-    
+
     class DeleteCustomerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            deleteCustomer();
+            int confirm = JOptionPane.showConfirmDialog(
+                    null,
+                    "Bạn có chắc muốn xóa khách hàng này không?",
+                    "Xác nhận",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if (confirm != JOptionPane.YES_OPTION) return;
+            boolean ok = manageCustomer.deleteCustomer(customerView.getDataCustomerFromForm().getId());
+            if (ok) {
+                customerView.showSuccess("Xóa khách hàng thành công!");
+            } else {
+                customerView.showError("Xóa khách hàng thất bại!");
+            }
+            loadCustomerTableData();
+            customerView.clearCustomerForm();
         }
     }
-    
+
     class ClearCustomerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            clearForm();
+            customerView.clearCustomerForm();
         }
     }
 }

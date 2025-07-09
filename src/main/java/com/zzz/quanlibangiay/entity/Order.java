@@ -23,16 +23,14 @@ public class Order extends AbstractEntity {
     private double totalAmount;
     private PaymentMethod paymentMethod;
     private OrderStatus status;
-    private List<OrderItem> orderItems;
 
-    public Order(int customerId, int staffId, double totalAmount, PaymentMethod paymentMethod, OrderStatus status, List<OrderItem> orderItems, int id, Date createdDate, String description) {
+    public Order(int customerId, int staffId, double totalAmount, PaymentMethod paymentMethod, OrderStatus status, int id, Date createdDate, String description) {
         super(id, createdDate, description);
         this.customerId = customerId;
         this.staffId = staffId;
         this.totalAmount = totalAmount;
         this.paymentMethod = paymentMethod;
         this.status = status;
-        this.orderItems = orderItems;
     }
 
     public Order() {
@@ -77,14 +75,5 @@ public class Order extends AbstractEntity {
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-    
     
 }

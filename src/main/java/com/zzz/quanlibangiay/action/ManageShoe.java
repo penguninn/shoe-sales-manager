@@ -7,6 +7,7 @@ import com.zzz.quanlibangiay.utils.FileUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,6 +121,7 @@ public class ManageShoe {
 
     public boolean addShoe(Shoe shoe) {
         shoe.setId(nextId());
+        shoe.setCreatedDate(new Date());
         shoes.add(shoe);
         return save();
     }

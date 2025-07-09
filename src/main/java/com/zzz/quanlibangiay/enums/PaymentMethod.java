@@ -9,6 +9,21 @@ package com.zzz.quanlibangiay.enums;
  * @author coole
  */
 public enum PaymentMethod {
-    Banking,
-    Cash
+    BANKING,
+    CASH;
+
+    public static String paymentMethodToDisplay(PaymentMethod method) {
+        return switch (method) {
+            case BANKING -> "Chuyển khoản";
+            case CASH -> "Tiền mặt";
+        };
+    }
+
+    public static PaymentMethod displayToPaymentMethod(String display) {
+        return switch (display) {
+            case "Chuyển khoản" -> PaymentMethod.BANKING;
+            case "Tiền mặt" -> PaymentMethod.CASH;
+            default -> null;
+        };
+    }
 }

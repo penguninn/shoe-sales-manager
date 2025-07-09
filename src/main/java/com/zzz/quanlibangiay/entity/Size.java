@@ -8,25 +8,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Size extends AbstractEntity {
 
-    private String sizeName;
+    private String name;
 
     public Size() {
     }
 
-    public Size(String sizeName) {
-        this.sizeName = sizeName;
+    public Size(String name) {
+        this.name = name;
     }
 
-    public String getSizeName() {
-        return sizeName;
+    public String getName() {
+        return name;
     }
 
-    public void setSizeName(String sizeName) {
-        this.sizeName = sizeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return sizeName;
+        return name;
     }
 }

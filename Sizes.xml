@@ -4,30 +4,30 @@
         <id>1</id>
         <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
         <description>Size 39 chuẩn Việt Nam</description>
-        <sizeName>39</sizeName>
+        <name>39</name>
     </Size>
     <Size>
         <id>2</id>
         <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
         <description>Size 40 chuẩn Việt Nam</description>
-        <sizeName>40</sizeName>
+        <name>40</name>
     </Size>
     <Size>
         <id>3</id>
         <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
         <description>Size 41 chuẩn Việt Nam</description>
-        <sizeName>41</sizeName>
+        <name>41</name>
     </Size>
     <Size>
         <id>4</id>
         <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
         <description>Size 42 chuẩn Việt Nam</description>
-        <sizeName>42</sizeName>
+        <name>42</name>
     </Size>
     <Size>
         <id>5</id>
         <createdDate>2024-01-01T00:00:00.000+07:00</createdDate>
         <description>Size 43 chuẩn Việt Nam</description>
-        <sizeName>43</sizeName>
+        <name>43</name>
     </Size>
 </Sizes>

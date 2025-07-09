@@ -17,19 +17,23 @@ public class ProductController {
     private ProductView view;
     private ManageShoe manageShoe;
     private ManageBrand manageBrand;
-    private ManageShoeType manageShoeType;
+    private ManageType manageType;
     private ManageColor manageColor;
     private ManageMaterial manageMaterial;
     private ManageSize manageSize;
 
-    public ProductController(ProductView view) {
+    public ProductController(
+            ProductView view, ManageShoe manageShoe,
+            ManageType manageType, ManageBrand manageBrand,
+            ManageColor manageColor, ManageMaterial manageMaterial,
+            ManageSize manageSize) {
         this.view = view;
-        this.manageShoe = new ManageShoe();
-        this.manageBrand = new ManageBrand();
-        this.manageShoeType = new ManageShoeType();
-        this.manageColor = new ManageColor();
-        this.manageMaterial = new ManageMaterial();
-        this.manageSize = new ManageSize();
+        this.manageShoe = manageShoe;
+        this.manageType = manageType;
+        this.manageBrand = manageBrand;
+        this.manageColor = manageColor;
+        this.manageMaterial = manageMaterial;
+        this.manageSize = manageSize;
         initListeners();
         initializeData();
     }
@@ -72,7 +76,7 @@ public class ProductController {
         view.addProductTableSelectionListener(new ProductTableSelectionListener());
     }
 
-    private void initializeData() {
+    public void initializeData() {
         loadBrandData();
         loadTypeData();
         loadMaterialData();
@@ -101,7 +105,7 @@ public class ProductController {
 
     private void loadTypeTableData() {
         try {
-            List<ShoeType> types = manageShoeType.getAllShoeTypes();
+            List<Type> types = manageType.getAllShoeTypes();
             view.setTypeTableData(types);
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,7 +165,7 @@ public class ProductController {
 
     private void loadTypeData() {
         try {
-            List<ShoeType> types = manageShoeType.getAllShoeTypes();
+            List<Type> types = manageType.getAllShoeTypes();
             view.setTypeComboBoxData(types);
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,11 +209,11 @@ public class ProductController {
             Shoe s = shoes.get(i);
             data[i][0] = s.getId();
             data[i][1] = s.getName();
-            data[i][2] = manageShoeType.getShoeTypeById(s.getTypeId()).getName();
+            data[i][2] = manageType.getShoeTypeById(s.getTypeId()).getName();
             data[i][3] = manageBrand.getBrandById(s.getBrandId()).getName();
             data[i][4] = manageMaterial.getMaterialById(s.getMaterialId()).getName();
             data[i][5] = manageColor.getColorById(s.getColorId()).getName();
-            data[i][6] = manageSize.getSizeById(s.getSizeId()).getSizeName();
+            data[i][6] = manageSize.getSizeById(s.getSizeId()).getName();
             data[i][7] = s.getQuantity();
             data[i][8] = CurrencyUtils.formatCurrency(s.getPrice());
             data[i][9] = CurrencyUtils.formatCurrency(s.getImportPrice());
@@ -240,8 +244,11 @@ public class ProductController {
         @Override
         public void actionPerformed(ActionEvent e) {
             ShoeSearchCriteria criteria = view.getSearchCriteria();
+            System.out.println("Search Criteria: " + criteria.toString());
             String sortBy = view.getSelectedSortCriteria();
+            System.out.println("Selected Sort Criteria: " + sortBy);
             List<Shoe> sortedShoes = manageShoe.searchAndSort(criteria, sortBy);
+            System.out.println("Sorted Shoes: " + sortedShoes.toString());
             Object[][] data = toTableData(sortedShoes);
             view.setProductTableData(data);
         }
@@ -271,8 +278,11 @@ public class ProductController {
         @Override
         public void actionPerformed(ActionEvent e) {
             ShoeSearchCriteria criteria = view.getSearchCriteria();
+            System.out.println("Search Criteria: " + criteria.toString());
             String sortBy = view.getSelectedSortCriteria();
+            System.out.println("Selected Sort Criteria: " + sortBy);
             List<Shoe> sortedShoes = manageShoe.searchAndSort(criteria, sortBy);
+            System.out.println("Sorted Shoes: " + sortedShoes.toString());
             Object[][] data = toTableData(sortedShoes);
             view.setProductTableData(data);
         }
@@ -357,10 +367,10 @@ public class ProductController {
     class AddTypeListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ShoeType type = view.getTypeFromForm();
+            Type type = view.getTypeFromForm();
             if (type == null) return;
 
-            boolean ok = manageShoeType.addShoeType(type);
+            boolean ok = manageType.addShoeType(type);
             if (ok) {
                 view.showSuccess("Thêm loại sản phẩm thành công!");
                 loadTypeTableData();
@@ -376,7 +386,7 @@ public class ProductController {
     class EditTypeListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ShoeType type = view.getTypeFromForm();
+            Type type = view.getTypeFromForm();
             if (type == null) return;
 
             if (type.getId() == 0) {
@@ -384,7 +394,7 @@ public class ProductController {
                 return;
             }
 
-            boolean ok = manageShoeType.updateShoeType(type);
+            boolean ok = manageType.updateShoeType(type);
             if (ok) {
                 view.showSuccess("Cập nhật loại sản phẩm thành công!");
                 loadTypeTableData();
@@ -419,7 +429,7 @@ public class ProductController {
             );
             if (confirm != JOptionPane.YES_OPTION) return;
 
-            boolean ok = manageShoeType.deleteShoeType(selectedId);
+            boolean ok = manageType.deleteShoeType(selectedId);
             if (ok) {
                 view.showSuccess("Xóa loại sản phẩm thành công!");
                 loadTypeTableData();

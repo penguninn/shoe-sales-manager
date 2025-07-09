@@ -43,6 +43,7 @@ public class ManageColor {
 
     public boolean addColor(Color color) {
         color.setId(getNextId());
+        color.setCreatedDate(new java.util.Date());
         colorList.add(color);
         saveToFile();
         return true;
