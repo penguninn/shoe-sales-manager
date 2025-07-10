@@ -2,41 +2,28 @@
 <Shoes>
     <Shoe>
         <id>1</id>
-        <name>Giày sneaker</name>
-        <brandId>1</brandId>
-        <typeId>1</typeId>
+        <name>Giày da Tây Gucci</name>
+        <brandId>5</brandId>
+        <typeId>2</typeId>
         <colorId>1</colorId>
         <materialId>1</materialId>
-        <sizeId>1</sizeId>
-        <quantity>1160</quantity>
-        <price>1.0E7</price>
-        <importPrice>1234556.0</importPrice>
-        <image>C:\Users\coole\Desktop\Screenshot 2024-10-26 150605.png</image>
+        <sizeId>2</sizeId>
+        <quantity>90</quantity>
+        <price>2.0E7</price>
+        <importPrice>1.0E7</importPrice>
+        <image>C:\Users\coole\Desktop\OOP N02\quanlibangiay\shoe-images\tay1.jpg</image>
     </Shoe>
     <Shoe>
         <id>2</id>
-        <name>Giày sneaker</name>
-        <brandId>3</brandId>
+        <name>giay sneaker nike</name>
+        <brandId>1</brandId>
         <typeId>4</typeId>
-        <colorId>3</colorId>
-        <materialId>2</materialId>
+        <colorId>1</colorId>
+        <materialId>1</materialId>
         <sizeId>3</sizeId>
-        <quantity>80</quantity>
-        <price>1000000.0</price>
-        <importPrice>2000000.0</importPrice>
-        <image>C:\Users\coole\Desktop\maxresdefault_(1)-2Ty0OITmT-transformed.jpeg</image>
-    </Shoe>
-    <Shoe>
-        <id>3</id>
-        <name>Giày da</name>
-        <brandId>2</brandId>
-        <typeId>4</typeId>
-        <colorId>5</colorId>
-        <materialId>3</materialId>
-        <sizeId>4</sizeId>
-        <quantity>65</quantity>
-        <price>1000000.0</price>
-        <importPrice>2000000.0</importPrice>
-        <image>C:\Users\coole\Desktop\rb_1410.png</image>
+        <quantity>50</quantity>
+        <price>4.0E7</price>
+        <importPrice>1.0E7</importPrice>
+        <image>C:\Users\coole\Desktop\OOP N02\quanlibangiay\shoe-images\l3.jpg</image>
     </Shoe>
 </Shoes>

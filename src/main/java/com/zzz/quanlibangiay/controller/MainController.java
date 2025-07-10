@@ -25,7 +25,7 @@ public class MainController {
     private final ManageCustomer manageCustomer = new ManageCustomer();
     private final ManageOrder manageOrder = new ManageOrder();
     private final ManageShoe manageShoe = new ManageShoe();
-    private final ManageOrderItem manageOrderItem = new ManageOrderItem();
+    private final ManageOrderItem manageOrderItem = new ManageOrderItem(manageOrder, manageShoe);
     private final ManageType manageType = new ManageType();
     private final ManageBrand manageBrand = new ManageBrand();
     private final ManageSize manageSize = new ManageSize();
@@ -69,7 +69,8 @@ public class MainController {
         if (dashboardController == null) {
             dashboardController = new DashboardController(
                     mainView.getDashboardView(), currentUser,
-                    manageCustomer, manageOrder, manageOrderItem
+                    manageCustomer, manageOrder, manageOrderItem,
+                    manageShoe, manageUser, manageBrand, manageType
             );
             controllerCache.put("dashboard", dashboardController);
         }
@@ -82,7 +83,7 @@ public class MainController {
             productController = new ProductController(
                     mainView.getProductView(),
                     manageShoe, manageType, manageBrand,
-                    manageColor, manageMaterial, manageSize
+                    manageColor, manageMaterial, manageSize, manageOrderItem
             );
             controllerCache.put("product", productController);
         }

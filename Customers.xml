@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Customers>
     <Customer>
+        <createdDate>2024-01-01T08:00:00+07:00</createdDate>
+        <description>Khách hàng mặc định cho bán lẻ</description>
+        <id>1</id>
+        <name>Khách bán lẻ</name>
+        <phoneNumber>0999999999</phoneNumber>
+        <address>Việt Nam</address>
+        <gender>true</gender>
+    </Customer>
+    <Customer>
         <createdDate>2024-05-01T09:00:00+07:00</createdDate>
         <description>Khách hàng thường xuyên</description>
-        <id>1</id>
+        <id>2</id>
         <name>Nguyễn Văn An</name>
         <phoneNumber>0909111222</phoneNumber>
         <address>123 Nguyễn Trãi, Quận 1, TP.HCM</address>
@@ -12,27 +21,28 @@
     <Customer>
         <createdDate>2024-05-02T10:30:00+07:00</createdDate>
         <description>Khách hàng online</description>
-        <id>2</id>
+        <id>3</id>
         <name>Trần Thị Bình</name>
         <phoneNumber>0909222333</phoneNumber>
         <address>456 Lê Lợi, Quận 3, TP.HCM</address>
         <gender>false</gender>
     </Customer>
     <Customer>
-        <createdDate>2024-05-01T09:00:00+07:00</createdDate>
-        <description>Khách VIP</description>
-        <id>3</id>
-        <name>Lê Văn C</name>
-        <phoneNumber>0909123456</phoneNumber>
-        <address>789 Cách Mạng Tháng 8, Quận 10, TP.HCM</address>
+        <createdDate>2024-06-15T14:20:00+07:00</createdDate>
+        <description>Khách hàng VIP</description>
+        <id>4</id>
+        <name>Lê Hoàng Minh</name>
+        <phoneNumber>0909333444</phoneNumber>
+        <address>789 Pasteur, Quận 3, TP.HCM</address>
         <gender>true</gender>
     </Customer>
     <Customer>
-        <createdDate>2025-07-09T13:32:55.240+07:00</createdDate>
-        <id>6</id>
-        <name>Khách bán lẻ</name>
-        <phoneNumber>0999999999</phoneNumber>
-        <address>Việt Nam</address>
-        <gender>true</gender>
+        <createdDate>2024-07-20T16:45:00+07:00</createdDate>
+        <description>Khách hàng doanh nghiệp</description>
+        <id>5</id>
+        <name>Phạm Thị Lan Anh</name>
+        <phoneNumber>0909444555</phoneNumber>
+        <address>321 Điện Biên Phủ, Quận Bình Thạnh, TP.HCM</address>
+        <gender>false</gender>
     </Customer>
 </Customers>

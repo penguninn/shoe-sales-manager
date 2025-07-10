@@ -31,6 +31,7 @@ public class CustomerController {
 
         customerView.addTableSelectionListener(new CustomerTableSelectionListener());
         customerView.addSearchCustomerListener(new SearchCustomerListener());
+        customerView.addResetSearchListener(new ResetSearchListener());
 
         customerView.addAddCustomerListener(new AddCustomerListener());
         customerView.addEditCustomerListener(new EditCustomerListener());
@@ -110,6 +111,14 @@ public class CustomerController {
             List<Customer> customers = manageCustomer.searchCustomerByPhone(phoneNumber);
             Object[][] customerData = toTableData(customers);
             customerView.setCustomerTableData(customerData);
+        }
+    }
+
+    class ResetSearchListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            customerView.clearSearchForm();
+            loadCustomerTableData();
         }
     }
 

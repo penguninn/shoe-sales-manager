@@ -21,12 +21,13 @@ public class ProductController {
     private ManageColor manageColor;
     private ManageMaterial manageMaterial;
     private ManageSize manageSize;
+    private ManageOrderItem manageOrderItem;
 
     public ProductController(
             ProductView view, ManageShoe manageShoe,
             ManageType manageType, ManageBrand manageBrand,
             ManageColor manageColor, ManageMaterial manageMaterial,
-            ManageSize manageSize) {
+            ManageSize manageSize, ManageOrderItem manageOrderItem) {
         this.view = view;
         this.manageShoe = manageShoe;
         this.manageType = manageType;
@@ -34,6 +35,7 @@ public class ProductController {
         this.manageColor = manageColor;
         this.manageMaterial = manageMaterial;
         this.manageSize = manageSize;
+        this.manageOrderItem = manageOrderItem;
         initListeners();
         initializeData();
     }
@@ -344,6 +346,12 @@ public class ProductController {
                     JOptionPane.YES_NO_OPTION
             );
             if (confirm != JOptionPane.YES_OPTION) return;
+
+            int productId = view.getDataProductFromForm().getId();
+            if (manageOrderItem.isProductInUse(productId)) {
+                view.showError("Không thể xóa: sản phẩm này đang có trong đơn hàng.");
+                return;
+            }
 
             boolean ok = manageShoe.deleteShoe(view.getDataProductFromForm().getId());
             if (ok) {

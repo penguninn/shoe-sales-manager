@@ -80,8 +80,8 @@ public class OrderController {
             Customer customer = manageCustomer.getCustomerById(b.getCustomerId());
             User user = manageUser.getUserById(b.getStaffId());
             data[i][0] = b.getId();
-            data[i][1] = customer != null ? customer.getName() : "Unknown";
-            data[i][2] = user != null ? user.getFullName() : "Unknown";
+            data[i][1] = customer != null ? customer.getName() : "Khách hàng không tồn tại";
+            data[i][2] = user != null ? user.getFullName() : "Nhân viên không tồn tại";
             data[i][3] = CurrencyUtils.formatCurrency(b.getTotalAmount());
             data[i][4] = b.getPaymentMethod() != null ? PaymentMethod.paymentMethodToDisplay(b.getPaymentMethod()) : "Unknown";
             data[i][5] = b.getStatus() != null ? OrderStatus.orderStatusToDisplay(b.getStatus()) : "Unknown";
@@ -99,6 +99,9 @@ public class OrderController {
         for (int i = 0; i < details.size(); i++) {
             OrderItem d = details.get(i);
             Shoe s = manageShoe.getShoeById(d.getProductId());
+            if (s == null) {
+                data[i][1] = "(Sản phẩm không tồn tại)";
+            }
             if (s != null) {
                 data[i][0] = d.getId();
                 data[i][1] = s.getName();
@@ -136,13 +139,22 @@ public class OrderController {
                 orderView.setProductTableData(prodData);
 
                 Customer c = manageCustomer.getCustomerById(order.getCustomerId());
+                if (c == null) {
+                    orderView.setCustomerInfo(
+                            "",
+                            "",
+                            "",
+                            "",
+                            ""
+                    );
+                    return;
+                }
                 orderView.setCustomerInfo(
                         String.valueOf(c.getId()),
                         c.getName(),
                         c.getPhoneNumber(),
                         c.isGender() ? "Nam" : "Nữ",
-                        c.getAddress(),
-                        CurrencyUtils.formatCurrency(order.getTotalAmount()) + " VNĐ"
+                        c.getAddress()
                 );
 
             }

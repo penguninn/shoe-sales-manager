@@ -11,6 +11,7 @@ import com.zzz.quanlibangiay.component.table_custom.TableCustom;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 
@@ -22,11 +23,9 @@ public class DashboardView extends javax.swing.JPanel {
     private JPanel panelTable;
     private JPanel cardPanel;
     private CardLayout cardLayout;
-    private JPanel revenue;
     private JPanel product;
     private JPanel staff;
     private JPanel customer;
-    private JTable revenueTable;
     private JTable productTable;
     private JTable staffTable;
     private JTable customeTable;
@@ -34,10 +33,17 @@ public class DashboardView extends javax.swing.JPanel {
     private PanelBorder panelBorder;
     private MaterialTabbed tabbedPane;
 
+    // Thêm các JLabel để cập nhật StatCard
+    private JLabel totalTypesLabel;
+    private JLabel totalShoesLabel;
+    private JLabel totalSoldLabel;
+    private JLabel totalRevenueLabel;
+    private JLabel totalCostLabel;
+    private JLabel totalProfitLabel;
+
     public DashboardView() {
         initComponents();
         init();
-        setTableData();
     }
 
     public void init() {
@@ -49,34 +55,26 @@ public class DashboardView extends javax.swing.JPanel {
         cardPanel = new JPanel();
         cardLayout = new CardLayout();
         tabbedPane = new MaterialTabbed();
-        revenue = new JPanel(new MigLayout("fill", "[grow]", "[grow]"));
         product = new JPanel(new MigLayout("fill", "[grow]", "[grow]"));
         staff = new JPanel(new MigLayout("fill", "[grow]", "[grow]"));
         customer = new JPanel(new MigLayout("fill", "[grow]", "[grow]"));
 
         Color bg = Color.white;
-        revenue.setBackground(bg);
         product.setBackground(bg);
         staff.setBackground(bg);
         customer.setBackground(bg);
 
-        revenueTable = new JTable();
         productTable = new JTable();
         staffTable = new JTable();
         customeTable = new JTable();
 
-        JScrollPane scrollPaneRevenue = createCustomScrollPane(revenueTable);
         JScrollPane scrollPaneProduct = createCustomScrollPane(productTable);
         JScrollPane scrollPaneStaff = createCustomScrollPane(staffTable);
         JScrollPane scrollPaneCustomer = createCustomScrollPane(customeTable);
-        
-        TableCustom.apply(scrollPaneRevenue, TableCustom.TableType.DEFAULT);
+
         TableCustom.apply(scrollPaneProduct, TableCustom.TableType.DEFAULT);
         TableCustom.apply(scrollPaneStaff, TableCustom.TableType.DEFAULT);
         TableCustom.apply(scrollPaneCustomer, TableCustom.TableType.DEFAULT);
-
-        revenue.add(scrollPaneRevenue, "grow");
-        tabbedPane.addTab("Doanh Thu", revenue);
 
         product.add(scrollPaneProduct, "grow");
         tabbedPane.addTab("Sản Phẩm", product);
@@ -110,17 +108,24 @@ public class DashboardView extends javax.swing.JPanel {
         panelBorder.add(panelHeader, "h 40!, wrap");
         panelBorder.add(cardPanel, "grow");
 
+        totalTypesLabel = new JLabel("0");
+        totalShoesLabel = new JLabel("0");
+        totalSoldLabel = new JLabel("0");
+        totalRevenueLabel = new JLabel("0đ");
+        totalCostLabel = new JLabel("0đ");
+        totalProfitLabel = new JLabel("0đ");
+
         PanelBorder statCard1 = new PanelBorder(Color.decode("#373B44"), Color.decode("#4286f4"));
         statCard1.setLayout(new GridLayout(3, 1, 0, 2));
-        statCard1.add(createStatRow("Tổng Loại Giày", "12"));
-        statCard1.add(createStatRow("Tổng Số Giày", "345"));
-        statCard1.add(createStatRow("Tổng Đã Bán", "278"));
+        statCard1.add(createStatRow("Tổng Loại Giày", totalTypesLabel));
+        statCard1.add(createStatRow("Tổng Số Giày", totalShoesLabel));
+        statCard1.add(createStatRow("Tổng Đã Bán", totalSoldLabel));
 
         PanelBorder statCard2 = new PanelBorder(Color.decode("#373B44"), Color.decode("#4286f4"));
         statCard2.setLayout(new GridLayout(3, 1, 0, 2));
-        statCard2.add(createStatRow("Doanh Thu Tháng", "123,000,000đ"));
-        statCard2.add(createStatRow("Chi Phí", "45,000,000đ"));
-        statCard2.add(createStatRow("Lợi Nhuận", "78,000,000đ"));
+        statCard2.add(createStatRow("Tổng Doanh Thu", totalRevenueLabel));
+        statCard2.add(createStatRow("Tổng Chi Phí", totalCostLabel));
+        statCard2.add(createStatRow("Tổng Lợi Nhuận", totalProfitLabel));
 
         layerPane.setLayout(new GridLayout(1, 2, 10, 0));
         layerPane.add(statCard1);
@@ -141,7 +146,7 @@ public class DashboardView extends javax.swing.JPanel {
         return scroll;
     }
 
-    private JPanel createStatRow(String labelText, String valueText) {
+    private JPanel createStatRow(String labelText, JLabel valueLabel) {
         JPanel row = new JPanel(new BorderLayout());
         row.setOpaque(false);
         row.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -150,101 +155,131 @@ public class DashboardView extends javax.swing.JPanel {
         label.setFont(new Font("SansSerif", Font.BOLD, 15));
         label.setForeground(Color.WHITE);
 
-        JLabel value = new JLabel(valueText, SwingConstants.RIGHT);
-        value.setFont(new Font("SansSerif", Font.BOLD, 15));
-        value.setForeground(Color.WHITE);
+        valueLabel.setFont(new Font("SansSerif", Font.BOLD, 15));
+        valueLabel.setForeground(Color.WHITE);
+        valueLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         row.add(label, BorderLayout.WEST);
-        row.add(value, BorderLayout.EAST);
+        row.add(valueLabel, BorderLayout.EAST);
 
         return row;
     }
 
-    private void setTableData() {
-        // Dữ liệu mẫu cho bảng Doanh thu
-        revenueTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                    {"Tháng 1", "50,000,000đ"},
-                    {"Tháng 2", "60,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 1", "50,000,000đ"},
-                    {"Tháng 2", "60,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 1", "50,000,000đ"},
-                    {"Tháng 2", "60,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 1", "50,000,000đ"},
-                    {"Tháng 2", "60,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                    {"Tháng 3", "70,000,000đ"},
-                },
-                new String[]{"Tháng", "Doanh Thu"}
-        ));
+    public void updateStatCards(String totalTypes, String totalShoes, String totalSold,
+                               String totalRevenue, String totalCost, String totalProfit) {
+        SwingUtilities.invokeLater(() -> {
+            totalTypesLabel.setText(totalTypes);
+            totalShoesLabel.setText(totalShoes);
+            totalSoldLabel.setText(totalSold);
+            totalRevenueLabel.setText(totalRevenue);
+            totalCostLabel.setText(totalCost);
+            totalProfitLabel.setText(totalProfit);
+        });
+    }
 
-        // Dữ liệu mẫu cho bảng Sản phẩm
-        productTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                    {"Nike Air", "Giày Thể Thao", "2,500,000đ"},
-                    {"Adidas Boost", "Giày Chạy", "2,200,000đ"},
-                    {"Puma X", "Giày Casual", "1,800,000đ"}
-                },
-                new String[]{"Tên Sản Phẩm", "Loại", "Giá"}
-        ));
+    public void updateTotalTypes(String value) {
+        SwingUtilities.invokeLater(() -> totalTypesLabel.setText(value));
+    }
 
-        // Dữ liệu mẫu cho bảng Nhân viên
-        staffTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                    {"Nguyễn Văn A", "Quản lý", "12,000,000đ"},
-                    {"Trần Thị B", "Bán hàng", "9,000,000đ"},
-                    {"Lê Văn C", "Kho", "8,500,000đ"}
-                },
-                new String[]{"Tên", "Chức vụ", "Lương"}
-        ));
+    public void updateTotalShoes(String value) {
+        SwingUtilities.invokeLater(() -> totalShoesLabel.setText(value));
+    }
 
-        // Dữ liệu mẫu cho bảng Khách hàng
-        customeTable.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                    {"Phạm Hồng D", "0123456789", "Hà Nội"},
-                    {"Võ Minh E", "0987654321", "Đà Nẵng"},
-                    {"Trịnh Xuân F", "0909090909", "TP.HCM"}
-                },
-                new String[]{"Tên KH", "SĐT", "Địa chỉ"}
-        ));
+    public void updateTotalSold(String value) {
+        SwingUtilities.invokeLater(() -> totalSoldLabel.setText(value));
+    }
+
+    public void updateTotalRevenue(String value) {
+        SwingUtilities.invokeLater(() -> totalRevenueLabel.setText(value));
+    }
+
+    public void updateTotalCost(String value) {
+        SwingUtilities.invokeLater(() -> totalCostLabel.setText(value));
+    }
+
+    public void updateTotalProfit(String value) {
+        SwingUtilities.invokeLater(() -> totalProfitLabel.setText(value));
+    }
+
+    public void updateStatCardsWithNumbers(int totalTypes, int totalShoes, int totalSold,
+                                          double totalRevenue, double totalCost, double totalProfit) {
+        SwingUtilities.invokeLater(() -> {
+            totalTypesLabel.setText(String.valueOf(totalTypes));
+            totalShoesLabel.setText(String.valueOf(totalShoes));
+            totalSoldLabel.setText(String.valueOf(totalSold));
+            totalRevenueLabel.setText(formatCurrency(totalRevenue));
+            totalCostLabel.setText(formatCurrency(totalCost));
+            totalProfitLabel.setText(formatCurrency(totalProfit));
+        });
+    }
+
+    public void resetStatCards() {
+        SwingUtilities.invokeLater(() -> {
+            totalTypesLabel.setText("0");
+            totalShoesLabel.setText("0");
+            totalSoldLabel.setText("0");
+            totalRevenueLabel.setText("0đ");
+            totalCostLabel.setText("0đ");
+            totalProfitLabel.setText("0đ");
+        });
+    }
+
+    private String formatCurrency(double amount) {
+        return String.format("%,.0fđ", amount);
+    }
+
+    public String getCurrentTotalTypes() {
+        return totalTypesLabel.getText();
+    }
+
+    public String getCurrentTotalShoes() {
+        return totalShoesLabel.getText();
+    }
+
+    public String getCurrentTotalSold() {
+        return totalSoldLabel.getText();
+    }
+
+    public String getCurrentTotalRevenue() {
+        return totalRevenueLabel.getText();
+    }
+
+    public String getCurrentTotalCost() {
+        return totalCostLabel.getText();
+    }
+
+    public String getCurrentTotalProfit() {
+        return totalProfitLabel.getText();
+    }
+
+    public void setProductTableData(Object[][] data) {
+        String[] columns = {"Tên Sản Phẩm", "Loại", "Thương hiệu", "Tồn kho", "Đã bán", "Giá bán", "Giá nhập", "Lợi nhuận"};
+        productTable.setModel(new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+    }
+
+    public void setStaffTableData(Object[][] data) {
+        String[] columns = {"Tên", "Chức vụ", "Tổng đơn hàng xử lý", "Tổng doanh thu đóng góp", "Trạng thái", "Ngày vào làm"};
+        staffTable.setModel(new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
+    }
+
+    public void setCustomerTableData(Object[][] data) {
+        String[] columns = {"Tên KH", "SĐT", "Địa chỉ", "Tổng đơn hàng", "Tổng chi tiêu"};
+        customeTable.setModel(new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        });
     }
 
     /**
@@ -259,15 +294,14 @@ public class DashboardView extends javax.swing.JPanel {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1200, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 1200, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 600, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

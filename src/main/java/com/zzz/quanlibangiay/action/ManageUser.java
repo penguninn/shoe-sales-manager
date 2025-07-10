@@ -4,9 +4,10 @@
  */
 package com.zzz.quanlibangiay.action;
 
-import com.zzz.quanlibangiay.entity.Customer;
 import com.zzz.quanlibangiay.entity.User;
 import com.zzz.quanlibangiay.entity.xml.UserXML;
+import com.zzz.quanlibangiay.enums.UserRole;
+import com.zzz.quanlibangiay.enums.UserStatus;
 import com.zzz.quanlibangiay.utils.FileUtils;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class ManageUser {
 
     public boolean authenticate(String username, String password) {
         for (User user : userList) {
-            if (user.getUserName().equalsIgnoreCase(username) && user.getPassword().equals(password)) {
+            if (user.getUserName().equalsIgnoreCase(username) && user.getPassword().equals(password) && user.getStatus() == UserStatus.WORKING) {
                 return true;
             }
         }
@@ -132,5 +133,35 @@ public class ManageUser {
         UserXML userXML = new UserXML();
         userXML.setUsers(userList);
         FileUtils.writeXMLtoFile(FILE_NAME, userXML);
+    }
+
+    public List<User> getUsersByStatus(UserStatus status) {
+        List<User> result = new ArrayList<>();
+        for (User user : userList) {
+            if (user.getStatus() == status) {
+                result.add(user);
+            }
+        }
+        return result;
+    }
+
+    public List<User> getUsersByRole(UserRole role) {
+        List<User> result = new ArrayList<>();
+        for (User user : userList) {
+            if (user.getRole() == role) {
+                result.add(user);
+            }
+        }
+        return result;
+    }
+
+    public List<User> getAllStaff() {
+        List<User> result = new ArrayList<>();
+        for (User user : userList) {
+            if (user.getRole() == UserRole.STAFF) {
+                result.add(user);
+            }
+        }
+        return result;
     }
 }

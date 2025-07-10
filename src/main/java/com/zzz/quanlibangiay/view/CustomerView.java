@@ -25,7 +25,7 @@ public class CustomerView extends javax.swing.JPanel {
     private PanelBorder leftPanelSection;
     private PanelBorder rightPanelSection;
     private JTextField txtSearch;
-    private ButtonCustom btnSearch;
+    private ButtonCustom btnSearch, btnReset;
     private ButtonCustom btnAdd, btnEdit, btnDelete, btnClear;
 
     private JTextField txtId;
@@ -66,6 +66,10 @@ public class CustomerView extends javax.swing.JPanel {
         btnSearch.setText("Tìm kiếm");
         searchPane.add(txtSearch);
         searchPane.add(btnSearch);
+
+        btnReset = new ButtonCustom();
+        btnReset.setText("Làm mới");
+        searchPane.add(btnReset);
         leftPanelSection.add(searchPane, BorderLayout.NORTH);
 
         tableCustomer = new JTable();
@@ -214,6 +218,11 @@ public class CustomerView extends javax.swing.JPanel {
         tableCustomer.clearSelection();
     }
 
+    public void clearSearchForm() {
+        txtSearch.setText("");
+        tableCustomer.clearSelection();
+    }
+
     public void setCustomerTableData(Object[][] data) {
         String[] columnNames = new String[]{
                 "Id", "Tên khách hàng", "Giới tính", "Số điện thoại", "Địa chỉ", "Ngày tham gia"};
@@ -266,6 +275,10 @@ public class CustomerView extends javax.swing.JPanel {
 
     public void addSearchCustomerListener(ActionListener listener) {
         btnSearch.addActionListener(listener);
+    }
+
+    public void addResetSearchListener(ActionListener listener) {
+        btnReset.addActionListener(listener);
     }
 
     public void addAddCustomerListener(ActionListener listener) {

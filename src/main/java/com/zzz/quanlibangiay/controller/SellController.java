@@ -109,7 +109,7 @@ public class SellController {
             Order order = orders.get(i);
             data[i][0] = order.getId();
             data[i][1] = manageCustomer.getCustomerById(order.getCustomerId()).getName();
-            data[i][2] = manageUser.getUserById(order.getStaffId()).getFullName();
+            data[i][2] = currentUser.getFullName();
             data[i][3] = CurrencyUtils.formatCurrency(order.getTotalAmount());
             data[i][4] = DateUtils.formatDateToShort(order.getCreatedDate());
         }
@@ -417,7 +417,6 @@ public class SellController {
 
             Order newOrder = new Order();
             newOrder.setCustomerId(chosen.getId());
-            newOrder.setStaffId(currentUser.getId());
             newOrder.setStatus(OrderStatus.PENDING);
             newOrder.setPaymentMethod(PaymentMethod.CASH);
             newOrder.setTotalAmount(0);
@@ -462,6 +461,7 @@ public class SellController {
             order.setStatus(OrderStatus.COMPLETED);
             order.setDescription(sellView.getNote());
             order.setPaymentMethod(sellView.getPaymentMethod());
+            order.setStaffId(currentUser.getId());
             manageOrder.updateOrder(order);
 
             sellView.showSuccess("Thanh toán thành công: "

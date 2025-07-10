@@ -331,8 +331,9 @@ public class SellView extends javax.swing.JPanel {
 
     public void clearBillInfo() {
         cbPaymentMethod.setSelectedIndex(0);
+        txtBillCode.setText("");
+        txtTotalAmount.setText("");
         txtPhoneNumber.setText("");
-        txtPhoneNumber.requestFocus();
         txtNote.setText("");
     }
 

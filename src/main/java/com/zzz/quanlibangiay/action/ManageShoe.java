@@ -3,6 +3,7 @@ package com.zzz.quanlibangiay.action;
 import com.zzz.quanlibangiay.entity.Shoe;
 import com.zzz.quanlibangiay.entity.ShoeSearchCriteria;
 import com.zzz.quanlibangiay.entity.xml.ShoeXML;
+import com.zzz.quanlibangiay.utils.CurrencyUtils;
 import com.zzz.quanlibangiay.utils.FileUtils;
 
 import java.util.ArrayList;
@@ -85,7 +86,6 @@ public class ManageShoe {
                 .collect(Collectors.toList());
     }
 
-
     public boolean isBrandInUse(int brandId) {
         return shoes.stream().anyMatch(shoe -> shoe.getBrandId() == brandId);
     }
@@ -167,5 +167,32 @@ public class ManageShoe {
             ex.printStackTrace();
             return false;
         }
+    }
+
+    public Object[][] getProductStatisticsData(ManageOrderItem manageOrderItem, ManageType manageType,
+                                               ManageBrand manageBrand) {
+        List<Object[]> data = new ArrayList<>();
+
+        for (Shoe shoe : shoes) {
+            int soldQuantity = manageOrderItem.getSoldQuantityByProductId(shoe.getId());
+
+            double profit = (shoe.getPrice() - shoe.getImportPrice()) * soldQuantity;
+
+            String typeName = manageType.getShoeTypeById(shoe.getTypeId()).getName();
+            String brandName = manageBrand.getBrandById(shoe.getBrandId()).getName();
+
+            data.add(new Object[]{
+                    shoe.getName(),
+                    typeName,
+                    brandName,
+                    shoe.getQuantity(),
+                    soldQuantity,
+                    CurrencyUtils.formatCurrency(shoe.getPrice()),
+                    CurrencyUtils.formatCurrency(shoe.getImportPrice()),
+                    CurrencyUtils.formatCurrency(profit)
+            });
+        }
+
+        return data.toArray(new Object[0][]);
     }
 }

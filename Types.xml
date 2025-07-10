@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Types>
     <Type>
-        <createdDate>2024-01-01T00:00:00+07:00</createdDate>
-        <description>Giày thể thao đa năng</description>
         <id>1</id>
-        <name>Giày thể thao</name>
+        <name>Giày sneaker</name>
     </Type>
     <Type>
-        <createdDate>2024-01-01T00:00:00+07:00</createdDate>
-        <description>Giày thể thao đa năng</description>
         <id>2</id>
-        <name>Giày thể thao</name>
+        <name>Giày tây</name>
     </Type>
     <Type>
-        <createdDate>2024-01-01T00:00:00+07:00</createdDate>
-        <description>Giày thể thao đa năng</description>
         <id>3</id>
-        <name>Giày thể thao</name>
+        <name>Giày cao gót</name>
     </Type>
     <Type>
         <id>4</id>
-        <name>Sneakerrrr</name>
+        <name>Giày lười</name>
     </Type>
     <Type>
+        <createdDate>2025-07-10T11:39:59.926+07:00</createdDate>
         <id>5</id>
-        <name>Sneakerrrr123</name>
+        <name>Giày boot</name>
     </Type>
 </Types>

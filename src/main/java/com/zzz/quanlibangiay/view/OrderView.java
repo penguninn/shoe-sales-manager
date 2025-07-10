@@ -101,9 +101,6 @@ public class OrderView extends javax.swing.JPanel {
         customerPanel.add(new JLabel("Địa Chỉ :"));
         customerPanel.add(txtAddress);
         txtAddress.setEditable(false);
-        customerPanel.add(new JLabel("Tổng giá trị hóa đơn :"));
-        customerPanel.add(txtTotal);
-        txtTotal.setEditable(false);
 
         bottomPanel.add(productPanel, "grow");
         bottomPanel.add(customerPanel, "grow");
@@ -138,13 +135,12 @@ public class OrderView extends javax.swing.JPanel {
         });
     }
 
-    public void setCustomerInfo(String id, String name, String phone, String gender, String address, String total) {
+    public void setCustomerInfo(String id, String name, String phone, String gender, String address) {
         txtCustomerId.setText(id);
         txtCustomerName.setText(name);
         txtPhone.setText(phone);
         txtGender.setText(gender);
         txtAddress.setText(address);
-        txtTotal.setText(total);
     }
 
     public void showError(String message) {

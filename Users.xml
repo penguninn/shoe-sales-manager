@@ -14,32 +14,6 @@
         <birthDate>2025-07-31T00:12:27.893+07:00</birthDate>
     </User>
     <User>
-        <id>2</id>
-        <userName>STAFF</userName>
-        <password>STAFF</password>
-        <fullName>Trần Thị STAFF</fullName>
-        <role>STAFF</role>
-        <name>STAFF</name>
-        <gender>false</gender>
-        <phoneNumber>0987654321</phoneNumber>
-        <address>456 Đường XYZ, Quận 2, TP.HCM</address>
-        <status>WORKING</status>
-        <birthDate>2025-07-07T00:12:46.855+07:00</birthDate>
-    </User>
-    <User>
-        <id>101</id>
-        <userName>STAFF101</userName>
-        <password>STAFF101</password>
-        <fullName>Nguyễn Văn Phúc</fullName>
-        <role>STAFF</role>
-        <name>STAFF 101</name>
-        <gender>true</gender>
-        <phoneNumber>0987123456</phoneNumber>
-        <address>789 Đường DEF, Quận 3, TP.HCM</address>
-        <status>WORKING</status>
-        <birthDate>1995-03-15T00:00:00+07:00</birthDate>
-    </User>
-    <User>
         <id>102</id>
         <userName>STAFF102</userName>
         <password>STAFF102</password>
@@ -88,7 +62,7 @@
         <gender>true</gender>
         <phoneNumber>0987567890</phoneNumber>
         <address>147 Đường PQR, Quận 7, TP.HCM</address>
-        <status>WORKING</status>
+        <status>RETIRED</status>
         <birthDate>1988-12-05T00:00:00+07:00</birthDate>
     </User>
 </Users>

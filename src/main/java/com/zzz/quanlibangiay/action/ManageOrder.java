@@ -1,8 +1,14 @@
 package com.zzz.quanlibangiay.action;
 
+import com.zzz.quanlibangiay.entity.Customer;
 import com.zzz.quanlibangiay.entity.Order;
+import com.zzz.quanlibangiay.entity.User;
 import com.zzz.quanlibangiay.entity.xml.OrderXML;
 import com.zzz.quanlibangiay.enums.OrderStatus;
+import com.zzz.quanlibangiay.enums.UserRole;
+import com.zzz.quanlibangiay.enums.UserStatus;
+import com.zzz.quanlibangiay.utils.CurrencyUtils;
+import com.zzz.quanlibangiay.utils.DateUtils;
 import com.zzz.quanlibangiay.utils.FileUtils;
 
 import java.util.ArrayList;
@@ -86,5 +92,70 @@ public class ManageOrder {
         OrderXML ox = new OrderXML();
         ox.setOrders(orderList);
         FileUtils.writeXMLtoFile(ORDERS_FILE, ox);
+    }
+
+    public double getTotalSpentByCustomerId(int customerId) {
+        return orderList.stream()
+                .filter(order -> order.getCustomerId() == customerId
+                        && order.getStatus() == OrderStatus.COMPLETED)
+                .mapToDouble(Order::getTotalAmount)
+                .sum();
+    }
+
+    public int getOrderCountByCustomerId(int customerId) {
+        return (int) orderList.stream()
+                .filter(order -> order.getCustomerId() == customerId)
+                .count();
+    }
+
+    public Object[][] getStaffStatisticsData(ManageUser manageUser, ManageOrderItem manageOrderItem) {
+        List<Object[]> data = new ArrayList<>();
+        List<User> users = manageUser.getAllUsers();
+
+        for (User user : users) {
+            int totalOrders = manageOrderItem.getOrderCountByStaffId(user.getId());
+
+            double totalRevenue = manageOrderItem.getTotalRevenueByStaffId(user.getId());
+
+            String statusDisplay = user.getStatus() != null ?
+                    (user.getStatus().equals(UserStatus.WORKING) ? UserStatus.statusToDisplay(UserStatus.WORKING) :
+                            UserStatus.statusToDisplay(UserStatus.RETIRED)) :
+                    "Không xác định";
+
+            String roleDisplay = user.getRole() != null ?
+                    UserRole.roleToDisplay(user.getRole()) : "Không xác định";
+
+            data.add(new Object[]{
+                    user.getFullName(),
+                    roleDisplay,
+                    totalOrders,
+                    CurrencyUtils.formatCurrency(totalRevenue),
+                    statusDisplay,
+                    DateUtils.formatDateToShort(user.getCreatedDate())
+            });
+        }
+
+        return data.toArray(new Object[0][]);
+    }
+
+    public Object[][] getCustomerStatisticsData(ManageCustomer manageCustomer) {
+        List<Object[]> data = new ArrayList<>();
+        List<Customer> customers = manageCustomer.getAllCustomers();
+
+        for (Customer customer : customers) {
+            int totalOrders = getOrderCountByCustomerId(customer.getId());
+
+            double totalSpent = getTotalSpentByCustomerId(customer.getId());
+
+            data.add(new Object[]{
+                    customer.getName(),
+                    customer.getPhoneNumber(),
+                    customer.getAddress(),
+                    totalOrders,
+                    CurrencyUtils.formatCurrency(totalSpent)
+            });
+        }
+
+        return data.toArray(new Object[0][]);
     }
 }
