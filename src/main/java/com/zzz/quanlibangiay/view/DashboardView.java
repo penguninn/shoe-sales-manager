@@ -33,7 +33,6 @@ public class DashboardView extends javax.swing.JPanel {
     private PanelBorder panelBorder;
     private MaterialTabbed tabbedPane;
 
-    // Thêm các JLabel để cập nhật StatCard
     private JLabel totalTypesLabel;
     private JLabel totalShoesLabel;
     private JLabel totalSoldLabel;
@@ -263,7 +262,7 @@ public class DashboardView extends javax.swing.JPanel {
     }
 
     public void setStaffTableData(Object[][] data) {
-        String[] columns = {"Tên", "Chức vụ", "Tổng đơn hàng xử lý", "Tổng doanh thu đóng góp", "Trạng thái", "Ngày vào làm"};
+        String[] columns = {"Tên", "Chức vụ", "Tổng đơn hàng xử lý", "Tổng doanh thu đóng góp", "Trạng thái"};
         staffTable.setModel(new DefaultTableModel(data, columns) {
             @Override
             public boolean isCellEditable(int row, int column) {
